@@ -1,7 +1,15 @@
+
+
 <div class="ui container center-screen">
   <div class="row justify-content-center">
-    <div class="col-12 center">
-      <img src="'../../assets/logo.png" alt="..." class="img-thumbnail" />
+    <div class="col-12 center m-3">
+
+      <video
+        style="width: 600px"
+        #player
+        (timeupdate)="onTimeUpdate()"
+        (pause)="onPause()"
+      ></video>
     </div>
   </div>
   <br />
@@ -70,4 +78,4 @@
     </div>
   </div>
 </div>
-<audio #player (timeupdate)="onTimeUpdate()" (pause)="onPause()"></audio>
+<!-- <audio #player (timeupdate)="onTimeUpdate()" (pause)="onPause()"></audio> -->

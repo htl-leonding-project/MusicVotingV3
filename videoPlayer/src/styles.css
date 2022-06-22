@@ -1,0 +1,5 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@vime/core/themes/default.css';
+
+/* Optional light theme (extends default). ~400B */
+@import '~@vime/core/themes/light.css';
