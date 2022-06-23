@@ -29,6 +29,16 @@ public class SongResource {
     }
 
     @GET
+    @Path("getNextSong")
+    @Transactional
+    public Song getNextSong(){
+        Song s = songRepository.listAll().get(0);
+        songRepository.deleteById(s.getId());
+        return s;
+    }
+
+
+    @GET
     @Transactional
     @Path("/addSong/{artistName}/{songTitle}")
     //Es wird angenommen das der genaue Titel des Liedes übergeben wird
@@ -47,6 +57,7 @@ public class SongResource {
         if (newSong == null){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+
 
         songRepository.persist(newSong);
         return Response.ok().build();

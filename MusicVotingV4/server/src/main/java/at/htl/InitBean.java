@@ -1,24 +1,14 @@
 package at.htl;
 
 
-import at.htl.boundary.ArtistService;
-import at.htl.boundary.TrackService;
 import at.htl.control.ArtistRepository;
 import at.htl.control.SongRepository;
-import at.htl.entity.Artist;
-import at.htl.entity.Song;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import javax.ws.rs.DefaultValue;
-import java.util.ArrayList;
-import java.util.List;
 
 public class InitBean {
     @Inject

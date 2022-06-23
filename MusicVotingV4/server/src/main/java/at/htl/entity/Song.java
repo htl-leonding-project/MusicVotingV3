@@ -21,6 +21,8 @@ public class Song {
 
     private LocalDateTime timeAdded;
 
+    private int duration;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Artist artist;
 
@@ -48,6 +50,21 @@ public class Song {
                 '}';
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getSongId() {
         return songId;

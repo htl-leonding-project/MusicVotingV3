@@ -8,7 +8,7 @@ import javax.ws.rs.QueryParam;
 
 @Path("")
 @RegisterRestClient
-public interface TrackService {
+public interface VideoService {
     @GET
-    String getTrack(@QueryParam("h") String trackId);
+    String getMusicVideos(@QueryParam("i") String artistId);
 }
