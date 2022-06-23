@@ -4,3 +4,4 @@ ng serve --port 8082 --host 10.0.0.20 --disable-host-check
 
 ./mvnw clean compile quarkus:dev
 
+ifconfig

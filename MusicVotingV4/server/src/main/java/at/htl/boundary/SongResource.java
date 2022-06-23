@@ -34,8 +34,13 @@ public class SongResource {
     //Es wird angenommen das der genaue Titel des Liedes übergeben wird
     public Response addSong(@PathParam("artistName") String artistName,
                             @PathParam("songTitle") String songTitle){
+
+        Artist a = artistRepository.getArtist(artistName);
+        if(a == null){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         Song newSong = songRepository.getSongsWithSearch(
-                artistRepository.getArtist(artistName),
+                a,
                 songTitle
         ).get(0);
 
@@ -49,21 +54,31 @@ public class SongResource {
 
     @GET
     @Path("search/{artistName}/{songTitle}")
-    public List<Song> getSongsWithSearch(
+    public Response getSongsWithSearch(
             @PathParam("artistName") String artistName,
             @PathParam("songTitle") String songTitle){
 
-        return songRepository.
+        Artist a = artistRepository.getArtist(artistName);
+        if(a == null){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(songRepository.
                 getSongsWithSearch(
-                        artistRepository.getArtist(artistName),
-                        songTitle);
+                        a,
+                        songTitle)).build();
     }
 
     @GET
     @Path("search/{artistName}")
-    public List<Song> getSongsWithSearch(
+    public Response getSongsWithSearch(
             @PathParam("artistName") String artistName){
 
-        return songRepository.getSongs(artistRepository.getArtist(artistName));
+        Artist a = artistRepository.getArtist(artistName);
+        if(a == null){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(
+                songRepository.getSongs(a)).build();
     }
 }

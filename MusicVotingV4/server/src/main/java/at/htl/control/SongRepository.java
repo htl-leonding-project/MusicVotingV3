@@ -44,8 +44,6 @@ public class SongRepository implements PanacheRepository<Song> {
         List<Song> songs = new ArrayList<>();
 
         if (songsArray != null) {
-
-            Log.info(songsArray);
             for (int i = 0; i < songsArray.size(); i++) {
                 JsonObject video = songsArray.getJsonObject(i);
 

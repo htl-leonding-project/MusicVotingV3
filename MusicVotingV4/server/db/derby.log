@@ -1,12 +1,12 @@
-Wed Jun 22 16:53:05 CEST 2022 : Apache Derby Network Server - 10.15.2.0 - (1873585) started and ready to accept connections on port 1527
+Thu Jun 23 07:58:12 CEST 2022 : Apache Derby Network Server - 10.15.2.0 - (1873585) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Wed Jun 22 16:53:55 CEST 2022:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585): instance a816c00e-0181-8be7-1207-000007007000 
-on database directory /home/anna/Desktop/MusicVotingV4/server/db/db with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@30946e09 
-Loaded from file:/home/anna/Desktop/MusicVotingV4/server/db/db-derby-10.15.2.0-bin/lib/derby.jar
+Thu Jun 23 08:03:45 CEST 2022:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585): instance a816c00e-0181-8f23-b974-000007007000 
+on database directory /home/anna/Desktop/MusicVotingV3/MusicVotingV4/server/db/db with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@30946e09 
+Loaded from file:/home/anna/Desktop/MusicVotingV3/MusicVotingV4/server/db/db-derby-10.15.2.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=17.0.1+12-LTS-39
-user.dir=/home/anna/Desktop/MusicVotingV4/server/db
+user.dir=/home/anna/Desktop/MusicVotingV3/MusicVotingV4/server/db
 os.name=Linux
 os.arch=amd64
 os.version=5.15.0-33-generic
