@@ -18,7 +18,7 @@
       </div>
       <div class="col-md-8">
         <div class="card-body">
-          <h1 class="card-title">{{actSong.songName}}</h1>
+          <h2 class="card-title">{{actSong.songName}}</h2>
           <p class="card-text">
             <small class="text-muted">{{actSong.artist.strArtist}}</small>
           </p>
@@ -48,7 +48,7 @@
     </span>
   </button>
 
-  <span *ngFor="let song of songs" class="col-3">
+  <span *ngFor="let song of songs; let i=index" class="col-3">
 
 
 
@@ -75,6 +75,8 @@
             </p>
           </div>
         </div>
+
+        <div class="card-footer text-muted">An der Stelle: {{i +1}}</div>
       </div>
     </div>
 
