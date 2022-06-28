@@ -1,0 +1,10 @@
+ng serve --port 8081 --host 10.0.0.20 --disable-host-check
+
+ng serve --port 8082 --host 10.0.0.20 --disable-host-check
+
+./mvnw clean compile quarkus:dev
+
+ifconfig
+
+export IP_ADDRESS=$(ip -4 addr show wlp0s20f3 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+
