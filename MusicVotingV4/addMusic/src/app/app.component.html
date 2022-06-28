@@ -1,0 +1,33 @@
+<div class="container col-12 row">
+  <div class="col-12">
+    <label>Künstler: </label>
+    <input [(ngModel)]="artist" required class="form-control" type="text" />
+    <br />
+
+    <label>Song Titel: </label>
+    <input [(ngModel)]="songTitle" class="form-control" type="text" /> <br />
+
+    <button class="btn btn-primary" (click)="search()">Suchen</button> <br />
+    <br />
+  </div>
+
+  <span *ngIf="songs.length == 0">
+    <h5 class="text-danger">Es wurden keine Lieder gefunden</h5>
+  </span>
+
+  <span class="col-sm-12 col-md-12 row" style="margin-bottom: 10px;" *ngFor="let song of songs">
+    <span class="col-4">
+      <span *ngIf="song.thumbnail == undefined">
+        <img src="../assets/musicCover.jpg" width="100px" />
+      </span>
+
+      <span *ngIf="song.thumbnail != undefined">
+        <img [src]="song.thumbnail" width="100px" />
+      </span>
+    </span>
+
+    <span class="col-4 center">{{ song.songName }}</span>
+
+    <button class="btn btn-dark col-4 center" [disabled]="buttonDisable" (click)="addSong(song)" style="height: 40%;">Hinzufügen</button>
+  </span>
+</div>
