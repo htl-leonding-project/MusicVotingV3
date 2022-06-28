@@ -12,13 +12,16 @@ import { interval, Observable } from 'rxjs';
 export class AppComponent implements OnInit {
   title = 'showMusic';
   isPlaying = false;
+  window?: Window|null;
 
   actSong: Song = {
-  videoUrl: "",
-  duration:0, songId:"",
-  songName:"",
-  thumbnail:"",
-  artist: {idArtist:"", strArtist:""}};
+    videoUrl: '',
+    duration: 0,
+    songId: '',
+    songName: '',
+    thumbnail: '',
+    artist: { idArtist: '', strArtist: '' },
+  };
 
   constructor(
     private songService: SongService,
@@ -33,7 +36,6 @@ export class AppComponent implements OnInit {
       this.songService.getPlaylist().subscribe({
         next: (result) => {
           this.songs = result;
-          //console.log(this.songs);
         },
       });
     });
@@ -43,43 +45,58 @@ export class AppComponent implements OnInit {
     window.open(song.videoUrl, '_blank');
   }
 
+
   playNextSong() {
-    if(this.isPlaying == true){
+    if (this.isPlaying == true) {
 
-    var actWindow: Window | null;
-    this.songService.getNextSong().subscribe({
-      next: (song) => {
-        if (song != null ) {
-          this.actSong = song;
-          console.log(song.artist.strArtist)
-          actWindow =  window.open(song.videoUrl, "",
-           "toolbar=no,scrollbars=no,resizable=no,top=200,left=500,width=100,height=100,menubar=no,titlebar=no");
+      this.songService.getNextSong().subscribe({
+        next: (song) => {
+          if (song != null) {
+            this.actSong = song;
+            console.log(song.artist.strArtist);
+            this.window = window.open(
+              song.videoUrl,
+              '',
+              'toolbar=no,scrollbars=no,resizable=no,top=200,left=500,width=100,height=100,menubar=no,titlebar=no'
+            );
 
-          setTimeout(() => {
-            console.log('song vorbei');
 
-            if(actWindow != null){
-              console.log("fenster schließen")
-              actWindow.close()
-            }
+            setTimeout(() => {
+              console.log('song vorbei');
 
-            this.playNextSong();
-          }, 25000);
-        }
-        else{
-          console.log("Playlist ende")
-          song = { artist: {strArtist:"", idArtist:""},videoUrl: "", duration:0, songId:"", songName:"", thumbnail:""};//
-          this.isPlaying = false;
-        }
-      },
-    });
-  }
+              if (this.window != null ) {
+                console.log('fenster schließen');
+                this.window.close();
+              }
+
+              this.playNextSong();
+            }, 25000);
+          } else {
+            console.log('Playlist ende');
+            song = {
+              artist: { strArtist: '', idArtist: '' },
+              videoUrl: '',
+              duration: 0,
+              songId: '',
+              songName: '',
+              thumbnail: '',
+            };
+            this.isPlaying = false;
+          }
+        },
+      });
+    }
   }
 
   playSong() {
     this.isPlaying = !this.isPlaying;
     if (this.isPlaying == true) {
       this.playNextSong();
+    }
+    else{
+      if(this.window != null){
+        this.window.close()
+      }
     }
   }
 
