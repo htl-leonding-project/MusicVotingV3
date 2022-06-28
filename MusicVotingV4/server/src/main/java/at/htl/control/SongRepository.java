@@ -6,6 +6,7 @@ import at.htl.entity.Artist;
 import at.htl.entity.Song;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.logging.Log;
+import io.quarkus.panache.common.Sort;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -29,8 +30,7 @@ public class SongRepository implements PanacheRepository<Song> {
     ArtistRepository artistRepository;
 
     public List<Song> getPlaylist() {
-        //TODO ist es richtig sortiert
-        return this.listAll();
+        return this.listAll(Sort.by("timeAdded").ascending());
     }
 
     @Override

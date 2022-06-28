@@ -32,9 +32,14 @@ public class SongResource {
     @Path("getNextSong")
     @Transactional
     public Song getNextSong(){
-        Song s = songRepository.listAll().get(0);
-        songRepository.deleteById(s.getId());
-        return s;
+        List<Song> songs = songRepository.getPlaylist();
+
+        if(songs.size() == 0){
+            return null;
+        }
+
+        songRepository.deleteById(songs.get(0).getId());
+        return songs.get(0);
     }
 
 
@@ -58,8 +63,12 @@ public class SongResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
+        if(songRepository.count("songid", newSong.getSongId()) > 0){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
 
         songRepository.persist(newSong);
+
         return Response.ok().build();
     }
 
