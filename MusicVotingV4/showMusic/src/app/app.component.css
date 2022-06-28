@@ -1,9 +1,5 @@
-.playButton
-{
-  background-color: darkslategray;
-}
 
-.pauseButton
+.playButton
 {
   background-color: rgb(95, 153, 153);
 }
@@ -11,4 +7,11 @@
 .center-song{
   margin-left: 40%;
   align-content: center;
+}
+
+
+.card{
+  background-color: rgb(227, 231, 236);
+  border-color: rgb(95, 153, 153);
+  border-width: 1px;
 }

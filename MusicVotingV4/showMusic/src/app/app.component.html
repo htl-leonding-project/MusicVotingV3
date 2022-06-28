@@ -1,29 +1,33 @@
-<div class="container col-12 row">
+<div class="container col-12 row ">
+  <div *ngIf="actSong.thumbnail != undefined && actSong.thumbnail != ''">
   <h1>Aktueller Song</h1>
 
-  <span class="col-6 center-song">
-    <img
-      *ngIf="actSong.thumbnail == undefined"
-      class="m-2"
-      src="../assets/musicCover.jpg"
-      height="200px"
+  <div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img
+    *ngIf="actSong.thumbnail == undefined"
+    class="card-img-top"      src="../assets/musicCover.jpg"
+    width="80px"
     />
-
     <img
-      *ngIf="actSong.thumbnail != undefined && actSong.thumbnail != ''"
-      class="m-2"
-      [src]="actSong.thumbnail"
-      height="200px"
-    />
+    *ngIf="actSong.thumbnail != undefined"
+    class="card-img-top"      [src]="actSong.thumbnail"
+    width="80px"
+  />
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h1 class="card-title">{{actSong.songName}}</h1>
+          <p class="card-text">
+            <small class="text-muted">{{actSong.artist.strArtist}}</small>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <span class="col-3">
-      {{ actSong.songName }} <br>
-    </span>
-
-    <span class="col-3">
-      {{actSong.artist.strArtist}}
-    </span>
-  </span>
+  </div>
 
   <br />
   <br />
@@ -32,31 +36,47 @@
   <h1>Aktuelle Playlist</h1>
 
   <button
-    class="btn col-12 m-2"
-    [ngClass]="{
-      playButton: isPlaying == true,
-      pauseButton: isPlaying == false
-    }"
+    class="btn col-12 m-2 playButton"
     (click)="playSong()"
   >
-    <span *ngIf="isPlaying == false"> Start Playlist </span>
-    <span *ngIf="isPlaying == true"> Stop Playlist </span>
+    <span *ngIf="isPlaying == false">
+      <mat-icon>play_arrow</mat-icon>
+    </span>
+    <span *ngIf="isPlaying == true">
+
+      <mat-icon>pause</mat-icon>
+    </span>
   </button>
 
-  <span *ngFor="let song of songs" class="col-6">
-    <img
+  <span *ngFor="let song of songs" class="col-3">
+
+
+
+
+    <div class="card mb-3" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img
       *ngIf="song.thumbnail == undefined"
-      class="m-2"
-      src="../assets/musicCover.jpg"
-      width="100px"
-    />
-    <img
+      class="card-img-top"      src="../assets/musicCover.jpg"
+      width="80px"
+      />
+      <img
       *ngIf="song.thumbnail != undefined"
-      class="m-2"
-      [src]="song.thumbnail"
-      width="100px"
+      class="card-img-top"      [src]="song.thumbnail"
+      width="80px"
     />
-    <span class="">{{ song.songName }}</span>
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h3 class="card-title">{{song.songName}}</h3>
+            <p class="card-text">
+              <small class="text-muted">{{song.artist.strArtist}}</small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!--     <a class="btn btn-danger" (click)="goToLink(song)">play song</a>-->
   </span>

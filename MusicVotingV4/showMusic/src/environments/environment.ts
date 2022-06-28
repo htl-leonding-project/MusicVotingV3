@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  host: "http://172.17.223.124:8080/songs"
+  host: "http://172.17.220.173:8080/songs"
 };
 
 /*
