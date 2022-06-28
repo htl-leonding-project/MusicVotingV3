@@ -1,0 +1,63 @@
+<div class="container col-12 row">
+  <h1>Aktueller Song</h1>
+
+  <span class="col-6 center-song">
+    <img
+      *ngIf="actSong.thumbnail == undefined"
+      class="m-2"
+      src="../assets/musicCover.jpg"
+      height="200px"
+    />
+
+    <img
+      *ngIf="actSong.thumbnail != undefined && actSong.thumbnail != ''"
+      class="m-2"
+      [src]="actSong.thumbnail"
+      height="200px"
+    />
+
+    <span class="col-3">
+      {{ actSong.songName }} <br>
+    </span>
+
+    <span class="col-3">
+      {{actSong.artist.strArtist}}
+    </span>
+  </span>
+
+  <br />
+  <br />
+  <br />
+
+  <h1>Aktuelle Playlist</h1>
+
+  <button
+    class="btn col-12 m-2"
+    [ngClass]="{
+      playButton: isPlaying == true,
+      pauseButton: isPlaying == false
+    }"
+    (click)="playSong()"
+  >
+    <span *ngIf="isPlaying == false"> Start Playlist </span>
+    <span *ngIf="isPlaying == true"> Stop Playlist </span>
+  </button>
+
+  <span *ngFor="let song of songs" class="col-6">
+    <img
+      *ngIf="song.thumbnail == undefined"
+      class="m-2"
+      src="../assets/musicCover.jpg"
+      width="100px"
+    />
+    <img
+      *ngIf="song.thumbnail != undefined"
+      class="m-2"
+      [src]="song.thumbnail"
+      width="100px"
+    />
+    <span class="">{{ song.songName }}</span>
+
+    <!--     <a class="btn btn-danger" (click)="goToLink(song)">play song</a>-->
+  </span>
+</div>

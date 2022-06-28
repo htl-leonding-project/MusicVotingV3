@@ -1,0 +1,14 @@
+.playButton
+{
+  background-color: darkslategray;
+}
+
+.pauseButton
+{
+  background-color: rgb(95, 153, 153);
+}
+
+.center-song{
+  margin-left: 40%;
+  align-content: center;
+}
