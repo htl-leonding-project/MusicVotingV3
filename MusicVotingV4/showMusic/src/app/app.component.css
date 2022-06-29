@@ -30,3 +30,9 @@ h1{
   font-weight: bold;
   text-decoration: underline;
 }
+
+.main-div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
