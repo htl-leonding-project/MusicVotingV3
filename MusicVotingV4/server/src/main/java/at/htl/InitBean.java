@@ -19,6 +19,7 @@ public class InitBean {
 
     @Transactional
     public void init(@Observes StartupEvent startupEvent) {
+        //songRepository.addRandomSong();
 
         //Artist artist = artistRepository.getArtist("the weekend");
         //artistRepository.persist(artist);

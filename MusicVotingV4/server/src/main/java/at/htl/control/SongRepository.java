@@ -14,6 +14,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,23 +35,33 @@ public class SongRepository implements PanacheRepository<Song> {
         List<Song> songs =  this.listAll(Sort.by("timeAdded").ascending());
 
         if(songs.size() == 0){
-
+            addRandomSong();
+            return  this.listAll(Sort.by("timeAdded").ascending());
         }
+
         return songs;
     }
 
+    @Transactional
     public void addRandomSong(){
         List<Artist> artists = artistRepository.listAll();
+        Song song = null;
 
-        Random rand = new Random();
-        int random_artist = rand.nextInt(artists.size());
+        do{
+            Random rand = new Random();
+            int random_artist = rand.nextInt(artists.size());
 
-        Artist a = artists.get(random_artist);
+            Artist a = artists.get(random_artist);
 
-        List<Song> s = getSongs(a);
+            List<Song> s = getSongs(a);
 
-        int random_song = rand.nextInt(artists.size());
+            int random_song = rand.nextInt(s.size());
 
+            song = s.get(random_song);
+
+        }while(song == null);
+
+        persist(song);
     }
 
 

@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   title = 'showMusic';
   isPlaying = false;
   window?: Window|null;
-  isPausedClicked = false;
+  isPausedClicked = true;
 
   actSong: Song = {
     videoUrl: '',
@@ -75,7 +75,7 @@ export class AppComponent implements OnInit {
               }
 
               this.playNextSong();
-            }, 25000);
+            }, song.duration);
           } else {
             console.log('Playlist ende');
             song = {
