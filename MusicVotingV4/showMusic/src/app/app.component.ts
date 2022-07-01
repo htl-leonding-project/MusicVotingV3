@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Song } from './modules/song.module';
 import { SongService } from './services/song.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { interval, Observable } from 'rxjs';
 
 @Component({
@@ -24,9 +23,8 @@ export class AppComponent implements OnInit {
   };
 
   constructor(
-    private songService: SongService,
-    private _sanitizer: DomSanitizer
-  ) {}
+    private songService: SongService
+      ) {}
 
   songs: Song[] = [];
   actIndex: number = -1;
@@ -38,6 +36,10 @@ export class AppComponent implements OnInit {
           this.songs = result;
         },
       });
+
+      if(this.songs.length > 0 && this.isPlaying == false){
+        this.playSong()
+      }
     });
   }
 
@@ -99,11 +101,4 @@ export class AppComponent implements OnInit {
       }
     }
   }
-
-  /*TODO
-  fenster nicht in den vordergrund so groß
-  Reihenfolge spielen
-  groß den aktuellen song
-
-  */
 }
