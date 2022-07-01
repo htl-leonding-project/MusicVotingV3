@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
   title = 'showMusic';
   isPlaying = false;
   window?: Window|null;
+  isPausedClicked = false;
 
   actSong: Song = {
     videoUrl: '',
@@ -37,7 +38,9 @@ export class AppComponent implements OnInit {
         },
       });
 
-      if(this.songs.length > 0 && this.isPlaying == false){
+      if(this.songs.length > 0
+        && this.isPlaying == false
+        && this.isPausedClicked == false){
         this.playSong()
       }
     });
@@ -92,6 +95,7 @@ export class AppComponent implements OnInit {
 
   playSong() {
     this.isPlaying = !this.isPlaying;
+    this.isPausedClicked = !this.isPausedClicked;
     if (this.isPlaying == true) {
       this.playNextSong();
     }
