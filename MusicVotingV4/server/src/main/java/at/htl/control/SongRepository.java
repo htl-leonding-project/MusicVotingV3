@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @ApplicationScoped
 public class SongRepository implements PanacheRepository<Song> {
@@ -30,8 +31,28 @@ public class SongRepository implements PanacheRepository<Song> {
     ArtistRepository artistRepository;
 
     public List<Song> getPlaylist() {
-        return this.listAll(Sort.by("timeAdded").ascending());
+        List<Song> songs =  this.listAll(Sort.by("timeAdded").ascending());
+
+        if(songs.size() == 0){
+
+        }
+        return songs;
     }
+
+    public void addRandomSong(){
+        List<Artist> artists = artistRepository.listAll();
+
+        Random rand = new Random();
+        int random_artist = rand.nextInt(artists.size());
+
+        Artist a = artists.get(random_artist);
+
+        List<Song> s = getSongs(a);
+
+        int random_song = rand.nextInt(artists.size());
+
+    }
+
 
     @Override
     public void persist(Song song) {
