@@ -1,7 +1,7 @@
 .playButton
 {
   background-color: rgb(95, 153, 153);
-  width: 500px;
+  width: 100%;
 
 }
 
@@ -12,7 +12,7 @@
   }
 
 .mat-form-field{
-    width: 500px;
+    width: 100%;
     padding-top: 20px;
 }
 
@@ -21,6 +21,7 @@
   border-color: rgb(95, 153, 153);
   border-width: 1px;
 }
+
 
 
 

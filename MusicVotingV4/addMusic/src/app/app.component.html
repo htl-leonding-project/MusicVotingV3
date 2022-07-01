@@ -3,7 +3,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Künstler</mat-label>
       <input matInput [(ngModel)]="artist" required />
-      <mat-hint>Dieses Feld muss angegeben werden</mat-hint>
+      <mat-hint>Muss 1 zu 1 mit dem Namen des Künstlers übereinstimmen</mat-hint>
     </mat-form-field>
     <br />
 
@@ -24,7 +24,7 @@
   </span>
 
   
-  <span class="col-sm-12 col-md-12 row" style="margin-bottom: 10px; margin-left: 8px;" *ngFor="let song of songs">
+  <!--<span class="col-sm-12 col-md-12 row" style="margin-bottom: 10px; margin-left: 8px;" *ngFor="let song of songs">
     <div class="card mb-3" style="max-width: 400px;">
       <div class="row g-0">
         <div class="col-md-4">
@@ -57,6 +57,24 @@
         
       </div>
     </div>
+  </span>-->
+
+  <span class="col-sm-12 col-md-12 row" style="margin-bottom: 10px;" *ngFor="let song of songs">
+    <span class="col-4">
+      <span *ngIf="song.thumbnail == undefined">
+        <img src="../assets/musicCover.jpg" width="100px" />
+      </span>
+
+      <span *ngIf="song.thumbnail != undefined">
+        <img [src]="song.thumbnail" width="100px" />
+      </span>
+    </span>
+
+    <span class="col-4 center">{{ song.songName }}</span>
+
+    <button class="btn btn-dark col-4 center" [disabled]="buttonDisable" (click)="addSong(song)" style="height: 40%;">
+      <mat-icon>add</mat-icon>
+    </button>
   </span>
 </div>
 
