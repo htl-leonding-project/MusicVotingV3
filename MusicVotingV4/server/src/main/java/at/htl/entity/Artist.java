@@ -10,15 +10,16 @@ public class Artist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String idArtist;
     private String strArtist;
 
-    public String getIdArtist() {
-        return idArtist;
+    private String genre;
+
+    public String getGenre() {
+        return genre;
     }
 
-    public void setIdArtist(String idArtist) {
-        this.idArtist = idArtist;
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public String getStrArtist() {
@@ -29,9 +30,9 @@ public class Artist {
         this.strArtist = strArtist;
     }
 
-    public Artist(String idArtist, String strArtist) {
-        this.idArtist = idArtist;
+    public Artist(String strArtist, String genre) {
         this.strArtist = strArtist;
+        this.genre = genre;
     }
 
     public Artist() {
@@ -40,7 +41,6 @@ public class Artist {
     @Override
     public String toString() {
         return "Artist{" +
-                "idArtist=" + idArtist +
                 ", strArtist='" + strArtist + '\'' +
                 '}';
     }

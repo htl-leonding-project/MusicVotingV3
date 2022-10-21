@@ -4,6 +4,8 @@ import at.htl.control.ArtistRepository;
 import at.htl.control.SongRepository;
 import at.htl.entity.Artist;
 import at.htl.entity.Song;
+import org.apache.http.ContentTooLongException;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -19,9 +21,6 @@ public class SongResource {
 
     @Inject
     SongRepository songRepository;
-
-    @Inject
-    ArtistRepository artistRepository;
 
     @GET
     public List<Song> getPlaylist(){
@@ -43,62 +42,34 @@ public class SongResource {
     }
 
 
-    @GET
+    @POST
     @Transactional
-    @Path("/addSong/{artistName}/{songTitle}")
-    //Es wird angenommen das der genaue Titel des Liedes übergeben wird
-    public Response addSong(@PathParam("artistName") String artistName,
-                            @PathParam("songTitle") String songTitle){
-
-        Artist a = artistRepository.getArtist(artistName);
-        if(a == null){
-            return Response.status(Response.Status.NOT_FOUND).build();
+    @Path("/addSong")
+    public Response addSong(@RequestBody Song newSong){
+        System.out.println(newSong);
+        Song s = new Song();
+        s.setSongName(newSong.getSongName());
+        s.setThumbnail(newSong.getThumbnail());
+        s.setSongId(newSong.getSongId());
+        s.setVideoUrl(newSong.getVideoUrl());
+        try {
+            songRepository.insert(s);
+        } catch (ContentTooLongException e) {
+            return Response.serverError().build();
         }
-        Song newSong = songRepository.getSongsWithSearch(
-                a,
-                songTitle
-        ).get(0);
-
-        if (newSong == null){
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-
-        if(songRepository.count("songid", newSong.getSongId()) > 0){
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
-
-        songRepository.persist(newSong);
-
         return Response.ok().build();
     }
 
     @GET
-    @Path("search/{artistName}/{songTitle}")
+    @Path("search/{query}")
     public Response getSongsWithSearch(
-            @PathParam("artistName") String artistName,
-            @PathParam("songTitle") String songTitle){
+            @PathParam("query") String query){
 
-        Artist a = artistRepository.getArtist(artistName);
-        if(a == null){
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-
-        return Response.ok(songRepository.
-                getSongsWithSearch(
-                        a,
-                        songTitle)).build();
-    }
-
-    @GET
-    @Path("search/{artistName}")
-    public Response getSongsWithSearch(
-            @PathParam("artistName") String artistName){
-
-        Artist a = artistRepository.getArtist(artistName);
-        if(a == null){
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+//        Artist a = artistRepository.getArtist(artistName);
+//        if(a == null){
+//            return Response.status(Response.Status.NOT_FOUND).build();
+//        }
         return Response.ok(
-                songRepository.getSongs(a)).build();
+                songRepository.getSongs(query)).build();
     }
 }

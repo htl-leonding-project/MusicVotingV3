@@ -6,12 +6,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "MV_Song")
 public class Song {
-    //TODO artist verbinden
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     private String songName;
     private String videoUrl;
@@ -21,10 +18,9 @@ public class Song {
 
     private LocalDateTime timeAdded;
 
-    private int duration;
+    private int voteCount = 1;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private Artist artist;
+    private int duration;
 
     public Song(String songName,
                 String videoUrl,
@@ -35,7 +31,6 @@ public class Song {
         this.videoUrl = videoUrl;
         this.thumbnail = thumbnail;
         this.songId = songId;
-        this.artist = artist;
     }
 
     public Song() {
@@ -50,12 +45,12 @@ public class Song {
                 '}';
     }
 
-    public Artist getArtist() {
-        return artist;
+    public int getVoteCount() {
+        return voteCount;
     }
 
-    public void setArtist(Artist artist) {
-        this.artist = artist;
+    public void setVoteCount(int voteCount) {
+        this.voteCount = voteCount;
     }
 
     public int getDuration() {
