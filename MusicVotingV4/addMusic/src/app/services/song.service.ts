@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Song } from '../modules/song.module';
@@ -8,21 +8,23 @@ import { Song } from '../modules/song.module';
 })
 export class SongService {
 
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json'
+    })
+  };
+
   constructor(private http: HttpClient) { }
 
   getPlaylist(){
     return this.http.get<Song[]>(environment.host);
   }
 
-  getSearchResultWithTitle(artistName: string, songTitle: string){
-    return this.http.get<Song[]>(environment.host+"/search/"+artistName+"/"+songTitle);
-  }
-
-  getSearchResultNoTitle(artistName: string){
+  getSearchResult(artistName: string){
     return this.http.get<Song[]>(environment.host+"/search/"+artistName);
   }
 
-  addSong(artistName: string, songTitle: string){
-    return this.http.get(environment.host+"/addSong/"+artistName+"/"+songTitle);
+  addSong(newSong: Song){
+    return this.http.post<Song>(environment.host+"/addSong", newSong, this.httpOptions);
   }
 }

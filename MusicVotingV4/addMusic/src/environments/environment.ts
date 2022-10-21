@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   timeOutAtAdd: 3000,
-  host: "http://172.17.223.124:8080/songs"
+  host: "http://localhost:8080/songs"
 };
 
 /*

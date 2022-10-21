@@ -12,11 +12,13 @@ export class AppComponent implements OnInit {
   title = 'addMusic';
 
   songs: Song[] =[];
+  playlistSongs: Song[] =[];
 
-  artist: string= "";
+  query: string= "";
   songTitle: string ="";
 
   buttonDisable = false;
+  buttonLikeDisable = false;
 
   ngOnInit(): void {
 
@@ -26,33 +28,28 @@ export class AppComponent implements OnInit {
   }
 
   search(){
-    if(this.songTitle != ""){
-      this.service.getSearchResultWithTitle(this.artist,  this.songTitle).subscribe(
+      this.service.getSearchResult(this.query).subscribe(
         {
           next: result => {
           this.songs = result;
         }}
       )
-    }
-    else{
-      this.service.getSearchResultNoTitle(this.artist).subscribe(
-        {
-          next: result => {
-          this.songs = result;
-        }}
-      )
-    }
+
   }
 
 
   addSong(song: Song){
     this.buttonDisable = true;
-    this.service.addSong(this.artist,  song.songName).subscribe()
+    this.service.addSong(song).subscribe({
+      error: ()=>{
+        alert("Video zu lang oder Titel beinhaltet Zeichen die nicht verarbeitet werden können")
+      }
+    })
 
     setTimeout(()=>{
       this.buttonDisable = false;
     },environment.timeOutAtAdd);
 
-  	console.log(this.artist)
+  	console.log(this.query)
   }
 }

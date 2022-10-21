@@ -20,8 +20,8 @@ export class AppComponent implements OnInit {
     songId: '',
     songName: '',
     thumbnail: '',
-    artist: { idArtist: '', strArtist: '' },
-  };
+    voteCount:1
+    };
 
   constructor(
     private songService: SongService
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
   actIndex: number = -1;
 
   ngOnInit(): void {
-    interval(2000).subscribe((x) => {
+    interval(1000).subscribe((x) => {
       this.songService.getPlaylist().subscribe({
         next: (result) => {
           this.songs = result;
@@ -58,7 +58,6 @@ export class AppComponent implements OnInit {
         next: (song) => {
           if (song != null) {
             this.actSong = song;
-            console.log(song.artist.strArtist);
             this.window = window.open(
               song.videoUrl,
               '',
@@ -69,7 +68,7 @@ export class AppComponent implements OnInit {
             setTimeout(() => {
               console.log('song vorbei');
 
-              if (this.window != null ) {
+              if (this.window != null) {
                 console.log('fenster schließen');
                 this.window.close();
               }
@@ -79,12 +78,12 @@ export class AppComponent implements OnInit {
           } else {
             console.log('Playlist ende');
             song = {
-              artist: { strArtist: '', idArtist: '' },
               videoUrl: '',
               duration: 0,
               songId: '',
               songName: '',
               thumbnail: '',
+              voteCount:1
             };
             this.isPlaying = false;
           }

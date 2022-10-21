@@ -18,5 +18,5 @@ export interface Song {
   songId: string
   thumbnail: string
   duration: number
-  artist: Artist
+  voteCount:number
 }
