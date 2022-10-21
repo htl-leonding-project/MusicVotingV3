@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Song } from './modules/song.module';
 import { SongService } from './services/song.service';
+import { interval, Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-root',
@@ -20,11 +22,19 @@ export class AppComponent implements OnInit {
   buttonDisable = false;
   buttonLikeDisable = false;
 
-  ngOnInit(): void {
-
-  }
 
   constructor(private service: SongService){
+  }
+
+
+  ngOnInit(): void {
+    interval(1000).subscribe((x) => {
+      this.service.getPlaylist().subscribe({
+        next: (result) => {
+          this.playlistSongs = result;
+        },
+      });
+    });
   }
 
   search(){
@@ -34,7 +44,6 @@ export class AppComponent implements OnInit {
           this.songs = result;
         }}
       )
-
   }
 
 
@@ -47,9 +56,18 @@ export class AppComponent implements OnInit {
     })
 
     setTimeout(()=>{
-      this.buttonDisable = false;
-    },environment.timeOutAtAdd);
+      this.buttonDisable = false
+    },environment.timeOutAtAdd)
 
   	console.log(this.query)
+  }
+
+  likeSong(song: Song){
+    this.buttonLikeDisable = true
+    this.addSong(song)
+
+    setTimeout(()=>{
+      this.buttonLikeDisable = false
+    },environment.timeOutAtAdd)
   }
 }

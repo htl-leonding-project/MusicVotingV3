@@ -54,7 +54,7 @@
 
         <span class="col-4 center">{{ playlistSong.songName }}</span>
 
-        <button class="btn btn-dark col-4 center" [disabled]="buttonLikeDisable" (click)="addSong(playlistSong)"
+        <button class="btn btn-dark col-4 center" [disabled]="buttonLikeDisable" (click)="likeSong(playlistSong)"
           style="height: 40%;">
           <mat-icon>favorite</mat-icon>
         </button>
