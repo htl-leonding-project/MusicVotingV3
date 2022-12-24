@@ -5,6 +5,7 @@ import at.htl.control.SongRepository;
 import at.htl.entity.Artist;
 import at.htl.entity.Song;
 import org.apache.http.ContentTooLongException;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
 import javax.inject.Inject;
@@ -14,7 +15,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Path("songs")
 public class SongResource {
@@ -71,5 +74,17 @@ public class SongResource {
 //        }
         return Response.ok(
                 songRepository.getSongs(query)).build();
+    }
+
+    @GET
+    @Path("checkPassword/{password}")
+    public Response checkPassword(@PathParam("password") String password){
+        String adminPass = ConfigProvider.getConfig().getValue("admin.password", String.class);
+
+        if(Objects.equals(adminPass, password)) {
+            System.out.println("Pass: " + adminPass);
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 }
