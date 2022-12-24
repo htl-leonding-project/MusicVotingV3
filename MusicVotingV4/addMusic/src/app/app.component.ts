@@ -3,6 +3,8 @@ import { environment } from 'src/environments/environment';
 import { Song } from './modules/song.module';
 import { SongService } from './services/song.service';
 import { interval, Observable } from 'rxjs';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { DialogBodyComponent } from './dialog-body/dialog-body.component';
 
 
 @Component({
@@ -11,6 +13,7 @@ import { interval, Observable } from 'rxjs';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
   title = 'addMusic';
 
   songs: Song[] =[];
@@ -23,7 +26,10 @@ export class AppComponent implements OnInit {
   buttonLikeDisable = false;
 
 
-  constructor(private service: SongService){
+  constructor(
+    private service: SongService,
+    private matDialog: MatDialog
+    ){
   }
 
 
@@ -69,5 +75,10 @@ export class AppComponent implements OnInit {
     setTimeout(()=>{
       this.buttonLikeDisable = false
     },environment.timeOutAtAdd)
+  }
+
+  openPasswordDialog() {
+    const dialogConfig = new MatDialogConfig();
+    this.matDialog.open(DialogBodyComponent, dialogConfig);
   }
 }

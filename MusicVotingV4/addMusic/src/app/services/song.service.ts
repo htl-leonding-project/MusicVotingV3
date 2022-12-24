@@ -27,4 +27,8 @@ export class SongService {
   addSong(newSong: Song){
     return this.http.post<Song>(environment.host+"/addSong", newSong, this.httpOptions);
   }
+
+  checkPassword(password: string){
+    return this.http.get<boolean>(environment.host+"/checkPassword/"+password);
+  }
 }
