@@ -61,6 +61,7 @@ public class SongRepository implements PanacheRepository<Song> {
         }
     }
 
+
     @Transactional
     public void addRandomSong() {
         List<Artist> artists = artistRepository.listAll();
