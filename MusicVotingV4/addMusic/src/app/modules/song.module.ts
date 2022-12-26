@@ -13,7 +13,7 @@ export interface Song {
 
   songName: string
   videoUrl: string
-  songId: string
+  id: string
   thumbnail: string
   duration:number
 

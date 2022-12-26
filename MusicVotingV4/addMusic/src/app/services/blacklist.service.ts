@@ -8,7 +8,7 @@ import { BlacklistItem } from '../modules/blacklist-item.model';
 })
 export class BlacklistService {
 
-  url: string = environment.host + "/blacklist"
+  url: string = environment.host + "blacklist"
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -23,10 +23,10 @@ export class BlacklistService {
   }
 
   putOnBlacklist(phrase: string){
-    return this.http.get(this.url+"/putOnBlackList/"+phrase);
+    return this.http.post(this.url+"/putOnBlackList/"+phrase, {});
   }
 
-  delteFromBlacklist(blacklistItemId: string){
-    return this.http.delete(this.url+"/deleteFromBlackList/"+blacklistItemId);
+  delteFromBlacklist(blacklistItemId: number){
+    return this.http.delete(this.url+"/deleteFromBlacklist/"+blacklistItemId);
   }
 }

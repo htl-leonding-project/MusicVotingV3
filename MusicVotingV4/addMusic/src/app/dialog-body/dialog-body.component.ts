@@ -30,7 +30,6 @@ export class DialogBodyComponent implements OnInit {
 
 
   ok() {
-    //https://www.md5.cz/
     this.songService.checkPassword(md5(this.password)).subscribe({
       next: ()=> {
         console.log("Passwort stimmt")

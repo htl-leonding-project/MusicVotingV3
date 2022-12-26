@@ -1,4 +1,4 @@
 export interface BlacklistItem {
-  id: string,
+  id: number,
   phrase: string
 }
