@@ -1,0 +1,39 @@
+<div class="container col-12 row">
+  <mat-tab-group>
+    <mat-tab label="Lieder löschen">
+
+      <span class="col-sm-12 col-md-12 row" style="margin-bottom: 10px;" *ngFor="let song of songs">
+        <span class="col-3">
+          <span *ngIf="song.thumbnail == undefined">
+            <img src="../assets/musicCover.jpg" width="100px" />
+          </span>
+
+          <span *ngIf="song.thumbnail != undefined">
+            <img [src]="song.thumbnail" width="100px" />
+          </span>
+        </span>
+
+        <span class="col-3 center">{{ song.songName }}</span>
+
+        <button class="btn btn-dark col-3 center"  (click)="deleteSong(song.songId)">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+        <button class="btn btn-dark col-3 center" (click)="onBlackList()">
+          Sperren
+        </button>
+      </span>
+
+    </mat-tab>
+    <mat-tab label="Black List">
+      <span class="col-sm-12 col-md-12 row" style="margin-bottom: 10px;" *ngFor="let item of blacklist">
+        <span class="col-6 center">{{ item.phrase }}</span>
+
+        <button class="btn btn-dark col-6 center" (click)="deleteBlacklistItem(item.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+      </span>
+    </mat-tab>
+  </mat-tab-group>
+</div>

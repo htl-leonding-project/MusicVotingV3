@@ -13,10 +13,12 @@ import { MatInputModule } from '@angular/material/input';
 import {MatTabsModule} from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogBodyComponent } from './dialog-body/dialog-body.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
-    AppComponent, DialogBodyComponent
+    AppComponent, DialogBodyComponent, AdminPageComponent, HomeComponent
   ],
   imports: [
     BrowserModule,
