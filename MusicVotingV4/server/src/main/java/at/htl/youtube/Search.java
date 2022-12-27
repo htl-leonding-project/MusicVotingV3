@@ -10,6 +10,12 @@ import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Thumbnail;
+import io.quarkus.logging.Log;
+import io.vertx.core.json.JsonObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -32,15 +38,46 @@ public class Search {
 
     private static YouTube youtube;
 
+    public List<Song> getSearchFromYoutube(String queryTerm) {
+        queryTerm += " Lyrics";
+        List<Song> songs = new ArrayList<>();
+        String baseUrl = "https://www.youtube.com/results?search_query=";
+
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(baseUrl+queryTerm).get();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Element body = doc.body();
+
+        String javascript = body.child(15).html();
+        JsonObject json = new JsonObject(javascript.substring(19, javascript.length()-1));
+
+        var videoArray = json.getJsonObject("contents").getJsonObject("twoColumnSearchResultsRenderer")
+                .getJsonObject("primaryContents").getJsonObject("sectionListRenderer")
+                .getJsonArray("contents").getJsonObject(0).getJsonObject("itemSectionRenderer").getJsonArray("contents");
+
+        for (int i = 0; i < videoArray.size()-1; i++) {
+            var video = videoArray.getJsonObject(i).getJsonObject("videoRenderer");
+            if(video != null){
+                String title = video.getJsonObject("title").getJsonArray("runs").getJsonObject(0).getString("text");
+                String thumbnail = video.getJsonObject("thumbnail").getJsonArray("thumbnails").getJsonObject(0).getString("url");
+                String videoUrl = "https://www.youtube.com/watch?v="+ video.getString("videoId");
+                songs.add(new Song(title,videoUrl, thumbnail, "", null));
+            }
+        }
+        return songs;
+    }
     /**
      * Initialize a YouTube object to search for videos on YouTube. Then
      * display the name and thumbnail image of each video in the result set.
      *
      *
      */
-    public List<Song> getSearchFromYoutube(String queryTerm) {
+    public List<Song> getSearchFromYoutube2(String queryTerm) {
     	queryTerm += " Lyrics";
-    
+
         // API Key auslesen
         Properties properties = new Properties();
         try {
