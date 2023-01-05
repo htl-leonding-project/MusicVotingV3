@@ -1,4 +1,9 @@
 <div class=" col-12 row">
+  <button (click)="adminBtnClicked()" class="btn adminButton">
+    <mat-icon>person</mat-icon>
+    Admin
+  </button>
+
   <mat-tab-group>
     <mat-tab label="Lied hinzufügen">
 
@@ -60,8 +65,10 @@
         </button>
       </span>
     </mat-tab>
+
   </mat-tab-group>
-  <button (click)="adminBtnClicked()">Admin</button>
+
+
 
 
   <!--<span class="col-sm-12 col-md-12 row" style="margin-bottom: 10px; margin-left: 8px;" *ngFor="let song of songs">
