@@ -9,7 +9,8 @@
 
         <img
     *ngIf="actSong.thumbnail == undefined"
-    class="card-img-top"      src="../assets/musicCover.jpg"
+    class="card-img-top"
+    src="../assets/musicCover.jpg"
     width="80px"
     />
     <img
@@ -49,10 +50,10 @@
     </span>
   </button>
 
-  <span *ngFor="let song of songs; let i=index" class="col-3">
+  <span *ngFor="let song of songs; let i=index" class="col-4">
     <div class="card mb-3" style="max-width: 540px;">
       <div class="row g-0">
-        <div class="col-md-4">
+        <div class="col-md-6">
           <img
       *ngIf="song.thumbnail == undefined"
       class=""      src="../assets/musicCover.jpg"
@@ -60,13 +61,13 @@
       />
       <img
       *ngIf="song.thumbnail != undefined"
-      class="card-img-top"      [src]="song.thumbnail"
-      height="100px"
+      class="card-img"      [src]="song.thumbnail"
+
     />
         </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h3 class="card-title">{{song.songName}}</h3>
+        <div class="col-md-6">
+          <div class="card-body " style="height: 80px;">
+            <h3 class="card-text overflow">{{song.songName}}</h3>
           </div>
         </div>
 
