@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  timeOutAtAdd: 3000,
+  host: "http://localhost:8080/"
 };
