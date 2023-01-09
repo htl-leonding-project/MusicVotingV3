@@ -56,7 +56,7 @@ public class SongRepository implements PanacheRepository<Song> {
         }
         else{
             song.setTimeAdded(LocalDateTime.now());
-            song.setDuration(this.getDurationOfSong(song.getVideoUrl()));
+            //song.setDuration(this.getDurationOfSong(song.getVideoUrl()));
 
             if(song.getDuration() > 60*8*1000 || song.getDuration() < 60*2*1000 || song.getDuration() == 0)
                 throw new ContentTooLongException("Video zu lang oder zu kurz");

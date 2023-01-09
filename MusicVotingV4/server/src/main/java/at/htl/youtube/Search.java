@@ -64,11 +64,28 @@ public class Search {
                 String title = video.getJsonObject("title").getJsonArray("runs").getJsonObject(0).getString("text");
                 String thumbnail = video.getJsonObject("thumbnail").getJsonArray("thumbnails").getJsonObject(0).getString("url");
                 String videoUrl = "https://www.youtube.com/watch?v="+ video.getString("videoId");
-                songs.add(new Song(title,videoUrl, thumbnail, "", null));
+                String durationString = video.getJsonObject("lengthText").getString("simpleText");
+                int duration = convertString(durationString);
+                Song newSong = new Song(title,videoUrl, thumbnail, "", null);
+                newSong.setDuration(duration);
+                songs.add(newSong);
             }
         }
         return songs;
     }
+
+    private int convertString(String duration) {
+        String[] splitted = duration.split(":");
+        int result = 0;
+        //Stunden
+        if(splitted.length == 3){
+            result+= 60*60*Integer.parseInt(splitted[0])+ 60*Integer.parseInt(splitted[1]) + Integer.parseInt(splitted[2]);
+        }else if(splitted.length == 2){
+            result+= 60*Integer.parseInt(splitted[0]) + Integer.parseInt(splitted[1]);
+        }
+        return result*1000;
+    }
+
     /**
      * Initialize a YouTube object to search for videos on YouTube. Then
      * display the name and thumbnail image of each video in the result set.

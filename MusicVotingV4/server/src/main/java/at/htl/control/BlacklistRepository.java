@@ -36,7 +36,7 @@ public class BlacklistRepository implements PanacheRepository<BlacklistItem> {
                     " von "+song.getSongName()+" und "+item.getPhrase());
             double similarity = l.distance(song.getSongName().toUpperCase(), item.getPhrase().toUpperCase());
              if(similarity > 0.90 || song.getSongName().contains(item.getPhrase())){
-                 return true;
+                 //return true;
              }
         }
 
