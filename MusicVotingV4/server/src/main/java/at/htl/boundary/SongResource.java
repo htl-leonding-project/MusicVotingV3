@@ -54,7 +54,7 @@ public class SongResource {
         s.setVideoUrl(newSong.getVideoUrl());
         try {
             songRepository.insert(s);
-        } catch (ContentTooLongException e) {
+        } catch (Exception e) {
             return Response.serverError().build();
         }
         return Response.ok().build();

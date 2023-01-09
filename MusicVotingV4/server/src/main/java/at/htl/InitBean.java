@@ -21,8 +21,26 @@ public class InitBean {
     @Inject
     ArtistRepository artistRepository;
 
+    public void main(String[] args){//@Observes StartupEvent startupEvent
+        readCsv();
+        //artistRepository.saveArtistsToCsv();
+    //songRepository.addRandomSong();
+
+        //Artist artist = artistRepository.getArtist("the weekend");
+        //artistRepository.persist(artist);
+
+        //List<Song> songsBySearch = songRepository.getSongsWithSearch(artist, "Hill");
+
+        //List<Song> songs = songRepository.getSongsWithSearch(artist, null);
+
+        //songRepository.persist(songsBySearch.get(0));
+        //songRepository.persist(songs.get(3));
+
+        Log.info(songRepository.getPlaylist());
+    }
+
     @Transactional
-    public void init(@Observes StartupEvent startupEvent) {
+    public void readCsv(){
         artistRepository.deleteAll();
         String line = "";
         String splitBy = ",";
@@ -45,22 +63,6 @@ public class InitBean {
         {
             e.printStackTrace();
         }
-
-        //artistRepository.saveArtistsToCsv();
-    //songRepository.addRandomSong();
-
-        //Artist artist = artistRepository.getArtist("the weekend");
-        //artistRepository.persist(artist);
-
-        //List<Song> songsBySearch = songRepository.getSongsWithSearch(artist, "Hill");
-
-        //List<Song> songs = songRepository.getSongsWithSearch(artist, null);
-
-        //songRepository.persist(songsBySearch.get(0));
-        //songRepository.persist(songs.get(3));
-
-        Log.info(songRepository.getPlaylist());
     }
-
 
 }

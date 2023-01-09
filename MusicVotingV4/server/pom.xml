@@ -124,8 +124,16 @@
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20180130</version>
+      <version>20220320</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/de.uni_jena.cs.fusion/similarity.jarowinkler -->
+    <dependency>
+      <groupId>de.uni_jena.cs.fusion</groupId>
+      <artifactId>similarity.jarowinkler</artifactId>
+      <version>0.1.0</version>
+    </dependency>
+
 
   </dependencies>
   <build>
@@ -182,6 +190,21 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <!-- Build an executable JAR -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>lib/</classpathPrefix>
+              <mainClass>at.htl.InitBean</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
       </plugin>
     </plugins>
   </build>

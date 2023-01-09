@@ -46,7 +46,7 @@ public class SongRepository implements PanacheRepository<Song> {
         return songs;
     }
 
-    public void insert(Song song) throws ContentTooLongException {
+    public void insert(Song song) throws Exception {
         Song s = find("songName", song.getSongName()).firstResult();
         if(s != null){
             int count = s.getVoteCount();
@@ -58,12 +58,12 @@ public class SongRepository implements PanacheRepository<Song> {
             song.setTimeAdded(LocalDateTime.now());
             song.setDuration(this.getDurationOfSong(song.getVideoUrl()));
 
-            if(song.getDuration() > 60*8*1000 || song.getDuration() == 0)
-                throw new ContentTooLongException("Video too long or duration error");
+            if(song.getDuration() > 60*8*1000 || song.getDuration() < 60*2*1000 || song.getDuration() == 0)
+                throw new ContentTooLongException("Video zu lang oder zu kurz");
 
-            if(!blacklistRepository.checkSong(song)){
+            if(blacklistRepository.checkSong(song)){
                 System.out.println("zu Ähnlich");
-                //throw new Exception("Lied darf aufgrund der Blacklist nicht hinzugefügt werden");
+                throw new Exception("Lied darf aufgrund der Blacklist nicht hinzugefügt werden");
             }
             PanacheRepository.super.persist(song);
         }
@@ -90,7 +90,7 @@ public class SongRepository implements PanacheRepository<Song> {
 
             try {
                 insert(song);
-            } catch (ContentTooLongException e) {
+            } catch (Exception e) {
                 System.out.println("too long");
                 insertFailes = true;
             }
