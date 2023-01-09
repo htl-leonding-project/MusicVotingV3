@@ -6,6 +6,7 @@ import { DialogBodyComponent } from '../dialog-body/dialog-body.component';
 import { BlacklistItem } from '../modules/blacklist-item.model';
 import { BlacklistService } from '../services/blacklist.service';
 import { interval } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-page',
@@ -20,7 +21,8 @@ export class AdminPageComponent implements OnInit {
   constructor(
     private matDialog: MatDialog,
     private songService: SongService,
-    private blacklistService: BlacklistService
+    private blacklistService: BlacklistService,
+    private router:Router
     ) {
   }
 
@@ -75,5 +77,9 @@ export class AdminPageComponent implements OnInit {
         this.blacklist = res
       }
     })
+  }
+
+  backToHome(){
+    this.router.navigate(['/home']);
   }
 }
