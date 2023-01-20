@@ -26,6 +26,7 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
 
       - name: Build with Maven
+        working-directory: ./server
         run: mvn clean install
 
   build-and-release:
