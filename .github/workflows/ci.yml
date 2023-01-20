@@ -30,7 +30,6 @@ jobs:
         run: mvn clean install
 
   build-and-release:
-    if: ${{ github.event_name == 'release' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
