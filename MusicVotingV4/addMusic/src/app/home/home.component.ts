@@ -6,6 +6,7 @@ import { Song } from '../modules/song.module';
 import { SongService } from '../services/song.service';
 import { DialogBodyComponent } from '../dialog-body/dialog-body.component';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -54,8 +55,8 @@ export class HomeComponent implements OnInit {
   addSong(song: Song){
     this.buttonDisable = true;
     this.service.addSong(song).subscribe({
-      error: ()=>{
-        alert("Video zu lang oder Titel beinhaltet Zeichen die nicht verarbeitet werden können")
+      error: (err: HttpErrorResponse)=>{
+        alert(err.error)
       }
     })
 
