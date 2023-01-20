@@ -11,6 +11,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import net.bytebuddy.implementation.bytecode.Throw;
 import org.apache.http.ContentTooLongException;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -56,13 +57,19 @@ public class SongRepository implements PanacheRepository<Song> {
         }
         else{
             song.setTimeAdded(LocalDateTime.now());
-            //song.setDuration(this.getDurationOfSong(song.getVideoUrl()));
+            int minDuration = ConfigProvider.getConfig().getValue("song.minDuration", Integer.class);
+            int maxDuration = ConfigProvider.getConfig().getValue("song.maxDuration", Integer.class);
 
-            if(song.getDuration() > 60*8*1000 || song.getDuration() < 60*2*1000 || song.getDuration() == 0)
-                throw new ContentTooLongException("Video zu lang oder zu kurz");
+            if(song.getDuration() > 60*maxDuration*1000){
+                throw new ContentTooLongException("Video zu lang (max. "+maxDuration+" Minuten)");
+            }
+            else if(song.getDuration() < 60*minDuration*1000){
+                throw new Exception("Lied ist zu kurz (min. "+minDuration+" Minuten)");
+            } else if (song.getDuration() == 0) {
+                throw new Exception("Lied hat keine Länge");
+            }
 
             if(blacklistRepository.checkSong(song)){
-                System.out.println("zu Ähnlich");
                 throw new Exception("Lied darf aufgrund der Blacklist nicht hinzugefügt werden");
             }
             PanacheRepository.super.persist(song);
@@ -91,7 +98,6 @@ public class SongRepository implements PanacheRepository<Song> {
             try {
                 insert(song);
             } catch (Exception e) {
-                System.out.println("too long");
                 insertFailes = true;
             }
         }while (insertFailes);
