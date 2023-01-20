@@ -58,9 +58,11 @@ jobs:
             ]'
 
       - name: Build with Maven
+        working-directory: ./server
         run: mvn -B package --file pom.xml
 
       - name: Publish to GitHub Packages Apache Maven
+        working-directory: ./server
         run: mvn deploy
         env:
           GITHUB_USERNAME: x-access-token
