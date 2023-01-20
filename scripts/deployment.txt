@@ -1,0 +1,20 @@
+http-server dist/addMusic/ -p 8082 -a music.htl-leonding.ac.at
+http-server dist/showMusic/ -p 8081
+
+npx http-server dist/showMusic/ -p 8081 -a music.htl-leonding.ac.at
+
+http://music.htl-leonding.ac.at:8081/index.html
+
+Quarkus
+./mvnw package
+java -jar quarkus-run.jar
+
+TODO Graal VM native
+
+
+ng build
+
+npx http-server dist/addMusic/ -p 8081 -a music.htl-leonding.ac.at
+
+ng serve --port 8081 --host music.htl-leonding.ac.at --disable-host-check
+ 
