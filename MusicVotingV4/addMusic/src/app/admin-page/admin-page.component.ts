@@ -17,6 +17,7 @@ export class AdminPageComponent implements OnInit {
   songs: Song[] = []
   blacklist: BlacklistItem[]= []
   blacklistphrase: string = ""
+  buttonDisable = true
 
   constructor(
     private matDialog: MatDialog,
@@ -29,20 +30,25 @@ export class AdminPageComponent implements OnInit {
   ngOnInit(): void {
     this.openPasswordDialog()
 
-    interval(1000).subscribe((x) => {
-      this.songService.getPlaylist().subscribe({
-        next: (res) => {
-          this.songs = res
-        },
-      })
-    })
-    this.refreshBlacklist()
+
   }
 
   openPasswordDialog() {
     const dialogConfig = new MatDialogConfig()
     dialogConfig.disableClose = true
-    this.matDialog.open(DialogBodyComponent, dialogConfig)
+    let dialogref=this.matDialog.open(DialogBodyComponent, dialogConfig)
+    dialogref.afterClosed().subscribe(result => {
+      interval(1000).subscribe((x) => {
+        this.songService.getPlaylist().subscribe({
+          next: (res) => {
+            this.songs = res
+          },
+        })
+      })
+      this.refreshBlacklist()
+      this.buttonDisable = false
+    });
+
   }
 
 

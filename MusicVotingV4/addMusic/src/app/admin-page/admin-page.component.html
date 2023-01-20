@@ -37,7 +37,7 @@
         </mat-form-field>
         <br />
 
-        <button class="btn btn-dark black-list-btn" (click)="onBlackList(blacklistphrase)">
+        <button  [disabled]="buttonDisable" class="btn btn-dark black-list-btn" (click)="onBlackList(blacklistphrase)">
           <mat-icon>lock</mat-icon>
         </button> <br />
         <br />
