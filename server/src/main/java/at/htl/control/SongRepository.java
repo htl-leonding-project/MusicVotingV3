@@ -4,15 +4,9 @@ import at.htl.entity.Artist;
 import at.htl.entity.Song;
 import at.htl.youtube.Search;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Sort;
-import io.vertx.core.json.Json;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.apache.http.ContentTooLongException;
 import org.eclipse.microprofile.config.ConfigProvider;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
