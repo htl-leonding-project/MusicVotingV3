@@ -3,10 +3,6 @@
 Video:
 * https://youtu.be/BWKhZGNvlnY
 
-* Ordnerstruktur anpassen
-* Deployment
-
-
 ## Dokumentation
 
 * https://hautzmayersheila.github.io/MusicVotingV3/
