@@ -1,0 +1,14 @@
+= Dokumentation
+
+
+== Struktur
+
+== Scraping
+
+== Wieso keine Youtube API
+
+== Deployment
+
+== Scripts
+
+== Authentifizierung
