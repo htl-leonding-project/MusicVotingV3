@@ -52,6 +52,7 @@ public class SongResource {
         s.setThumbnail(newSong.getThumbnail());
         s.setSongId(newSong.getSongId());
         s.setVideoUrl(newSong.getVideoUrl());
+        s.setDuration(newSong.getDuration());
         try {
             songRepository.insert(s);
         } catch (Exception e) {

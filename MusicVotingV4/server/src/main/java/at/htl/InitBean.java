@@ -21,7 +21,7 @@ public class InitBean {
     @Inject
     ArtistRepository artistRepository;
 
-    public void main(String[] args){//@Observes StartupEvent startupEvent
+    public void main(@Observes StartupEvent startupEvent){//@Observes StartupEvent startupEvent
         readCsv();
         //artistRepository.saveArtistsToCsv();
     //songRepository.addRandomSong();
