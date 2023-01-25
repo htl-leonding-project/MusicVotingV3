@@ -1,4 +1,4 @@
-name: Publish
+name: Angular GitHub CI
 on:
   push:
     branches:
@@ -9,10 +9,12 @@ permissions:
 
 jobs:
   set-up:
+    runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
+
   frontend-build:
     needs: [set-up]
     runs-on: ubuntu-latest
