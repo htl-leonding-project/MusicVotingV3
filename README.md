@@ -5,7 +5,7 @@ Video:
 
 ## Dokumentation
 
-* https://hautzmayersheila.github.io/MusicVotingV3/
+* https://musicvoting.github.io/MusicVotingV3/
 
 * Tutorial schreiben (Bedienung)
 * Struktur erklären (Seiten Add-Show,Endpoints)
