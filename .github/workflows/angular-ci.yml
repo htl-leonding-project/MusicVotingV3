@@ -67,5 +67,6 @@ jobs:
           files: |
             addMusic.zip
             backend.zip
+            server/artists.csv
 
   
