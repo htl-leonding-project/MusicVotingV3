@@ -1,21 +1,20 @@
-name: Angular GitHub CI
+name: Publish Release
 on:
   push:
     branches:
       - main
-
+      
 permissions:
   contents: write
 
 jobs:
-
-  frontend-build:
+  ci:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
@@ -27,19 +26,24 @@ jobs:
 
       - name: Build
         working-directory: ./addMusic
-        run: npm run build
+        run: npm run build      
 
       - uses: montudor/action-zip@v1
         with:
           args: zip -qq -r addMusic.zip addMusic/dist/addMusic/
 
+      - name: list dir
+        run: ls
+        
+#      - name: Release angular
+#        uses: softprops/action-gh-release@v1
+#        with:
+#          draft: false
+#          prerelease: false
+#          release_name: 'test'
+#          tag_name: 'v0.0.2'
+#          files: addMusic.zip
 
-  backend-build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Set up JDK 14
         uses: actions/setup-java@v1
         with:
@@ -53,21 +57,14 @@ jobs:
         with:
           args: zip -qq -r backend.zip server/target/quarkus-app/
 
-
-
-  release:
-    needs: [frontend-build, backend-build]
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Release server
-      uses: softprops/action-gh-release@v1
-      with:
-        draft: false
-        prerelease: false
-        release_name: 'test'
-        tag_name: 'v0.0.2'
-        files: |
-          addMusic.zip
-          backend.zip
-          server/artists.csv
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          prerelease: false
+          release_name: 'test'
+          tag_name: 'v0.0.2'
+          files: |
+            addMusic.zip
+            backend.zip
+            server/artists.csv
