@@ -32,10 +32,10 @@ jobs:
       - name: list dir
         run: ls
         
-
-      - name: Archive Release
-        uses: thedoctor0/zip-release@0.7.0
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          type: 'zip'
-          filename: 'addMusic.zip'
-
+          files: addMusci.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
