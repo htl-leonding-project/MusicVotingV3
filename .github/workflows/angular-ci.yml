@@ -35,7 +35,9 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: addMusci.zip
+          files: addMuscic.zip
+          release_name: 'test'
+          tag_name: ${{ github.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
