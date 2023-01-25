@@ -27,7 +27,7 @@ jobs:
 
       - uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r addMusic.zip addMusic/dist/addMusic
+          args: zip -qq -r addMusic.zip addMusic/dist/addMusic/
 
       - uses: actions/upload-artifact@v2
         with:
