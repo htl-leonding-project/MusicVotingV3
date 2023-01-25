@@ -43,7 +43,7 @@ jobs:
           java-version: 14
 
       - name: Build project with Maven
-        working-directory: ./server
+        working-directory: server
         run: mvn -B package --file pom.xml
 
       - uses: montudor/action-zip@v1
