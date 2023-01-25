@@ -37,7 +37,7 @@ jobs:
         with:
           files: addMusic.zip
           release_name: 'test'
-          tag_name: ${{ github.ref }}
+          tag_name: 'test2'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
