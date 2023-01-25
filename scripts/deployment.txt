@@ -1,5 +1,5 @@
 http-server dist/addMusic/ -p 8082 -a music.htl-leonding.ac.at
-http-server dist/showMusic/ -p 8081
+http-server dist/showMusic/ -p 8081 -a music.htl-leonding.ac.at
 
 npx http-server dist/showMusic/ -p 8081 -a music.htl-leonding.ac.at
 
@@ -9,6 +9,10 @@ Quarkus
 ./mvnw package
 java -jar quarkus-run.jar
 
+
+git archive --format jar --output ./quarkus-run.jar master
+
+
 TODO Graal VM native
 
 
@@ -17,4 +21,8 @@ ng build
 npx http-server dist/addMusic/ -p 8081 -a music.htl-leonding.ac.at
 
 ng serve --port 8081 --host music.htl-leonding.ac.at --disable-host-check
+
+wget https://github.com/MusicVoting/MusicVotingV3/releases/latest/download/backend.zip
+
+unzip file.zip
  
