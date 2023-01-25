@@ -46,7 +46,7 @@ jobs:
           settings-path: ${{ github.workspace }} # location for the settings.xml file
 
       - name: Setup Maven settings.xml
-        uses: whelk-io/maven-settings-xml-action@v11
+        uses: whelk-io/maven-settings-xml-action@v14
         with:
           servers:
             '[
