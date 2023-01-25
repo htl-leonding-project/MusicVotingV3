@@ -15,15 +15,8 @@
     <quarkus.platform.version>2.9.2.Final</quarkus.platform.version>
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
-    <packaging>jar</packaging>
   </properties>
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <name>GitHub Apache Maven Packages</name>
-      <url>https://maven.pkg.github.com/HautzmayerSheila/MusicVotingV3</url>
-    </repository>
-  </distributionManagement>
+
 
   <dependencyManagement>
     <dependencies>

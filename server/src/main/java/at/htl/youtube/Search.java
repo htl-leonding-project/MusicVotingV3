@@ -39,11 +39,15 @@ public class Search {
                 String title = video.getJsonObject("title").getJsonArray("runs").getJsonObject(0).getString("text");
                 String thumbnail = video.getJsonObject("thumbnail").getJsonArray("thumbnails").getJsonObject(0).getString("url");
                 String videoUrl = "https://www.youtube.com/watch?v="+ video.getString("videoId");
-                String durationString = video.getJsonObject("lengthText").getString("simpleText");
-                int duration = convertStringToDuration(durationString);
-                Song newSong = new Song(title,videoUrl, thumbnail, "", null);
-                newSong.setDuration(duration);
-                songs.add(newSong);
+
+                if(video.getJsonObject("lengthText") != null) //Live Video
+                {
+                    String durationString = video.getJsonObject("lengthText").getString("simpleText");
+                    int duration = convertStringToDuration(durationString);
+                    Song newSong = new Song(title,videoUrl, thumbnail, "", null);
+                    newSong.setDuration(duration);
+                    songs.add(newSong);
+                }
             }
         }
         return songs;
