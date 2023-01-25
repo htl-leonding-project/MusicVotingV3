@@ -23,4 +23,4 @@ jobs:
 
       - name: Build
         working-directory: ./addMusic
-        run: npm run build:prod
+        run: npm run build
