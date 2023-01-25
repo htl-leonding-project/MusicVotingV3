@@ -29,6 +29,9 @@ jobs:
         with:
           args: zip -qq -r addMusic.zip addMusic/dist/addMusic/
 
+      - name: list dir
+        run: ls
+        
       - uses: actions/upload-artifact@v2
         with:
           name: addMusic.zip
