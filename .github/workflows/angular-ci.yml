@@ -23,4 +23,16 @@ jobs:
 
       - name: Build
         working-directory: ./addMusic
-        run: npm run build
+        run: npm run build      
+        
+      - name: Zip file
+        working-directory: ./addMusic
+        uses: montudor/action-zip@v1
+        with:
+        args: zip -qq -r addMusic.zip dist/addMusic
+
+      - name: Upload artifact
+        working-directory: ./addMusic
+        uses: actions/upload-artifact@v2
+        with:
+          name: addMusic.zip
