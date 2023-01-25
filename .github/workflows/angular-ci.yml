@@ -8,13 +8,16 @@ permissions:
   contents: write
 
 jobs:
-  frontend-build:
-    runs-on: ubuntu-latest
-
+  set-up:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        
+  frontend-build:
+    needs: [set-up]
+    runs-on: ubuntu-latest
 
+    steps:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
@@ -34,6 +37,7 @@ jobs:
 
 
   backend-build:
+    needs: [set-up]
     runs-on: ubuntu-latest
 
     steps:
@@ -43,7 +47,7 @@ jobs:
           java-version: 14
 
       - name: Build project with Maven
-        working-directory: server
+        working-directory: ./server
         run: mvn -B package --file pom.xml
 
       - uses: montudor/action-zip@v1
