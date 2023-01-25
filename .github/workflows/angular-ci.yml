@@ -32,7 +32,10 @@ jobs:
       - name: list dir
         run: ls
         
-      - uses: actions/upload-artifact@v3
+
+      - name: Archive Release
+        uses: thedoctor0/zip-release@0.7.0
         with:
-            name: addMusic
-            path: addMusic.zip
+          type: 'zip'
+          filename: 'addMusic.zip'
+
