@@ -13,12 +13,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Node.js
+        working-directory: ./addMusic
         uses: actions/setup-node@v2
         with:
           node-version: 14
 
       - name: Install dependencies
+        working-directory: ./addMusic
         run: npm install
 
       - name: Build
+        working-directory: ./addMusic
         run: npm run build:prod
