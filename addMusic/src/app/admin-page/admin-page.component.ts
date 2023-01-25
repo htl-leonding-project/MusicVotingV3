@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin-page.component.css'],
 })
 export class AdminPageComponent implements OnInit {
+
   songs: Song[] = []
   blacklist: BlacklistItem[]= []
   blacklistphrase: string = ""
@@ -29,8 +30,6 @@ export class AdminPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.openPasswordDialog()
-
-
   }
 
   openPasswordDialog() {
@@ -88,4 +87,8 @@ export class AdminPageComponent implements OnInit {
   backToHome(){
     this.router.navigate(['/home']);
   }
+
+  navigateToShow() {
+    this.router.navigate(['/show']);
+    }
 }

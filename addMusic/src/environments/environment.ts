@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   timeOutAtAdd: 3000,
-  host: "http://192.168.191.53:8080/"
+  //host: "http://192.168.191.53:8080/"
+  host: "http://music.htl-leonding.ac.at:8080/"
 };
 
 /*

@@ -15,10 +15,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DialogBodyComponent } from './dialog-body/dialog-body.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { HomeComponent } from './home/home.component';
+import { ShowMusicComponent } from './show-music/show-music.component';
 
 @NgModule({
   declarations: [
-    AppComponent, DialogBodyComponent, AdminPageComponent, HomeComponent
+    AppComponent, DialogBodyComponent, AdminPageComponent, HomeComponent, ShowMusicComponent
   ],
   imports: [
     BrowserModule,
