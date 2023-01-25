@@ -41,7 +41,7 @@ jobs:
           draft: false
           prerelease: false
           release_name: 'test'
-          tag_name: 'aaa'
+          tag_name: ${{ github.ref }}
           files: addMusic.zip
 
   
