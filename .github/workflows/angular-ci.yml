@@ -35,16 +35,15 @@ jobs:
       - name: list dir
         run: ls
         
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: false
-          prerelease: false
-          release_name: 'test'
-          tag_name: ${{ github.ref }}
-          files: addMusic.zip
-          
-          
+#      - name: Release angular
+#        uses: softprops/action-gh-release@v1
+#        with:
+#          draft: false
+#          prerelease: false
+#          release_name: 'test'
+#          tag_name: 'v0.0.2'
+#          files: addMusic.zip
+
       - name: Set up JDK 14
         uses: actions/setup-java@v1
         with:
@@ -53,5 +52,20 @@ jobs:
       - name: Build project with Maven
         working-directory: ./server
         run: mvn -B package --file pom.xml
+
+      - uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r backend.zip target/quarkus-app/
+
+      - name: Release server
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          prerelease: false
+          release_name: 'test'
+          tag_name: 'v0.0.2'
+          files: |
+            addMusic.zip
+            backend.zip
 
   
