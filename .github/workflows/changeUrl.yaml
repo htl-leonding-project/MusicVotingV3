@@ -6,6 +6,9 @@ on:
       url:
         description: Neue Url
         required: true
+        
+permissions:
+  contents: write
 
 jobs:
   pipeline:
