@@ -24,7 +24,7 @@ jobs:
         working-directory: ./addMusic
         run: npm install
         
-      - name: Install dependencies
+      - name: change url in env file 
         working-directory: ./addMusic/src/environments
         run: sed -r -i 's/home:"\w*"'/home:\"{{ github.event.inputs.url }}\"/ environment.prod.ts 
 
