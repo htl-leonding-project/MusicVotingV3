@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SongService } from '../services/song.service';
 import { Router } from '@angular/router';
 import {md5} from '../../md5';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dialog-body',
@@ -25,7 +26,7 @@ export class DialogBodyComponent implements OnInit {
 
   close() {
     this.dialogRef.close();
-    this.router.navigate(['/home']);
+    this.router.navigate(['/'+environment.home]);
   }
 
 

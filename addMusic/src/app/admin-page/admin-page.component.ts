@@ -7,6 +7,7 @@ import { BlacklistItem } from '../modules/blacklist-item.model';
 import { BlacklistService } from '../services/blacklist.service';
 import { interval } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-admin-page',
@@ -85,7 +86,7 @@ export class AdminPageComponent implements OnInit {
   }
 
   backToHome(){
-    this.router.navigate(['/home']);
+    this.router.navigate(['/'+environment.home]);
   }
 
   navigateToShow() {

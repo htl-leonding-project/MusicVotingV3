@@ -5,13 +5,14 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { ShowMusicComponent } from './show-music/show-music.component';
 import { QrCodeComponent } from './qr-code/qr-code.component';
+import { environment } from 'src/environments/environment';
 
 const routes: Routes = [
   { path: 'adminPage', component: AdminPageComponent },
-  { path: 'home',   component: HomeComponent},
+  { path: environment.home,   component: HomeComponent},
   { path: 'show',   component: ShowMusicComponent},
   { path: 'qr',   component: QrCodeComponent},
-  { path: '',   redirectTo: '/home', pathMatch: 'full' },
+  { path: '',   redirectTo: '/'+environment.home, pathMatch: 'full' },
 ];
 
 @NgModule({
