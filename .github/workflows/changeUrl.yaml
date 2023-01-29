@@ -31,6 +31,10 @@ jobs:
           replace: "home:\"{{ github.event.inputs.url }}\""
           regex: true
           
+      - name: show contents
+        working-directory: ./addMusic/src/environments
+        run: cat environment.prod.ts 
+
       - name: Build
         working-directory: ./addMusic
         run: npm run build      
