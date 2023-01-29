@@ -16,10 +16,12 @@ import { DialogBodyComponent } from './dialog-body/dialog-body.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { HomeComponent } from './home/home.component';
 import { ShowMusicComponent } from './show-music/show-music.component';
+import { QrCodeComponent } from './qr-code/qr-code.component';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   declarations: [
-    AppComponent, DialogBodyComponent, AdminPageComponent, HomeComponent, ShowMusicComponent
+    AppComponent, DialogBodyComponent, AdminPageComponent, HomeComponent, ShowMusicComponent, QrCodeComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +34,8 @@ import { ShowMusicComponent } from './show-music/show-music.component';
     MatFormFieldModule,
     MatInputModule,
     MatTabsModule,
-    MatDialogModule
+    MatDialogModule,
+    QRCodeModule
     ],
   providers: [],
   bootstrap: [AppComponent],

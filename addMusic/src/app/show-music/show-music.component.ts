@@ -17,6 +17,7 @@ export class ShowMusicComponent implements OnInit {
   isPlaying = false;
   window?: Window|null;
   isPausedClicked = true;
+  btnDisabled = true
 
   actSong: Song = {
     videoUrl: '',
@@ -38,7 +39,7 @@ export class ShowMusicComponent implements OnInit {
 
   ngOnInit(): void {
     this.openPasswordDialog()
-    
+
   }
 
   openPasswordDialog() {
@@ -46,6 +47,7 @@ export class ShowMusicComponent implements OnInit {
     dialogConfig.disableClose = true
     let dialogref=this.matDialog.open(DialogBodyComponent, dialogConfig)
     dialogref.afterClosed().subscribe(result => {
+      this.btnDisabled = false
       interval(1000).subscribe((x) => {
         this.songService.getPlaylist().subscribe({
           next: (res) => {

@@ -37,7 +37,7 @@
 
   <h1>Aktuelle Playlist</h1>
 
-  <button
+  <button [disabled]="btnDisabled"
     class="btn col-12 m-2 playButton"
     (click)="playSong()"
   >
