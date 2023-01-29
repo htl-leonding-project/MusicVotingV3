@@ -6,8 +6,6 @@ on:
       message:
         description: Neue Url
         required: true
-      environment:
-        type: environment
 
 jobs:
   greet:
