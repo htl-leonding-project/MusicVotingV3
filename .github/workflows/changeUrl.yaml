@@ -28,7 +28,7 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v2
         with:
           find: "home:\"[a-zA-Z0-9]*\""
-          replace: "home:\"{{ github.event.inputs.url }}\""
+          replace: "home:\"${{ github.event.inputs.url }}\""
           regex: true
           
       - name: show contents
