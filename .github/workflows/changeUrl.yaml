@@ -74,7 +74,7 @@ jobs:
           draft: false
           prerelease: false
           release_name: 'test'
-          tag_name: 'v0.0.2'
+          tag_name: 'v0.0.3'
           files: |
             addMusic.zip
             backend.zip
