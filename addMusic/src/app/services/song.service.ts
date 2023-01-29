@@ -39,6 +39,6 @@ export class SongService {
   }
 
   getNextSong() {
-    return this.http.get<Song>(environment.host+"/getNextSong");
+    return this.http.get<Song>(this.url+"/getNextSong");
   }
 }
