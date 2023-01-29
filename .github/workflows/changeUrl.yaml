@@ -23,11 +23,14 @@ jobs:
       - name: Install dependencies
         working-directory: ./addMusic
         run: npm install
-        
+      
       - name: change url in env file 
-        working-directory: ./addMusic/src/environments
-        run: sed -r -i 's/home:"\w*"'/home:\"{{ github.event.inputs.url }}\"/ environment.prod.ts 
-
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "home:\"[a-zA-Z0-9]*\""
+          replace: "home:\"{{ github.event.inputs.url }}\""
+          regex: true
+          
       - name: Build
         working-directory: ./addMusic
         run: npm run build      
