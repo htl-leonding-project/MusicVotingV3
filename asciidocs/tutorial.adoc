@@ -1,2 +1,44 @@
+:sourcedir: ../src/main/java
+:icons: font
+:toc: left
+:sectnums:
+:imagesdir: ../asciidocs/images
+
 = Tutorial
+
+IMPORTANT: Mit bestimmtem Schul-WLAN funktioniert es nicht
+
+== Add Music
+
+**http://music.htl-leonding.ac.at/home**
+
+Mit dem oberen Link gelangt man zu folgender Seite:
+
+image::mv01.png[,500]
+
+
+== Show Music
+
+**http://music.htl-leonding.ac.at/show**
+
+Mit dem oberen Link gelangt man zu folgender Seite:
+
+image::mv8.png[,500]
+
+Hier muss dann das Admin Passwort eingegeben werden. Danach sieht man die Playlist und kann die Musik starten:
+
+image::mv6.png[,500]
+
+== QR-Code
+
+**http://music.htl-leonding.ac.at/qr**
+
+Mit dem oberen Link gelangt man zu folgender Seite:
+
+image::mv9.png[,500]
+
+Hier muss dann das Admin Passwort eingegeben werden. Danach kann man den QR-Code normal mit dem Handy scannen:
+
+image::mv11.png[,500]
+
 

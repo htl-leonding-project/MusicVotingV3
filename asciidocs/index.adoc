@@ -1,8 +1,31 @@
-= Test
+:sourcedir: ../src/main/java
+:icons: font
+:toc: left
+:sectnums:
+:imagesdir: ../asciidocs/images
+
+= Music Voting
+
+== Plakat
+
+image::Plakat_MusicVoting-1.png[,500]
+
+== Projektvideo
+
+
+.source: https://www.youtube.com/embed/BWKhZGNvlnY
++++
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BWKhZGNvlnY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
++++
+
 
 == Zur Dokumentation
 
+* https://musicvoting.github.io/MusicVotingV3/documentation.html
+
 == Zum Tutorial
+
+* https://musicvoting.github.io/MusicVotingV3/tutorial.html
 
 
 

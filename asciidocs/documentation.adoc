@@ -1,14 +1,106 @@
+:sourcedir: ../src/main/java
+:icons: font
+:toc: left
+:sectnums:
+:imagesdir: ../asciidocs/images
+
 = Dokumentation
 
+== Allgemein
+
+Music Voting ist ein Projekt, mit dem man Musik spielen kann. Hierbei können Lieder zu einer Playlist hinzugefügt werden, geliked werden und nacheinander abgespielt werden. Mit Music Voting wird jedes lahme Event zu einer richtig coolen Party.
 
 == Struktur
+
+=== Musik hinzufügen
+
+image::mv01.png[,500]
+
+Man kann in das Suchfeld eingeben, nach was für einem Lied bzw. nach welchem Sänger/welcher Sängerin man suchen will.
+Klickt man auf den Button mit der Lupe darunter, startet man die Suche.
+
+image::mv2.png[,500]
+
+Es werden die gefundenen Lieder in einer Liste untereinander angezeigt. Die Songs sind in den meisten Fällen die Lyrics Version des Songs, da somit verhindert wird, dass lange Musikvideos mit unnötigen Dialogen oder Teilen, die nicht zum Song gehören hinzugefügt werden können.
+
+Neben jedem Lied befindet sich ein Button mit einem Plussymbol. Klickt man auf diesen Button, fügt man das Lied zu einer Playlist hinzu.
+
+
+
+=== Musik abstimmen
+
+image::mv7.jpeg[,500]
+
+Wenn man oben auf den Reiter "Abstimmen" klickt, gelangt man zu der oben angezeigten Seite. Dort werden alle Lieder angezeigt, die sich in der aktuellen Playlist befinden. Neben jedem Lied befindet sich ein Button mit einem Herz. Klickt man auf diesen wird die Like-Anzahl für das Lied erhöht. Die Lieder der Playlist werden nach der Anzahl der Likes sortiert und die Lieder in dieser Reihenfolge abgespielt. So kann man Lieder, die einem gefallen schneller hören.
+
+=== Musik abspielen
+
+image::mv8.png[,500]
+
+Geht man auf diese Seite, muss das Admin Passwort eingegeben werden. Wird das Passwort korrekt eingegeben, gelangt man auf die richtige Seite mit der Playlist, welche man abspielen kann.
+
+
+image::mv6.png[,500]
+
+Klickt man auf den türkisen Startbutton beginnt die Musik aus der Playlist nacheinander zu spielen. Zusätzlich wird ein neues Fenster geöffnet, welches man links sehen kann. In diesem Fenster öffnet Youtube das Lied, welches gerade gespielt wird. Die Lieder in der Playlist werden je nach Anzahl der Likes sortiert und auch in dieser Reihenfolge abgespielt. Jede Reihe wird von links nach rechts durchgegangen.
+
+Wenn gerade kein Lied in der Playlist ist, wird automatisch ein neuer Song hinzugefügt. Das funktioniert, indem aus einer Datei mit dem Namen **artist.csv**, eine Liste aus 100 verschiedenen Sänger, einer ausgewählt wird und ein random Song von diesem Sänger hinzugefügt wird.
+
+=== Admin Page
+
+Auf die Admin Page gelangt man, wenn man auf den Button Admin links oben klickt:
+
+image::mv3.png[,500]
+
+Um auf die Admin Page zu gelangen, muss man ein Passwort eingeben. Damit verhindert man, dass jede Person Lieder löschen und Titel sperren kann.
+Hat man das richtige Passwort eingegeben, gelangt man auf die folgende Seite.
+
+
+image::mv4_Admin.png[,500]
+
+Auf der Admin Page sieht man alle Lieder, die sich in der Playlist befinden. Möchte man ein Lied davon löschen, kann man auf den Button mit dem Mitkübel neben jedem Lied klicken.
+
+Reicht das Löschen des Liedes nicht aus, kann man ein Lied auch Sperren lassen. Dafür muss man auf den Button mit dem Schloss klicken.
+
+image::mv5.png[,500]
+
+Möchte man nicht nur ein einzelnes Lied, sondern auch gewisse Wörter in Liedtiteln sperren, kann man auf den Reiter "Black List" klicken.
+
+
+=== QR-Code
+
+image::mv9.png[,500]
+
+Auf dieser Seite wird ein QR-Code angezeigt. Dieser wird automatisch generiert. Wenn jemand diesen scannen will, ohne zuvor das Admin Passwort einzugeben, wird derjenige/diejenige auf diese Seite weitergeleitet:
+
+image::mv10.jpeg[,500]
+
+Gibt man das richtige Passwort ein, kann der angezeigte QR-Code gescanned werden und man gelangt auf die Seite mit dem Namen "Musik hinzufügen":
+
+image::mv11.png[,500]
+
+image::mv01.png[,500]
+
 
 == Scraping
 
 == Wieso keine Youtube API
+
+Anfangs wurde Music Voting mit der Youtube API umgesetzt. Youtube rechnet mit sogenannten **Quota**. Quota sind eine Einheit, um die kostenlose Verwendung der API zu limitieren. Pro Tag stehen 10 000 Quota zur Verfügung. Die Youtube API wurde für Music Voting verwendet. Um die Links der Youtube Videos zu erhalten, also wurde die search Funktion verwendet. Diese Funktion verrechnet pro Suchanfrage 100 Quota. Wenn man sich eine Party vorstellt, dann wäre es möglich 10 000 / 100 = 100 Suchanfragen durchzuführen.
+Wenn jede dieser Suchanfragen ein Lied spielt, welches 3 Minuten läuft, dann könnte man um die 300 Minuten Lieder abspielen. Das entspricht 5 Stunden. Nahc diesen 5 Stunden müsste man entweder anfangen etwas für jede weitere Suchanfrage zu bezahlen, oder auf der Party würde es keine Musik mehr spielen. Beide Ausgänge sind keine Lösung, darum wurde schlussendlich Scraping verwendet.
 
 == Deployment
 
 == Scripts
 
 == Authentifizierung
+
+== Weitere Ideen für die Zukunft
+
+1. Verschidene Versionen:
+
+* Karaoke
+* Musik Videos
+* Tanz
+* ...
+
