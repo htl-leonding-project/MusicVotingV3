@@ -9,7 +9,7 @@ env:
 
 jobs:
   build-frontend:
-    name: build-frontend
+    name: build-docker-image-frontend
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -39,8 +39,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
+          context: ./addMusic
+          file: ./addMusic/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}-frontend:latest
           build-args: |
