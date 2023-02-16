@@ -12,6 +12,9 @@ Music Voting ist ein Projekt, mit dem man Musik spielen kann. Hierbei können Li
 
 == Struktur
 
+image::system.jpeg[,500]
+
+
 === Musik hinzufügen
 
 image::mv01.png[,500]
@@ -87,10 +90,12 @@ Anfangs wurde Music Voting mit der Youtube API umgesetzt. Youtube rechnet mit so
 
 
 == Scraping
-Für die Suche auf Youtube wurde dann Scaping verwendet.
-Library: Jsoup
+Für die Suche auf Youtube wurde dann Scraping verwendet.
 
-Methode: getSearchFromYoutube in Search.java
+Library: https://jsoup.org/[Jsoup^]
+
+.Methode: getSearchFromYoutube in Search.java
+[source,java]
 ----
 public List<Song> getSearchFromYoutube(String queryTerm) {
         queryTerm += " Lyrics";
