@@ -102,6 +102,7 @@
 
   </dependencies>
   <build>
+    <finalName>music-server</finalName>
     <plugins>
       <plugin>
         <groupId>${quarkus.platform.group-id}</groupId>
