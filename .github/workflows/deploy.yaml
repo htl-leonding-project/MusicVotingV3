@@ -32,7 +32,7 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: cd ./server && ls && ./mvnw package
+        run: cd ./server && ls && ./mvnw package && ls && cp artists.csv target/quarkus-app
 
       - name: convert github repository name to lowercase
         run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
