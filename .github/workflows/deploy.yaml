@@ -3,6 +3,8 @@ name: build-image
 on:
   push:
     branches: [ main ]
+    paths:
+      - server/**
 
 env:
   REGISTRY: ghcr.io
