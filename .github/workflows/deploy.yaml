@@ -9,7 +9,7 @@ env:
 
 jobs:
   build-server:
-    name: build
+    name: build-docker-image-server
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -30,7 +30,7 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: cd ./server && ./mvnw package
+        run: ls && cd ./server && ./mvnw package
 
       - name: convert github repository name to lowercase
         run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
