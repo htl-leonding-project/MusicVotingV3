@@ -22,7 +22,7 @@ public class InitBean {
     ArtistRepository artistRepository;
 
     public void main(@Observes StartupEvent startupEvent){//@Observes StartupEvent startupEvent
-        //readCsv();
+        readCsv();
         //artistRepository.saveArtistsToCsv();
     //songRepository.addRandomSong();
 
