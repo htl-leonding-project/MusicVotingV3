@@ -30,7 +30,7 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: ls && cd ./server && ./mvnw package
+        run: cd ./server && ls && ./mvnw package
 
       - name: convert github repository name to lowercase
         run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
