@@ -91,10 +91,15 @@ public class SongResource {
     }
 
     @DELETE
-    @Path("deleteSong/{id}")
+    @Path("deleteSong/{id}/{password}")
     @Transactional
-    public Response deleteSong(@PathParam("id") Long id){
-        songRepository.deleteById(id);
-        return Response.ok().build();
+    public Response deleteSong(@PathParam("id") Long id, @PathParam("password") String password){
+        String adminPass = ConfigProvider.getConfig().getValue("admin.password", String.class);
+        if(Objects.equals(adminPass, password)) {
+            songRepository.deleteById(id);
+            return Response.ok().build();
+
+        }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 }
