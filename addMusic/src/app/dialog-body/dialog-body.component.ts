@@ -4,6 +4,7 @@ import { SongService } from '../services/song.service';
 import { Router } from '@angular/router';
 import {md5} from '../../md5';
 import { environment } from 'src/environments/environment';
+import { GlobalService } from '../services/global.service';
 
 @Component({
   selector: 'app-dialog-body',
@@ -17,7 +18,8 @@ export class DialogBodyComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogBodyComponent>,
     private songService: SongService,
-    private router: Router
+    private router: Router,
+    private globalService: GlobalService
     )
   {}
 
@@ -35,6 +37,7 @@ export class DialogBodyComponent implements OnInit {
       next: ()=> {
         console.log("Passwort stimmt")
         this.errorMessage = ""
+        this.globalService.password = md5(this.password)
         this.dialogRef.close();
 
       },

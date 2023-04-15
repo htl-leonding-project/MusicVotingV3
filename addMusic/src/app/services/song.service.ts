@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Song } from '../modules/song.module';
+import { GlobalService } from './global.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class SongService {
     })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private globalService: GlobalService) { }
 
   getPlaylist(){
     return this.http.get<Song[]>(this.url);
@@ -35,7 +36,7 @@ export class SongService {
   }
 
   deleteSong(songId: string){
-    return this.http.delete(this.url+"/deleteSong/"+songId,this.httpOptions);
+    return this.http.delete(this.url+"/deleteSong/"+songId+"/"+this.globalService.password,this.httpOptions);
   }
 
   getNextSong() {
