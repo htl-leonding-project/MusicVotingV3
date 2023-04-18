@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   timeOutAtAdd: 3000,
-  //host: "http://192.168.191.53:8080/"
-  host: "https://student.cloud.htl-leonding.ac.at/a.hartl/music-voting/api/",
+  host: "http://localhost:8080/",
+  //host: "https://student.cloud.htl-leonding.ac.at/a.hartl/music-voting/api/",
   home:"home"
 };
 

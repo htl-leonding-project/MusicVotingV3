@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: db-deployment
+  name: music-db-deployment
   namespace: student-a-hartl1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: compdatabase 
+      app: musicdatabase 
   template:
     metadata:
       labels:
-        app: compdatabase
+        app: musicdatabase
     spec:
       containers:
-        - name: compdatabase
+        - name: musicdatabase
           image: postgres 
           ports:
             - containerPort: 5432
@@ -52,21 +52,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-deployment
+  name: music-backend-deployment
   namespace: student-a-hartl1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: backend
+      app: music-backend
   template:
     metadata:
       labels:
-        app: backend
+        app: music-backend
     spec:
       containers:
-        - name: backend
-          image: ghcr.io/annahartl/mvserver
+        - name: music-backend
+          image: ghcr.io/musicvoting/musicvotingv3-server
           ports:
             - containerPort: 8080
           imagePullPolicy: Always
@@ -97,21 +97,21 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: backend
+    app: music-backend
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: database-svc
+  name: music-database-svc
   namespace: student-a-hartl1
 spec:
   ports:
     - port: 5432
       targetPort: 5432
       protocol: TCP
-      name: compdatabase 
+      name: musicdatabase 
   selector:
-    app: compdatabase
+    app: musicdatabase
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
