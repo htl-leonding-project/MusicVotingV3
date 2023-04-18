@@ -8,6 +8,7 @@ export const environment = {
   host: "http://localhost:8080/",
   //host: "https://student.cloud.htl-leonding.ac.at/a.hartl/music-voting/api/",
   home:"home"
+  //test
 };
 
 /*
