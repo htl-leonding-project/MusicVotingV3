@@ -8,7 +8,8 @@
 
 == Allgemein
 
-Music Voting ist ein Projekt, mit dem man Musik spielen kann. Hierbei können Lieder zu einer Playlist hinzugefügt werden, geliked werden und nacheinander abgespielt werden. Mit Music Voting wird jedes lahme Event zu einer richtig coolen Party.
+Music Voting ist ein Projekt, mit dem man Musik spielen kann. Hierbei können Lieder zu einer Playlist hinzugefügt werden, geliked werden und nacheinander abgespielt werden.
+Mit MusicVoting wird jedes lahme Event zu einer richtig coolen Party.
 
 === Musik hinzufügen
 
