@@ -10,11 +10,6 @@
 
 Music Voting ist ein Projekt, mit dem man Musik spielen kann. Hierbei können Lieder zu einer Playlist hinzugefügt werden, geliked werden und nacheinander abgespielt werden. Mit Music Voting wird jedes lahme Event zu einer richtig coolen Party.
 
-== Struktur
-
-image::system.jpeg[,500]
-
-
 === Musik hinzufügen
 
 image::mv01.png[,500]
@@ -40,7 +35,7 @@ Wenn man oben auf den Reiter "Abstimmen" klickt, gelangt man zu der oben angezei
 
 image::mv8.png[,500]
 
-Geht man auf diese Seite, muss das Admin Passwort eingegeben werden. Wird das Passwort korrekt eingegeben, gelangt man auf die richtige Seite mit der Playlist, welche man abspielen kann.
+Geht man auf diese Seite, muss das Admin-Passwort eingegeben werden. Wird das Passwort korrekt eingegeben, gelangt man auf die richtige Seite mit der Playlist, welche man abspielen kann.
 
 
 image::mv6.png[,500]
@@ -51,11 +46,11 @@ Wenn gerade kein Lied in der Playlist ist, wird automatisch ein neuer Song hinzu
 
 === Admin Page
 
-Auf die Admin Page gelangt man, wenn man auf den Button Admin links oben klickt:
+Auf die Admin-Page gelangt man, wenn man auf den Button Admin links oben klickt:
 
 image::mv3.png[,500]
 
-Um auf die Admin Page zu gelangen, muss man ein Passwort eingeben. Damit verhindert man, dass jede Person Lieder löschen und Titel sperren kann.
+Um auf die Admin-Page zu gelangen, muss man ein Passwort eingeben. Damit verhindert man, dass jede Person Lieder löschen und Titel sperren kann.
 Hat man das richtige Passwort eingegeben, gelangt man auf die folgende Seite.
 
 
@@ -138,153 +133,244 @@ public List<Song> getSearchFromYoutube(String queryTerm) {
     }
 ----
 <1> Es wird das Javascript ausgelesen
-<2> Wenn die Länge eines Video nicht bekannt ist handelt es sich um ein Live Video
+<2> Wenn die Länge eines Videos nicht bekannt ist, handelt es sich um ein Live Video
 <3> Konvertiert einen String der die Länge eines Videos erhält in Millisekungen
 
 
 Wenn jede dieser Suchanfragen ein Lied spielt, welches 3 Minuten läuft, dann könnte man um die 300 Minuten Lieder abspielen. Das entspricht 5 Stunden. Nahc diesen 5 Stunden müsste man entweder anfangen etwas für jede weitere Suchanfrage zu bezahlen, oder auf der Party würde es keine Musik mehr spielen. Beide Ausgänge sind keine Lösung, darum wurde schlussendlich Scraping verwendet.
 
 == Deployment
-Das Deployment ist in 2 Scripts aufgeteilt:
+Das Deployment wird in zwei Schritten durchgeführt:
 
-* GH-Action -> publish.yaml
-* Script am Server -> deploy.sh und deploy_2.sh
+* GH-Actions -> mv-image-backend.yaml und mv-image-frontend.yaml
+* LeoCloud -> leocloud_mv.yaml
 
 === GH-Actions
 
-Erstellt einen Release
+*mv-image-backend.yaml*
 
 ----
-name: Publish Release
+name: build-image-backend
+
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+    paths:
+      - server/**
 
-permissions:
-  contents: write <1>
+env:
+  REGISTRY: ghcr.io
 
 jobs:
-  pipeline:
+  build-server:
+    name: build-docker-image-server
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
+      deployments: write
+      packages: write
+      pages: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          node-version: 14
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
 
-      - name: Install dependencies
-        working-directory: ./addMusic
-        run: npm install
+      - name: Build with Maven
+        run: cd ./server && ls && ./mvnw package && ls && cp artists.csv target/quarkus-app <1>
 
-      - name: Build
-        working-directory: ./addMusic
-        run: npm run build <2>
+      - name: convert github repository name to lowercase
+        run: echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
-      - uses: montudor/action-zip@v1
+      - name: convert github registry name to lowercase
+        run: echo "IMAGE_REGISTRY=$(echo ${{ env.REGISTRY }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1
         with:
-          args: zip -qq -r addMusic.zip addMusic/dist/addMusic/ <3>
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: list dir
-        run: ls
+      - name: Set up Docker Build
+        uses: docker/setup-buildx-action@v1
 
-      - name: Set up JDK 14
-        uses: actions/setup-java@v1
+      - name: Build and push
+        uses: docker/build-push-action@v2
         with:
-          java-version: 14
-
-      - name: Build project with Maven
-        working-directory: ./server
-        run: mvn -B package --file pom.xml <4>
-
-      - uses: montudor/action-zip@v1
-        with:
-          args: zip -qq -r backend.zip server/target/quarkus-app/
-
-      - name: Release   <5>
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: false
-          prerelease: false
-          release_name: 'test'
-          tag_name: 'v0.0.3'
-          files: |
-            addMusic.zip
-            backend.zip
-            server/artists.csv
+          context: ./server
+          file: ./server/src/main/docker/Dockerfile.jvm
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}-server:latest
+          build-args: |
+            configuration=production
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}-server:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}-server:buildcache,mode=max
 ----
 
-<1> Wird benötigt um einen Release zu veröffentlichen
-<2> Angular Build wird aufgerufen dieses wird verpackt und trasformiert in den Dist Ordner gegeben
-<3> Dateien werden gezippt
-<4> Quarkus App wird zu einem jar
-<5> Erstellt einen Release mit den Dateien addMusic, backend und den Artist.csv
+In der Datei server/src/main/docker/Dockerfile.jvm steht die nötige Information,
+die für das Generieren des Docker Images gebraucht wird.
 
-=== Script am Server
-Es sind 2 scripts, weil manchmal wird falsch gezippt dann braucht man das zweite script.
+<1> Alle zusätzlichen Dateien müssen in den Ordner target/quarkus-app kopiert werden sonst wird die CSV nicht gefunden
 
-----
-#webseite
-cd /var/www
+=== LeoCloud
 
-rm -rd addMusic.zip
-rm -rd html
+Sämtliche a.hartl1 müssen im GANZEN Projekt verändert werden!
 
-wget https://github.com/MusicVoting/MusicVotingV3/releases/latest/download/addMusic.zip
-unzip addMusic.zip
-
-mv addMusic html
-rm -rd addMusic.zip
-
-#server
-cd /home/mvadmin/deployment
-
-rm -rd quarkus-app
-rm -rd backend.zip
-
-wget https://github.com/MusicVoting/MusicVotingV3/releases/latest/download/backend.zip
-unzip backend.zip
-
-rm -rd backend.zip
-
-cd quarkus-app
-wget https://github.com/MusicVoting/MusicVotingV3/releases/latest/download/artists.csv
-java -jar quarkus-run.jar
-----
+(auch im Dockerfile vom Angular)
 
 ----
-#webseite
-cd /var/www
-
-rm -rd addMusic.zip
-rm -rd html
-
-wget https://github.com/MusicVoting/MusicVotingV3/releases/latest/download/addMusic.zip
-unzip addMusic.zip
-
-mv addMusic/dist/addMusic/ ../www/html
-#mv addMusic html
-rm -rd addMusic.zip
-
-#server
-cd /home/mvadmin/deployment
-
-rm -rd quarkus-app
-rm -rd backend.zip
-
-wget https://github.com/MusicVoting/MusicVotingV3/releases/latest/download/backend.zip
-unzip backend.zip
-
-rm -rd backend.zip
-
-cd server/target/quarkus-app
-wget https://github.com/MusicVoting/MusicVotingV3/releases/latest/download/artists.csv
-java -jar quarkus-run.jar
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: music-db-deployment
+  namespace: student-a-hartl1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: musicdatabase
+  template:
+    metadata:
+      labels:
+        app: musicdatabase
+    spec:
+      containers:
+        - name: musicdatabase
+          image: postgres
+          ports:
+            - containerPort: 5432
+              name: "postgres"
+          env:
+            - name: POSTGRES_DB
+              value: db
+            - name: POSTGRES_USER
+              value: app
+            - name: POSTGRES_PASSWORD
+              value: app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: music-frontend-deployment
+  namespace: student-a-hartl1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: music-frontend
+  template:
+    metadata:
+      labels:
+        app: music-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/musicvoting/musicvotingv3-frontend:latest
+          ports:
+            - containerPort: 80
+          imagePullPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: music-backend-deployment
+  namespace: student-a-hartl1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: music-backend
+  template:
+    metadata:
+      labels:
+        app: music-backend
+    spec:
+      containers:
+        - name: music-backend
+          image: ghcr.io/musicvoting/musicvotingv3-server:latest
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: music-frontend-svc
+  namespace: student-a-hartl1
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: music-frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: music-backend-svc
+  namespace: student-a-hartl1
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    app: music-backend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: music-database-svc
+  namespace: student-a-hartl1
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+      name: musicdatabase
+  selector:
+    app: musicdatabase
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backend-ingress-mv
+  namespace: student-a-hartl1
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: student.cloud.htl-leonding.ac.at
+      http:
+        paths:
+          - path: /a.hartl1/music-voting/api(/|$)(.*)$
+            pathType: Prefix
+            backend:
+              service:
+                name: music-backend-svc
+                port:
+                  number: 80
+          - path: /a.hartl1/music-voting(/|$)(.*)$
+            pathType: Prefix
+            backend:
+              service:
+                name: music-frontend-svc
+                port:
+                  number: 80
 ----
+
+Ausgeführt muss folgender Command im Terminal (vorraussetzug ist eine funktionierende LeoCloud)
 
 == Authentifizierung
 
