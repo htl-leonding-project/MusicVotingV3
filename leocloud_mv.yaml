@@ -44,7 +44,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/musicvoting/musicvotingv3-frontend
+          image: ghcr.io/musicvoting/musicvotingv3-frontend:latest
           ports:
             - containerPort: 80
           imagePullPolicy: Always
@@ -66,7 +66,7 @@ spec:
     spec:
       containers:
         - name: music-backend
-          image: ghcr.io/musicvoting/musicvotingv3-server
+          image: ghcr.io/musicvoting/musicvotingv3-server:latest
           ports:
             - containerPort: 8080
           imagePullPolicy: Always
@@ -125,7 +125,7 @@ spec:
     - host: student.cloud.htl-leonding.ac.at
       http:
         paths:
-          - path: /a.hartl/music-voting/api(/|$)(.*)$
+          - path: /a.hartl1/music-voting/api(/|$)(.*)$
             pathType: Prefix
             backend:
               service:
