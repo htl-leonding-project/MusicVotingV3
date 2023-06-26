@@ -4,11 +4,10 @@
 
 export const environment = {
   production: false,
-  timeOutAtAdd: 3000,
+  timeOutAtAdd: 3000,  //in Millisekunden
   host: "http://localhost:8080/",
   //host: "https://student.cloud.htl-leonding.ac.at/a.hartl/music-voting/api/",
   home:"home"
-  //test
 };
 
 /*

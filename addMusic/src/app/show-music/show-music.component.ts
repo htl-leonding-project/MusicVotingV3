@@ -80,7 +80,7 @@ export class ShowMusicComponent implements OnInit {
             this.window = window.open(
               song.videoUrl,
               '',
-              'toolbar=no,scrollbars=no,resizable=no,top=200,left=100,width=100,height=100,menubar=no,titlebar=no'
+              'toolbar=no,scrollbars=no,resizable=no,width=500,height=300,menubar=no,titlebar=no'
             );
 
 
@@ -121,6 +121,7 @@ export class ShowMusicComponent implements OnInit {
     else{
       if(this.window != null){
         this.window.close()
+        window.location.reload()
       }
     }
   }
