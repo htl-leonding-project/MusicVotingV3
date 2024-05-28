@@ -8,11 +8,12 @@ import org.apache.http.ContentTooLongException;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,17 +25,17 @@ public class SongResource {
     SongRepository songRepository;
 
     @GET
-    public List<Song> getPlaylist(){
+    public List<Song> getPlaylist() {
         return songRepository.getPlaylist();
     }
 
     @GET
     @Path("getNextSong")
     @Transactional
-    public Song getNextSong(){
+    public Song getNextSong() {
         List<Song> songs = songRepository.getPlaylist();
 
-        if(songs.size() == 0){
+        if (songs.size() == 0) {
             return null;
         }
 
@@ -46,7 +47,7 @@ public class SongResource {
     @POST
     @Transactional
     @Path("/addSong")
-    public Response addSong(@RequestBody Song newSong){
+    public Response addSong(@RequestBody Song newSong) {
         System.out.println(newSong);
         Song s = new Song();
         s.setSongName(newSong.getSongName());
@@ -68,7 +69,7 @@ public class SongResource {
     @GET
     @Path("search/{query}")
     public Response getSongsWithSearch(
-            @PathParam("query") String query){
+            @PathParam("query") String query) {
 
 //        Artist a = artistRepository.getArtist(artistName);
 //        if(a == null){
@@ -80,10 +81,10 @@ public class SongResource {
 
     @GET
     @Path("checkPassword/{password}")
-    public Response checkPassword(@PathParam("password") String password){
+    public Response checkPassword(@PathParam("password") String password) {
         String adminPass = ConfigProvider.getConfig().getValue("admin.password", String.class);
 
-        if(Objects.equals(adminPass, password)) {
+        if (Objects.equals(adminPass, password)) {
             System.out.println("Pass: " + adminPass);
             return Response.ok().build();
         }
@@ -93,9 +94,9 @@ public class SongResource {
     @DELETE
     @Path("deleteSong/{id}/{password}")
     @Transactional
-    public Response deleteSong(@PathParam("id") Long id, @PathParam("password") String password){
+    public Response deleteSong(@PathParam("id") Long id, @PathParam("password") String password) {
         String adminPass = ConfigProvider.getConfig().getValue("admin.password", String.class);
-        if(Objects.equals(adminPass, password)) {
+        if (Objects.equals(adminPass, password)) {
             songRepository.deleteById(id);
             return Response.ok().build();
 
