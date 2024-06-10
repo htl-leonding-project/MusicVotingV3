@@ -43,34 +43,38 @@
     </div>
   </div>
 
-<!--  <iframe width="420" height="315"-->
-<!--          [src]="actSong.videoUrl.replace('watch?v=','embed/') + '?autoplay=1' | safe">-->
-<!--  </iframe>-->
+  <!--  <iframe width="420" height="315"-->
+  <!--          [src]="actSong.videoUrl.replace('watch?v=','embed/') + '?autoplay=1' | safe">-->
+  <!--  </iframe>-->
 
-<!--  <youtube-player videoId="{{actSong.videoUrl.substring(actSong.videoUrl.indexOf('?v=')+3,actSong.videoUrl.length)}}"></youtube-player>-->
+  <!--  <youtube-player videoId="{{actSong.videoUrl.substring(actSong.videoUrl.indexOf('?v=')+3,actSong.videoUrl.length)}}"></youtube-player>-->
   <youtube-player
+    id="player"
     [videoId]="actSong.videoUrl.substring(actSong.videoUrl.indexOf('?v=')+3,actSong.videoUrl.length)"
-    [height]="100" [width]="100"  [playerVars]="{controls : 0, autoplay: 1}">
-    </youtube-player>
+    [height]="450"
+    [width]="800"
+    [playerVars]="{controls : 0, autoplay: 1}"
+    (stateChange)="onStateChanged($event)">
+  </youtube-player>
 
   <br/>
   <br/>
   <br/>
 
   <h1>Aktuelle Playlist</h1>
-
   <button [disabled]="btnDisabled"
           class="btn col-12 m-2 playButton"
-          (click)="playSong()"
-  >
-<span *ngIf="isPlaying == false">
+          (click)="startPlaying()"></button>
+  <button class="btn col-12 m-2 playButton"
+          (click)="testNewVid()"></button>
+
+  <span *ngIf="isPlaying == false">
 <mat-icon>play_arrow</mat-icon>
 </span>
-    <span *ngIf="isPlaying == true">
+  <span *ngIf="isPlaying == true">
 
 <mat-icon>pause</mat-icon>
 </span>
-  </button>
 
   <span *ngFor="let song of songs; let i=index" class="col-4">
 <div class="card mb-3" style="max-width: 540px;">
@@ -97,9 +101,9 @@
 </div>
 </div>
 
-    <!--     <a class="btn btn-danger" (click)="goToLink(song)">play song</a>-->
 </span>
 </div>
+
 
 </body>
 </html>
