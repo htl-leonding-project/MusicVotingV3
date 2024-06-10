@@ -1,10 +1,7 @@
 package at.htl.boundary;
 
-import at.htl.control.ArtistRepository;
 import at.htl.control.SongRepository;
-import at.htl.entity.Artist;
 import at.htl.entity.Song;
-import org.apache.http.ContentTooLongException;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
@@ -14,7 +11,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,31 +31,29 @@ public class SongResource {
     public Song getNextSong() {
         List<Song> songs = songRepository.getPlaylist();
 
-        if (songs.size() == 0) {
+        if (songs.isEmpty()) {
             return null;
         }
 
-        songRepository.deleteById(songs.get(0).getId());
+        songRepository.removeById(songs.get(0).getId()); // Use the renamed method
         return songs.get(0);
     }
-
 
     @POST
     @Transactional
     @Path("/addSong")
     public Response addSong(@RequestBody Song newSong) {
-        System.out.println(newSong);
-        Song s = new Song();
-        s.setSongName(newSong.getSongName());
-        s.setThumbnail(newSong.getThumbnail());
-        s.setSongId(newSong.getSongId());
-        s.setVideoUrl(newSong.getVideoUrl());
-        s.setDuration(newSong.getDuration());
+        Song song = new Song();
+        song.setSongName(newSong.getSongName());
+        song.setThumbnail(newSong.getThumbnail());
+        song.setSongId(newSong.getSongId());
+        song.setVideoUrl(newSong.getVideoUrl());
+        song.setDuration(newSong.getDuration());
         try {
-            songRepository.insert(s);
+            songRepository.insert(song);
         } catch (Exception e) {
             return Response.status(Response.Status.FORBIDDEN)
-                    .type(MediaType.TEXT_PLAIN_TYPE)
+                    .type(MediaType.TEXT_PLAIN)
                     .entity(e.getMessage())
                     .build();
         }
@@ -68,24 +62,15 @@ public class SongResource {
 
     @GET
     @Path("search/{query}")
-    public Response getSongsWithSearch(
-            @PathParam("query") String query) {
-
-//        Artist a = artistRepository.getArtist(artistName);
-//        if(a == null){
-//            return Response.status(Response.Status.NOT_FOUND).build();
-//        }
-        return Response.ok(
-                songRepository.getSongs(query)).build();
+    public Response getSongsWithSearch(@PathParam("query") String query) {
+        return Response.ok(songRepository.getSongs(query)).build();
     }
 
     @GET
     @Path("checkPassword/{password}")
     public Response checkPassword(@PathParam("password") String password) {
         String adminPass = ConfigProvider.getConfig().getValue("admin.password", String.class);
-
         if (Objects.equals(adminPass, password)) {
-            System.out.println("Pass: " + adminPass);
             return Response.ok().build();
         }
         return Response.status(Response.Status.FORBIDDEN).build();
@@ -97,9 +82,10 @@ public class SongResource {
     public Response deleteSong(@PathParam("id") Long id, @PathParam("password") String password) {
         String adminPass = ConfigProvider.getConfig().getValue("admin.password", String.class);
         if (Objects.equals(adminPass, password)) {
-            songRepository.deleteById(id);
-            return Response.ok().build();
-
+            boolean deleted = songRepository.removeById(id); // Use the renamed method
+            if (deleted) {
+                return Response.ok().build();
+            }
         }
         return Response.status(Response.Status.FORBIDDEN).build();
     }
