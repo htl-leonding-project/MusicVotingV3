@@ -1,22 +1,21 @@
-import {Component, OnInit, Pipe, PipeTransform, Sanitizer, SecurityContext} from '@angular/core';
-import { Song } from '../modules/song.module';
-import { SongService } from '../services/song.service';
-import { interval, Observable } from 'rxjs';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DialogBodyComponent } from '../dialog-body/dialog-body.component';
+import {Component, OnInit, Pipe, PipeTransform, Sanitizer, SecurityContext, ViewChild} from '@angular/core';
+import {Song} from '../modules/song.module';
+import {SongService} from '../services/song.service';
+import {interval, Observable} from 'rxjs';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {DialogBodyComponent} from '../dialog-body/dialog-body.component';
 import {DomSanitizer} from "@angular/platform-browser";
 import {YouTubePlayer} from "@angular/youtube-player";
-
 
 @Component({
   selector: 'app-show-music',
   templateUrl: './show-music.component.html',
   styleUrls: ['./show-music.component.css']
 })
+
 export class ShowMusicComponent implements OnInit {
-  title = 'showMusic';
+  @ViewChild('player', {static: true}) player: YT.Player  | undefined;
   isPlaying = false;
-  window?: Window|null;
   isPausedClicked = true;
   btnDisabled = true
   actSong: Song = {
@@ -24,18 +23,18 @@ export class ShowMusicComponent implements OnInit {
     duration: 0,
     songName: '',
     thumbnail: '',
-    voteCount:1,
-    id:'',
-    songId:''
-    };
+    voteCount: 1,
+    id: '',
+    songId: ''
+  };
+  songs: Song[] = [];
 
   constructor(
     private songService: SongService,
     private matDialog: MatDialog,
-      ) {}
+  ) {
+  }
 
-  songs: Song[] = [];
-  actIndex: number = -1;
 
   ngOnInit(): void {
     this.openPasswordDialog()
@@ -48,7 +47,7 @@ export class ShowMusicComponent implements OnInit {
   openPasswordDialog() {
     const dialogConfig = new MatDialogConfig()
     dialogConfig.disableClose = true
-    let dialogref=this.matDialog.open(DialogBodyComponent, dialogConfig)
+    let dialogref = this.matDialog.open(DialogBodyComponent, dialogConfig)
     dialogref.afterClosed().subscribe(result => {
       this.btnDisabled = false
       interval(1000).subscribe((x) => {
@@ -57,86 +56,61 @@ export class ShowMusicComponent implements OnInit {
             this.songs = res
           },
         })
-
-        if(this.songs.length > 0
-          && this.isPlaying == false
-          && this.isPausedClicked == false){
-          this.playSong()
-        }
-      })
-    });
-
+      });
+    })
   }
-
-  goToLink(song: Song) {
-    window.open(song.videoUrl, '_blank');
-  }
-
 
   playNextSong() {
-    if (this.isPlaying == true) {
+    if (this.songs.length != 0) {
+      let songToDelete = this.songs.shift();
+      console.log("Deleting song: " + songToDelete?.songName);
+      this.songService.deleteSong(songToDelete?.songId!)
+      this.actSong = this.songs[0];
+      console.log("New song: " + this.actSong.songName)
+    }
 
-      this.songService.getNextSong().subscribe({
-        next: (song) => {
-          if (song != null) {
-            console.log(song.songId)
-            this.actSong = song;
-            // this.window = window.open(
-            //   song.videoUrl,
-            //   '',
-            //   'toolbar=no,scrollbars=no,resizable=no,width=500,height=300,menubar=no,titlebar=no'
-            // );
+  }
 
-
-            setTimeout(() => {
-              console.log('song vorbei');
-
-              if (this.window != null) {
-                console.log('fenster schließen');
-                this.window.close();
-              }
-
-              this.playNextSong();
-            }, song.duration);
-          } else {
-            console.log('Playlist ende');
-            song = {
-              videoUrl: '',
-              duration: 0,
-              songName: '',
-              thumbnail: '',
-              voteCount:1,
-              id:"",
-              songId:''
-            };
-            this.isPlaying = false;
-          }
-        },
-      });
+  onStateChanged(event: any) {
+    console.log("Event: " + event.data)
+    if (event.data == YT.PlayerState.ENDED) {
+      console.log("Song Ended, playing next")
+      this.playNextSong()
     }
   }
 
-  playSong() {
-    this.isPlaying = !this.isPlaying;
-    this.isPausedClicked = !this.isPausedClicked;
-    if (this.isPlaying == true) {
-      this.playNextSong();
+  startPlaying() {
+    if (!this.isPlaying) {
+      this.playNextSong()
+      this.isPlaying = true;
     }
-    else{
-      if(this.window != null){
-        this.window.close()
-        window.location.reload()
-      }
-    }
+  }
+
+  testNewVid() {
+    this.actSong = new class implements Song {
+      duration: number = 44;
+      id: string = "234234";
+      songId: string = "2";
+      songName: string = "Crab";
+      thumbnail: string = "";
+      videoUrl: string = "https://www.youtube.com/watch?v=LDU_Txk06tM";
+      voteCount: number = 1;
+    };
+
+    // this.player?.nextVideo("LDU_Txk06tM")
   }
 }
+
 
 @Pipe({
   name: 'safe'
 })
-export class SafePipe implements PipeTransform {
+export class SafePipe
+  implements PipeTransform {
 
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor(private sanitizer: DomSanitizer) {
+  }
+
   transform(url: any) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
