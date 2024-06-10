@@ -8,15 +8,17 @@ import io.quarkus.panache.common.Sort;
 import org.apache.http.ContentTooLongException;
 import org.eclipse.microprofile.config.ConfigProvider;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class SongRepository implements PanacheRepository<Song> {
@@ -31,11 +33,11 @@ public class SongRepository implements PanacheRepository<Song> {
     Search search;
 
     public List<Song> getPlaylist() {
-        List<Song> songs = this.listAll(Sort.by("votecount").descending().and("timeAdded"));
+        List<Song> songs = this.listAll().stream().sorted().collect(Collectors.toList());
 
-        if (songs.size() == 0) {
+        if (songs.isEmpty()) {
             addRandomSong();
-            return this.listAll(Sort.by("votecount").descending());
+            return this.listAll().stream().sorted().collect(Collectors.toList());
         }
 
         return songs;
@@ -43,27 +45,25 @@ public class SongRepository implements PanacheRepository<Song> {
 
     public void insert(Song song) throws Exception {
         Song s = find("songName", song.getSongName()).firstResult();
-        if(s != null){
+        if (s != null) {
             int count = s.getVoteCount();
             count++;
             s.setVoteCount(count);
             System.out.println("Vote erhöht");
-        }
-        else{
+        } else {
             song.setTimeAdded(LocalDateTime.now());
             int minDuration = ConfigProvider.getConfig().getValue("song.minDuration", Integer.class);
             int maxDuration = ConfigProvider.getConfig().getValue("song.maxDuration", Integer.class);
 
-            if(song.getDuration() > 60*maxDuration*1000){
-                throw new ContentTooLongException("Video zu lang (max. "+maxDuration+" Minuten)");
-            }
-            else if(song.getDuration() < 60*minDuration*1000){
-                throw new Exception("Lied ist zu kurz (min. "+minDuration+" Minuten)");
+            if (song.getDuration() > 60 * maxDuration * 1000) {
+                throw new ContentTooLongException("Video zu lang (max. " + maxDuration + " Minuten)");
+            } else if (song.getDuration() < 60 * minDuration * 1000) {
+                throw new Exception("Lied ist zu kurz (min. " + minDuration + " Minuten)");
             } else if (song.getDuration() == 0) {
                 throw new Exception("Lied hat keine Länge");
             }
 
-            if(blacklistRepository.checkSong(song)){
+            if (blacklistRepository.checkSong(song)) {
                 throw new Exception("Lied darf aufgrund der Blacklist nicht hinzugefügt werden");
             }
             PanacheRepository.super.persist(song);
@@ -94,7 +94,7 @@ public class SongRepository implements PanacheRepository<Song> {
             } catch (Exception e) {
                 insertFailes = true;
             }
-        }while (insertFailes);
+        } while (insertFailes);
     }
 
     public List<Song> getSongsWithSearch(String artist, String trackName) {
@@ -133,8 +133,8 @@ public class SongRepository implements PanacheRepository<Song> {
     }
 
     public int getDurationOfSong(String videoUrl) {
-        try{
-            ProcessBuilder pb = new ProcessBuilder(System.getProperty("user.dir")+"/getDuration.sh", videoUrl);
+        try {
+            ProcessBuilder pb = new ProcessBuilder(System.getProperty("user.dir") + "/getDuration.sh", videoUrl);
             Process p = pb.start();
             p.waitFor();
             StringBuilder output = new StringBuilder();
@@ -142,19 +142,18 @@ public class SongRepository implements PanacheRepository<Song> {
                     new BufferedReader(new InputStreamReader(p.getInputStream()));
 
             String line = "";
-            while ((line = reader.readLine())!= null) {
+            while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
             }
 
             String[] st = output.toString().split(":");
             int min = Integer.parseInt(st[0].split("\n")[0]);
             int sec = 0;
-            if(st.length > 1)
+            if (st.length > 1)
                 sec = Integer.parseInt(st[1].split("\n")[0]);
-            System.out.println(min+"  "+sec);
-            return (min*60 + sec)*1000;
-        }
-        catch (Exception e){
+            System.out.println(min + "  " + sec);
+            return (min * 60 + sec) * 1000;
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

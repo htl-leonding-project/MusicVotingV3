@@ -1,6 +1,6 @@
 package at.htl.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "MV_Artist")

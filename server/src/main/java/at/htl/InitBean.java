@@ -7,9 +7,10 @@ import at.htl.entity.Artist;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
 
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,10 +22,10 @@ public class InitBean {
     @Inject
     ArtistRepository artistRepository;
 
-    public void main(@Observes StartupEvent startupEvent){//@Observes StartupEvent startupEvent
+    public void main(@Observes StartupEvent startupEvent) {//@Observes StartupEvent startupEvent
         readCsv();
         //artistRepository.saveArtistsToCsv();
-    //songRepository.addRandomSong();
+        //songRepository.addRandomSong();
 
         //Artist artist = artistRepository.getArtist("the weekend");
         //artistRepository.persist(artist);
@@ -40,27 +41,23 @@ public class InitBean {
     }
 
     @Transactional
-    public void readCsv(){
+    public void readCsv() {
         artistRepository.deleteAll();
         String line = "";
         String splitBy = ",";
-        try
-        {
-            BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir")+"/artists.csv"));
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/artists.csv"));
             br.readLine();
-            while ((line = br.readLine()) != null)
-            {
+            while ((line = br.readLine()) != null) {
                 String[] artist = line.split(splitBy);
                 Artist a = new Artist();
 
                 a.setStrArtist(artist[0]);
-                if(artist.length > 1)
+                if (artist.length > 1)
                     a.setGenre(artist[1]);
                 artistRepository.persist(a);
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

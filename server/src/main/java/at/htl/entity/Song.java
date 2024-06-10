@@ -1,11 +1,12 @@
 package at.htl.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "MV_Song")
-public class Song {
+public class Song implements Comparable<Song> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -107,5 +108,14 @@ public class Song {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    @Override
+    public int compareTo(Song o) {
+        if (this.getVoteCount() == o.getVoteCount()) {
+            return this.getTimeAdded().compareTo(o.getTimeAdded());
+        }
+
+        return this.getVoteCount() - o.getVoteCount();
     }
 }

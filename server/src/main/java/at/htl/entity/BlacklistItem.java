@@ -1,6 +1,6 @@
 package at.htl.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "MV_Blacklist")
@@ -9,7 +9,7 @@ public class BlacklistItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     String phrase;
-    
+
     public Long getId() {
         return id;
     }
