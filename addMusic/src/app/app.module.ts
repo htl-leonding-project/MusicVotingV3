@@ -15,13 +15,14 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DialogBodyComponent } from './dialog-body/dialog-body.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { HomeComponent } from './home/home.component';
-import { ShowMusicComponent } from './show-music/show-music.component';
+import {SafePipe, ShowMusicComponent} from './show-music/show-music.component';
 import { QrCodeComponent } from './qr-code/qr-code.component';
 import { QRCodeModule } from 'angularx-qrcode';
+import {YouTubePlayerModule} from "@angular/youtube-player";
 
 @NgModule({
   declarations: [
-    AppComponent, DialogBodyComponent, AdminPageComponent, HomeComponent, ShowMusicComponent, QrCodeComponent
+    AppComponent, DialogBodyComponent, AdminPageComponent, HomeComponent, ShowMusicComponent, QrCodeComponent, SafePipe
   ],
   imports: [
     BrowserModule,
@@ -29,14 +30,15 @@ import { QRCodeModule } from 'angularx-qrcode';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatButtonModule ,
+    MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
     MatTabsModule,
     MatDialogModule,
-    QRCodeModule
-    ],
+    QRCodeModule,
+    YouTubePlayerModule
+  ],
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [DialogBodyComponent]

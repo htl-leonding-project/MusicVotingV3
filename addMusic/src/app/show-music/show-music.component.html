@@ -1,80 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+
 <div class="container col-12 row " style="margin-left: 280px;">
 
   <div>
-  <h1>Aktueller Song</h1>
-    <div class="main-div" >
-  <div class="card mb-3" style="max-width: 540px;">
-    <div class="row g-0">
-      <div class="col-md-4">
+    <h1>Aktueller Song</h1>
+    <div class="main-div">
+      <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
 
-        <img
-    *ngIf="actSong.thumbnail == undefined"
-    class="card-img-top"
-    src="../assets/musicCover.jpg"
-    width="80px"
-    />
-    <img
-    *ngIf="actSong.thumbnail != undefined"
-    class="card-img-top"      [src]="actSong.thumbnail"
-    width="80px"
-  />
-      </div>
-      <div class="col-md-8">
-        <div class="card-body">
-          <h2 class="card-title">{{actSong.songName}}</h2>
-          <p class="card-text">
-          </p>
+            <img
+              *ngIf="actSong.thumbnail == undefined"
+              class="card-img-top"
+              src="../assets/musicCover.jpg"
+              width="80px"
+            />
+            <img
+              *ngIf="actSong.thumbnail != undefined"
+              class="card-img-top" [src]="actSong.thumbnail"
+              width="80px"
+            />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h2 class="card-title">{{ actSong.songName }}</h2>
+              <p class="card-text">
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-  </div>
 
-  <br />
-  <br />
-  <br />
+<!--  <iframe width="420" height="315"-->
+<!--          [src]="actSong.videoUrl.replace('watch?v=','embed/') + '?autoplay=1' | safe">-->
+<!--  </iframe>-->
+
+<!--  <youtube-player videoId="{{actSong.videoUrl.substring(actSong.videoUrl.indexOf('?v=')+3,actSong.videoUrl.length)}}"></youtube-player>-->
+  <youtube-player
+    [videoId]="actSong.videoUrl.substring(actSong.videoUrl.indexOf('?v=')+3,actSong.videoUrl.length)"
+    [height]="100" [width]="100"  [playerVars]="{controls : 0, autoplay: 1}">
+    </youtube-player>
+
+  <br/>
+  <br/>
+  <br/>
 
   <h1>Aktuelle Playlist</h1>
 
   <button [disabled]="btnDisabled"
-    class="btn col-12 m-2 playButton"
-    (click)="playSong()"
+          class="btn col-12 m-2 playButton"
+          (click)="playSong()"
   >
-    <span *ngIf="isPlaying == false">
-      <mat-icon>play_arrow</mat-icon>
-    </span>
+<span *ngIf="isPlaying == false">
+<mat-icon>play_arrow</mat-icon>
+</span>
     <span *ngIf="isPlaying == true">
 
-      <mat-icon>pause</mat-icon>
-    </span>
+<mat-icon>pause</mat-icon>
+</span>
   </button>
 
   <span *ngFor="let song of songs; let i=index" class="col-4">
-    <div class="card mb-3" style="max-width: 540px;">
-      <div class="row g-0">
-        <div class="col-md-6">
-          <img
-      *ngIf="song.thumbnail == undefined"
-      class=""      src="../assets/musicCover.jpg"
-      height="80px"
-      />
-      <img
-      *ngIf="song.thumbnail != undefined"
-      class="card-img"      [src]="song.thumbnail"
+<div class="card mb-3" style="max-width: 540px;">
+<div class="row g-0">
+<div class="col-md-6">
+<img
+  *ngIf="song.thumbnail == undefined"
+  class="" src="../assets/musicCover.jpg"
+  height="80px"
+/>
+<img
+  *ngIf="song.thumbnail != undefined"
+  class="card-img" [src]="song.thumbnail"
 
-    />
-        </div>
-        <div class="col-md-6">
-          <div class="card-body " style="height: 80px;">
-            <h3 class="card-text overflow">{{song.songName}}</h3>
-          </div>
-        </div>
+/>
+</div>
+<div class="col-md-6">
+<div class="card-body " style="height: 80px;">
+<h3 class="card-text overflow">{{ song.songName }}</h3>
+</div>
+</div>
 
-        <div class="card-footer text-muted">Stimmen: {{song.voteCount}}</div>
-      </div>
-    </div>
+<div class="card-footer text-muted">Stimmen: {{ song.voteCount }}</div>
+</div>
+</div>
 
     <!--     <a class="btn btn-danger" (click)="goToLink(song)">play song</a>-->
-  </span>
+</span>
 </div>
+
+</body>
+</html>

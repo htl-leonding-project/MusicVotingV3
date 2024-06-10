@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Pipe, PipeTransform, Sanitizer, SecurityContext} from '@angular/core';
 import { Song } from '../modules/song.module';
 import { SongService } from '../services/song.service';
 import { interval, Observable } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DialogBodyComponent } from '../dialog-body/dialog-body.component';
+import {DomSanitizer} from "@angular/platform-browser";
+import {YouTubePlayer} from "@angular/youtube-player";
 
 
 @Component({
@@ -12,13 +14,11 @@ import { DialogBodyComponent } from '../dialog-body/dialog-body.component';
   styleUrls: ['./show-music.component.css']
 })
 export class ShowMusicComponent implements OnInit {
-
   title = 'showMusic';
   isPlaying = false;
   window?: Window|null;
   isPausedClicked = true;
   btnDisabled = true
-
   actSong: Song = {
     videoUrl: '',
     duration: 0,
@@ -40,6 +40,9 @@ export class ShowMusicComponent implements OnInit {
   ngOnInit(): void {
     this.openPasswordDialog()
 
+    const tag = document.createElement("script")
+    tag.src = "https://www.youtube.com/iframe_api"
+    document.body.appendChild(tag)
   }
 
   openPasswordDialog() {
@@ -76,12 +79,13 @@ export class ShowMusicComponent implements OnInit {
       this.songService.getNextSong().subscribe({
         next: (song) => {
           if (song != null) {
+            console.log(song.songId)
             this.actSong = song;
-            this.window = window.open(
-              song.videoUrl,
-              '',
-              'toolbar=no,scrollbars=no,resizable=no,width=500,height=300,menubar=no,titlebar=no'
-            );
+            // this.window = window.open(
+            //   song.videoUrl,
+            //   '',
+            //   'toolbar=no,scrollbars=no,resizable=no,width=500,height=300,menubar=no,titlebar=no'
+            // );
 
 
             setTimeout(() => {
@@ -125,4 +129,16 @@ export class ShowMusicComponent implements OnInit {
       }
     }
   }
+}
+
+@Pipe({
+  name: 'safe'
+})
+export class SafePipe implements PipeTransform {
+
+  constructor(private sanitizer: DomSanitizer) { }
+  transform(url: any) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
 }
