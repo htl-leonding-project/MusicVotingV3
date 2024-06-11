@@ -3,18 +3,22 @@ package at.htl.control;
 import at.htl.boundary.SongWebSocket;
 import at.htl.entity.Song;
 import at.htl.entity.Artist;
+import at.htl.youtube.Search;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class SongRepository implements PanacheRepository<Song> {
+    @Inject
+    Search search;
 
     @Inject
     SongWebSocket songWebSocket;
@@ -53,7 +57,9 @@ public class SongRepository implements PanacheRepository<Song> {
     }
 
     public List<Song> getSongs(String query) {
-        return list("songName like ?1", "%" + query + "%");
+
+        List<Song> songs = new ArrayList<>();
+        return search.getSearchFromYoutube(query);
     }
 
     @Transactional
