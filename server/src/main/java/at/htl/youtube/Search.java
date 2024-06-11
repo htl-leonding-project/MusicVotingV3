@@ -21,34 +21,46 @@ public class Search {
         List<Song> songs = new ArrayList<>();
         String baseUrl = "https://www.youtube.com/results?search_query=";
 
-        Document doc;
-        try {
-            doc = Jsoup.connect(baseUrl + queryTerm)
-                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
-                    .header("Accept-Language", "en-US,en;q=0.5")
-                    .get();
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        Document doc = null;
+        int attempts = 0;
+        while (doc == null && attempts < 3) {
+            try {
+                doc = Jsoup.connect(baseUrl + queryTerm)
+                        .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
+                        .header("Accept-Language", "en-US,en;q=0.5")
+                        .get();
+            } catch (IOException e) {
+                attempts++;
+                try {
+                    Thread.sleep(1000 * attempts); // Exponential backoff
+                } catch (InterruptedException interruptedException) {
+                    throw new RuntimeException(interruptedException);
+                }
+            }
         }
-        Element body = doc.body();
+        if (doc == null) {
+            throw new RuntimeException("Failed to fetch YouTube results after several attempts.");
+        }
 
-        final int INDEX_OF_HTML_RESPONSE = 15;
-        String bodyHtml = body.child(INDEX_OF_HTML_RESPONSE).html();
-
-        int startOfJsonObjectIndex = bodyHtml.indexOf("{");
-        int endOfJsonObjectIndex = bodyHtml.lastIndexOf("}") + 1;
-
-        if (startOfJsonObjectIndex == -1 || endOfJsonObjectIndex == -1) {
+        Element scriptElement = doc.select("script:containsData(var ytInitialData)").first();
+        if (scriptElement == null) {
             throw new RuntimeException("JSON object not found in response.");
         }
 
-        String jsonString = bodyHtml.substring(startOfJsonObjectIndex, endOfJsonObjectIndex);
+        String scriptContent = scriptElement.html();
+        int startOfJsonObjectIndex = scriptContent.indexOf("{");
+        int endOfJsonObjectIndex = scriptContent.lastIndexOf("}") + 1;
 
+        if (startOfJsonObjectIndex == -1 || endOfJsonObjectIndex == -1) {
+            System.out.println(scriptContent); // Print the script content for debugging
+            throw new RuntimeException("JSON object not found in response.");
+        }
+
+        String jsonString = scriptContent.substring(startOfJsonObjectIndex, endOfJsonObjectIndex);
         JsonObject json = new JsonObject(jsonString);
 
         if (json == null) {
-            throw new RuntimeException("Error parsing JSON object. Obect was null");
+            throw new RuntimeException("Error parsing JSON object. Object was null");
         }
 
         JsonArray videoArray = json.getJsonObject("contents").getJsonObject("twoColumnSearchResultsRenderer")
