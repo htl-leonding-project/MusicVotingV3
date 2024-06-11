@@ -20,6 +20,9 @@ public class SongResource {
     @Inject
     SongRepository songRepository;
 
+    @Inject
+    SongWebSocket songWebSocket; // Inject WebSocket for notifications
+
     @GET
     public List<Song> getPlaylist() {
         return songRepository.getPlaylist();
@@ -30,12 +33,10 @@ public class SongResource {
     @Transactional
     public Song getNextSong() {
         List<Song> songs = songRepository.getPlaylist();
-
         if (songs.isEmpty()) {
             return null;
         }
-
-        songRepository.removeById(songs.get(0).getId()); // Use the renamed method
+        songRepository.removeById(songs.get(0).getId());
         return songs.get(0);
     }
 
@@ -51,6 +52,7 @@ public class SongResource {
         song.setDuration(newSong.getDuration());
         try {
             songRepository.insert(song);
+            songWebSocket.notifyAllSongsChanged(); // Notify WebSocket
         } catch (Exception e) {
             return Response.status(Response.Status.FORBIDDEN)
                     .type(MediaType.TEXT_PLAIN)
@@ -82,8 +84,9 @@ public class SongResource {
     public Response deleteSong(@PathParam("id") Long id, @PathParam("password") String password) {
         String adminPass = ConfigProvider.getConfig().getValue("admin.password", String.class);
         if (Objects.equals(adminPass, password)) {
-            boolean deleted = songRepository.removeById(id); // Use the renamed method
+            boolean deleted = songRepository.removeById(id);
             if (deleted) {
+                songWebSocket.notifyAllSongsChanged(); // Notify WebSocket
                 return Response.ok().build();
             }
         }

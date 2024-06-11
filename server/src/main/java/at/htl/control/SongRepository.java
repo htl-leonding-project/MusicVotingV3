@@ -2,6 +2,7 @@ package at.htl.control;
 
 import at.htl.boundary.SongWebSocket;
 import at.htl.entity.Song;
+import at.htl.entity.Artist;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -9,6 +10,7 @@ import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -16,6 +18,9 @@ public class SongRepository implements PanacheRepository<Song> {
 
     @Inject
     SongWebSocket songWebSocket;
+
+    @Inject
+    ArtistRepository artistRepository; // Assuming you have an ArtistRepository
 
     @Transactional
     public void insert(Song song) throws Exception {
@@ -25,16 +30,19 @@ public class SongRepository implements PanacheRepository<Song> {
         } else {
             song.setTimeAdded(LocalDateTime.now());
             persist(song);
-            songWebSocket.songAdded(song); // Notify WebSocket
+            songWebSocket.notifyAllSongsChanged(); // Notify WebSocket
         }
     }
 
     @Transactional
-    public boolean removeById(Long id) { // Renamed method to avoid conflict
+    public boolean removeById(Long id) {
         Song song = findById(id);
         if (song != null) {
             delete(song);
-            songWebSocket.songRemoved(song); // Notify WebSocket
+            songWebSocket.notifyAllSongsChanged(); // Notify WebSocket
+            if (getPlaylist().isEmpty()) {
+                addRandomSong(); // Add random song if no songs are left
+            }
             return true;
         }
         return false;
@@ -46,5 +54,30 @@ public class SongRepository implements PanacheRepository<Song> {
 
     public List<Song> getSongs(String query) {
         return list("songName like ?1", "%" + query + "%");
+    }
+
+    @Transactional
+    public Song addRandomSong() {
+        List<Artist> artists = artistRepository.listAll();
+        Song song;
+        boolean insertFails;
+        do {
+            insertFails = false;
+            Random rand = new Random();
+            int randomArtist = rand.nextInt(artists.size());
+            Artist artist = artists.get(randomArtist);
+
+            List<Song> songs = getSongs(artist.getStrArtist());
+            int randomSong = rand.nextInt(songs.size());
+            song = songs.get(randomSong);
+
+            try {
+                insert(song);
+            } catch (Exception e) {
+                insertFails = true;
+            }
+        } while (insertFails);
+
+        return song;
     }
 }
