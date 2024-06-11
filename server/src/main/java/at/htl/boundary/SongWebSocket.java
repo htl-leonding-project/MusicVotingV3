@@ -2,6 +2,7 @@ package at.htl.boundary;
 
 import at.htl.entity.Song;
 import at.htl.control.SongRepository;
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.websocket.OnClose;
@@ -38,7 +39,7 @@ public class SongWebSocket {
 
     @OnMessage
     public void onMessage(String message, Session session) {
-        // Handle received messages from clients if needed
+        Log.info(message);
     }
 
     public void notifyAllSongsChanged() {

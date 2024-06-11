@@ -17,6 +17,7 @@ import java.util.List;
 public class Search {
     public List<Song> getSearchFromYoutube(String queryTerm) {
         queryTerm += " Lyrics";
+        queryTerm = queryTerm.replace(' ', '+');
         List<Song> songs = new ArrayList<>();
         String baseUrl = "https://www.youtube.com/results?search_query=";
 
@@ -28,8 +29,10 @@ public class Search {
         }
         Element body = doc.body();
 
-        String javascript = body.child(15).html();
-        JsonObject json = new JsonObject(javascript.substring(19, javascript.length() - 1));
+        final int INDEX_OF_HTML_RESPONSE = 15;
+        String javascript = body.child(INDEX_OF_HTML_RESPONSE).html();
+        int endOfSubstringIndex = Math.max(javascript.length() - 1, 0);
+        JsonObject json = new JsonObject(javascript.substring(19, endOfSubstringIndex));
 
         JsonArray videoArray = json.getJsonObject("contents").getJsonObject("twoColumnSearchResultsRenderer")
                 .getJsonObject("primaryContents").getJsonObject("sectionListRenderer")
