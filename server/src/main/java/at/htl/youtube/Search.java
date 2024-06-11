@@ -23,16 +23,33 @@ public class Search {
 
         Document doc;
         try {
-            doc = Jsoup.connect(baseUrl + queryTerm).get();
+            doc = Jsoup.connect(baseUrl + queryTerm)
+                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
+                    .header("Accept-Language", "en-US,en;q=0.5")
+                    .get();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         Element body = doc.body();
 
         final int INDEX_OF_HTML_RESPONSE = 15;
-        String javascript = body.child(INDEX_OF_HTML_RESPONSE).html();
-        int endOfSubstringIndex = Math.max(javascript.length() - 1, 0);
-        JsonObject json = new JsonObject(javascript.substring(19, endOfSubstringIndex));
+        String bodyHtml = body.child(INDEX_OF_HTML_RESPONSE).html();
+
+        int startOfJsonObjectIndex = bodyHtml.indexOf("{");
+        int endOfJsonObjectIndex = bodyHtml.lastIndexOf("}") + 1;
+
+        if (startOfJsonObjectIndex == -1 || endOfJsonObjectIndex == -1) {
+            throw new RuntimeException("JSON object not found in response.");
+        }
+
+        String jsonString = bodyHtml.substring(startOfJsonObjectIndex, endOfJsonObjectIndex);
+
+        JsonObject json = new JsonObject(jsonString);
+
+        if (json == null) {
+            throw new RuntimeException("Error parsing JSON object. Obect was null");
+        }
 
         JsonArray videoArray = json.getJsonObject("contents").getJsonObject("twoColumnSearchResultsRenderer")
                 .getJsonObject("primaryContents").getJsonObject("sectionListRenderer")
