@@ -32,12 +32,13 @@ public class Search {
             } catch (IOException e) {
                 attempts++;
                 try {
-                    Thread.sleep(1000 * attempts); // Exponential backoff
+                    Thread.sleep(150L * attempts); // Exponential backoff
                 } catch (InterruptedException interruptedException) {
                     throw new RuntimeException(interruptedException);
                 }
             }
         }
+
         if (doc == null) {
             throw new RuntimeException("Failed to fetch YouTube results after several attempts.");
         }
