@@ -1,11 +1,12 @@
 import {Component, OnInit, Pipe, PipeTransform, Sanitizer, SecurityContext, ViewChild} from '@angular/core';
 import {Song} from '../modules/song.module';
 import {SongService} from '../services/song.service';
-import {interval, Observable} from 'rxjs';
+import {delay, interval, Observable} from 'rxjs';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {DialogBodyComponent} from '../dialog-body/dialog-body.component';
 import {DomSanitizer} from "@angular/platform-browser";
 import {YouTubePlayer} from "@angular/youtube-player";
+import {NgZone} from "@angular/core";
 
 @Component({
   selector: 'app-show-music',
@@ -14,10 +15,10 @@ import {YouTubePlayer} from "@angular/youtube-player";
 })
 
 export class ShowMusicComponent implements OnInit {
-  @ViewChild('player', {static: true}) player: YT.Player  | undefined;
   isPlaying = false;
   isPausedClicked = true;
   btnDisabled = true
+  player: YT.Player | null = null;
   actSong: Song = {
     videoUrl: '',
     duration: 0,
@@ -38,7 +39,6 @@ export class ShowMusicComponent implements OnInit {
 
   ngOnInit(): void {
     this.openPasswordDialog()
-
     const tag = document.createElement("script")
     tag.src = "https://www.youtube.com/iframe_api"
     document.body.appendChild(tag)
@@ -54,6 +54,9 @@ export class ShowMusicComponent implements OnInit {
         this.songService.getPlaylist().subscribe({
           next: (res) => {
             this.songs = res
+            if(this.songs.length != 0) {
+              this.actSong = this.songs[0]
+            }
           },
         })
       });
@@ -61,46 +64,49 @@ export class ShowMusicComponent implements OnInit {
   }
 
   playNextSong() {
+    console.log("Playing next song")
     if (this.songs.length != 0) {
+      console.log(this.songs)
       let songToDelete = this.songs.shift();
       console.log("Deleting song: " + songToDelete?.songName);
+
       this.songService.deleteSong(songToDelete?.songId!)
       this.actSong = this.songs[0];
-      console.log("New song: " + this.actSong.songName)
-    }
 
-  }
+      console.log("New song: " + this.actSong.songName + this.actSong.videoUrl)
 
-  onStateChanged(event: any) {
-    console.log("Event: " + event.data)
-    if (event.data == YT.PlayerState.ENDED) {
-      console.log("Song Ended, playing next")
-      this.playNextSong()
+      this.player?.loadVideoById(this.getSongIdFromSong(this.actSong))
     }
   }
-
   startPlaying() {
     if (!this.isPlaying) {
-      this.playNextSong()
       this.isPlaying = true;
+      this.player = new YT.Player('player', {
+        height: '360',
+        width: '640',
+        videoId: this.getSongIdFromSong(this.actSong),
+        events: {
+          "onReady": this.onPlayerReady,
+          'onStateChange': this.onStateChanged
+        }
+      });
     }
   }
 
-  testNewVid() {
-    // this.actSong = new class implements Song {
-    //   duration: number = 44;
-    //   id: string = "234234";
-    //   songId: string = "2";
-    //   songName: string = "Crab";
-    //   thumbnail: string = "";
-    //   videoUrl: string = "https://www.youtube.com/watch?v=LDU_Txk06tM";
-    //   voteCount: number = 1;
-    // };
-
-
-
-    this.player?.pauseVideo();
+  getSongIdFromSong(song: Song) {
+    return song.videoUrl.substring(song.videoUrl.indexOf('?v=') + 3, song.videoUrl.length)
   }
+
+  onStateChanged = (event: any) => {
+    if (event.data == YT.PlayerState.ENDED) {
+      this.playNextSong();
+    }
+  };
+
+  onPlayerReady = (event: any) => {
+    event.target.playVideo();
+  };
+
 }
 
 
