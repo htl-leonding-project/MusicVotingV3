@@ -53,7 +53,7 @@
     [videoId]="actSong.videoUrl.substring(actSong.videoUrl.indexOf('?v=')+3,actSong.videoUrl.length)"
     [height]="450"
     [width]="800"
-    [playerVars]="{controls : 0, autoplay: 1}"
+    [playerVars]="{controls : 1, autoplay: 1}"
     (stateChange)="onStateChanged($event)">
   </youtube-player>
 

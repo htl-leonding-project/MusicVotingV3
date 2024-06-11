@@ -3,8 +3,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SongService } from '../services/song.service';
 import { Router } from '@angular/router';
 import {md5} from '../../md5';
-import { environment } from 'src/environments/environment';
-import { GlobalService } from '../services/global.service';
+import {GlobalService} from "../services/global.service";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-dialog-body',
@@ -33,16 +33,18 @@ export class DialogBodyComponent implements OnInit {
 
 
   ok() {
+    console.log("Okay clicked")
     this.songService.checkPassword(md5(this.password)).subscribe({
       next: ()=> {
         console.log("Passwort stimmt")
         this.errorMessage = ""
         this.globalService.password = md5(this.password)
         this.dialogRef.close();
-
+        console.log("closing dialog")
       },
       error: ()=> {
         this.errorMessage = "Passwort ist falsch"
+        console.log("wrong pw")
       }
     })
   }

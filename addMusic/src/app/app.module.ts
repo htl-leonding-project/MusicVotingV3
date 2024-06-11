@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -19,6 +18,18 @@ import {SafePipe, ShowMusicComponent} from './show-music/show-music.component';
 import { QrCodeComponent } from './qr-code/qr-code.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import {YouTubePlayerModule} from "@angular/youtube-player";
+import { AppRoutingModule } from "./app-routing.module";
+import {RouterModule, Routes} from "@angular/router";
+import {environment} from "../environments/environment";
+
+const routes: Routes = [
+  { path: 'adminPage', component: AdminPageComponent },
+  { path: environment.home,   component: HomeComponent},
+  { path: 'show',   component: ShowMusicComponent},
+  { path: 'qr',   component: QrCodeComponent},
+  { path: '',   redirectTo: '/'+environment.home, pathMatch: 'full' },
+];
+
 
 @NgModule({
   declarations: [
@@ -37,8 +48,8 @@ import {YouTubePlayerModule} from "@angular/youtube-player";
     MatTabsModule,
     MatDialogModule,
     QRCodeModule,
-    YouTubePlayerModule
-  ],
+    YouTubePlayerModule,
+],
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [DialogBodyComponent]

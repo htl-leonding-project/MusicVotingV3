@@ -87,17 +87,19 @@ export class ShowMusicComponent implements OnInit {
   }
 
   testNewVid() {
-    this.actSong = new class implements Song {
-      duration: number = 44;
-      id: string = "234234";
-      songId: string = "2";
-      songName: string = "Crab";
-      thumbnail: string = "";
-      videoUrl: string = "https://www.youtube.com/watch?v=LDU_Txk06tM";
-      voteCount: number = 1;
-    };
+    // this.actSong = new class implements Song {
+    //   duration: number = 44;
+    //   id: string = "234234";
+    //   songId: string = "2";
+    //   songName: string = "Crab";
+    //   thumbnail: string = "";
+    //   videoUrl: string = "https://www.youtube.com/watch?v=LDU_Txk06tM";
+    //   voteCount: number = 1;
+    // };
 
-    // this.player?.nextVideo("LDU_Txk06tM")
+
+
+    this.player?.pauseVideo();
   }
 }
 
