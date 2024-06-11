@@ -33,13 +33,13 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    interval(1000).subscribe((x) => {
-      this.service.getPlaylist().subscribe({
-        next: (result) => {
-          this.playlistSongs = result;
-        },
-      });
-    });
+    // interval(1000).subscribe((x) => {
+    //   this.service.getPlaylist().subscribe({
+    //     next: (result) => {
+    //       this.playlistSongs = result;
+    //     },
+    //   });
+    // });
   }
 
   search(){

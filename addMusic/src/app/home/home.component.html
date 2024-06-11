@@ -15,7 +15,8 @@
         </mat-form-field>
         <br />
 
-        <button class="btn playButton" (click)="search()">
+        <button class="btn playButton"  mat-button
+                (keyup.enter)="search()" (click)="search()" mat-dialog-close>
           <mat-icon>search</mat-icon>
         </button> <br />
         <br />
