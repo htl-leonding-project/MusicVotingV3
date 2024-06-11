@@ -48,14 +48,10 @@
   <!--  </iframe>-->
 
   <!--  <youtube-player videoId="{{actSong.videoUrl.substring(actSong.videoUrl.indexOf('?v=')+3,actSong.videoUrl.length)}}"></youtube-player>-->
-  <youtube-player
-    id="player"
-    [videoId]="actSong.videoUrl.substring(actSong.videoUrl.indexOf('?v=')+3,actSong.videoUrl.length)"
-    [height]="450"
-    [width]="800"
-    [playerVars]="{controls : 1, autoplay: 1}"
-    (stateChange)="onStateChanged($event)">
-  </youtube-player>
+  <div class="container">
+
+    <div id="player"></div>
+  </div>
 
   <br/>
   <br/>
@@ -65,8 +61,6 @@
   <button [disabled]="btnDisabled"
           class="btn col-12 m-2 playButton"
           (click)="startPlaying()"></button>
-  <button class="btn col-12 m-2 playButton"
-          (click)="testNewVid()"></button>
 
   <span *ngIf="isPlaying == false">
 <mat-icon>play_arrow</mat-icon>
