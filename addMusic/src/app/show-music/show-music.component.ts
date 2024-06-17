@@ -63,32 +63,14 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
     const dialogConfig = new MatDialogConfig()
     dialogConfig.disableClose = true
     let dialogref = this.matDialog.open(DialogBodyComponent, dialogConfig)
-    dialogref.afterClosed().subscribe(result => {
-      this.btnDisabled = false
-      // interval(1000).subscribe((x) => {
-      //   this.songService.getPlaylist().subscribe({
-      //     next: (res) => {
-      //       this.songs = res
-      //       if(this.songs.length != 0) {
-      //         this.actSong = this.songs[0]
-      //       }
-      //     },
-      //   })
-      // });
-    })
+    dialogref.close()
   }
 
   playNextSong() {
     console.log("Playing next song")
     if (this.songs.length != 0) {
-      console.log(this.songs)
-      let songToDelete = this.songs.shift();
-      console.log("Deleting song: " + songToDelete?.songName);
 
-      this.songService.deleteSong(songToDelete?.songId!)
-      this.actSong = this.songs[0];
-
-      console.log("New song: " + this.actSong.songName + this.actSong.videoUrl)
+      this.deleteSong();
 
       this.player?.loadVideoById(this.getSongIdFromSong(this.actSong))
     }
