@@ -76,8 +76,7 @@ public class SongWebSocket {
     private String convertToJson(List<Song> songs) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            String jsonSongs = objectMapper.writeValueAsString(songs);
-            return jsonSongs;
+            return objectMapper.writeValueAsString(songs);
         } catch (Exception e) {
             return e.getMessage();
         }
