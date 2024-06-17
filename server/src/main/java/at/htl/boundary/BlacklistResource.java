@@ -19,14 +19,13 @@ public class BlacklistResource {
     BlacklistRepository blacklistRepository;
 
     @GET
-    @Path("/getBlacklist")
     public List<BlacklistItem> getBlacklist() {
         return blacklistRepository.listAll();
     }
 
     @POST
     @Transactional
-    @Path("/putOnBlackList/{phrase}/{password}")
+    @Path("{phrase}/{password}")
     public Response addBlacklistItem(@PathParam("phrase") String phrase, @PathParam("password") String password) {
         String adminPass = ConfigProvider.getConfig().getValue("admin.password", String.class);
         if (Objects.equals(adminPass, password)) {
@@ -39,7 +38,7 @@ public class BlacklistResource {
 
     @DELETE
     @Transactional
-    @Path("/deleteFromBlacklist/{id}/{password}")
+    @Path("{id}/{password}")
     public Response getBlacklist(@PathParam("id") Long id, @PathParam("password") String password) {
         String adminPass = ConfigProvider.getConfig().getValue("admin.password", String.class);
         if (Objects.equals(adminPass, password)) {

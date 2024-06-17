@@ -42,7 +42,6 @@ public class SongResource {
 
     @POST
     @Transactional
-    @Path("/addSong")
     public Response addSong(@RequestBody Song newSong) {
         Song song = new Song();
         song.setSongName(newSong.getSongName());
@@ -79,7 +78,7 @@ public class SongResource {
     }
 
     @DELETE
-    @Path("deleteSong/{id}/{password}")
+    @Path("{id}/{password}")
     @Transactional
     public Response deleteSong(@PathParam("id") Long id, @PathParam("password") String password) {
         String adminPass = ConfigProvider.getConfig().getValue("admin.password", String.class);
