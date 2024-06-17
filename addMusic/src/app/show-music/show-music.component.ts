@@ -49,8 +49,9 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
     this.songWebSocketService.connect();
     this.songSubscription = this.songWebSocketService.getSongUpdates().subscribe((song: any) => {
       this.songs = song;
-      console.log(song)
+      this.actSong = song[0];
     });
+      console.log(this.songs)
   }
 
   ngOnDestroy(): void {
@@ -63,7 +64,7 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
     const dialogConfig = new MatDialogConfig()
     dialogConfig.disableClose = true
     let dialogref = this.matDialog.open(DialogBodyComponent, dialogConfig)
-    dialogref.close()
+    dialogref.afterClosed().subscribe((result) => { console.log(result) })
   }
 
   playNextSong() {
@@ -81,7 +82,7 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
     //   if(this.player.getPlayerState() === -1)
     //       this.playNextSong();
     // }
-    if (!this.isPlaying) {
+    if (!this.isPlaying && this.songs.length > 0) {
       this.isPlaying = true;
       this.player = new YT.Player('player', {
         height: '360',
@@ -112,13 +113,8 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
   };
 
   deleteSong() {
-    let songToDelete = this.songs.shift();
-    console.log("Deleting song: " + songToDelete?.songName);
-
-    this.songService.deleteSong(songToDelete?.songId!)
-    this.actSong = this.songs[0];
-    console.log(this.songs)
-
+    let songToDelete = this.songs[0];
+    this.songService.deleteSong(songToDelete?.id!)
   }
 }
 
