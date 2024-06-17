@@ -1,12 +1,13 @@
-import {Component, OnInit, Pipe, PipeTransform, Sanitizer, SecurityContext, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, Pipe, PipeTransform, Sanitizer, SecurityContext, ViewChild} from '@angular/core';
 import {Song} from '../modules/song.module';
 import {SongService} from '../services/song.service';
-import {delay, interval, Observable} from 'rxjs';
+import {delay, interval, Observable, Subscription} from 'rxjs';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {DialogBodyComponent} from '../dialog-body/dialog-body.component';
 import {DomSanitizer} from "@angular/platform-browser";
 import {YouTubePlayer} from "@angular/youtube-player";
 import {NgZone} from "@angular/core";
+import {SongWebSocketService} from "../services/song-websocket.service";
 
 @Component({
   selector: 'app-show-music',
@@ -14,7 +15,7 @@ import {NgZone} from "@angular/core";
   styleUrls: ['./show-music.component.css']
 })
 
-export class ShowMusicComponent implements OnInit {
+export class ShowMusicComponent implements OnInit, OnDestroy {
   isPlaying = false;
   isPausedClicked = true;
   btnDisabled = true
@@ -29,10 +30,12 @@ export class ShowMusicComponent implements OnInit {
     songId: ''
   };
   songs: Song[] = [];
+  private songSubscription: Subscription | undefined;
 
   constructor(
     private songService: SongService,
     private matDialog: MatDialog,
+    private songWebSocketService: SongWebSocketService,
   ) {
   }
 
@@ -42,6 +45,18 @@ export class ShowMusicComponent implements OnInit {
     const tag = document.createElement("script")
     tag.src = "https://www.youtube.com/iframe_api"
     document.body.appendChild(tag)
+
+    this.songWebSocketService.connect();
+    this.songSubscription = this.songWebSocketService.getSongUpdates().subscribe((song: any) => {
+      this.songs = song;
+      console.log(song)
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.songSubscription) {
+      this.songSubscription.unsubscribe();
+    }
   }
 
   openPasswordDialog() {
@@ -50,16 +65,16 @@ export class ShowMusicComponent implements OnInit {
     let dialogref = this.matDialog.open(DialogBodyComponent, dialogConfig)
     dialogref.afterClosed().subscribe(result => {
       this.btnDisabled = false
-      interval(1000).subscribe((x) => {
-        this.songService.getPlaylist().subscribe({
-          next: (res) => {
-            this.songs = res
-            if(this.songs.length != 0) {
-              this.actSong = this.songs[0]
-            }
-          },
-        })
-      });
+      // interval(1000).subscribe((x) => {
+      //   this.songService.getPlaylist().subscribe({
+      //     next: (res) => {
+      //       this.songs = res
+      //       if(this.songs.length != 0) {
+      //         this.actSong = this.songs[0]
+      //       }
+      //     },
+      //   })
+      // });
     })
   }
 
@@ -107,6 +122,15 @@ export class ShowMusicComponent implements OnInit {
     event.target.playVideo();
   };
 
+  deleteSong() {
+    let songToDelete = this.songs.shift();
+    console.log("Deleting song: " + songToDelete?.songName);
+
+    this.songService.deleteSong(songToDelete?.songId!)
+    this.actSong = this.songs[0];
+    console.log(this.songs)
+
+  }
 }
 
 

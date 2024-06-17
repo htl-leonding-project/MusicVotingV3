@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { interval, Observable } from 'rxjs';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Song } from '../modules/song.module';
-import { SongService } from '../services/song.service';
-import { DialogBodyComponent } from '../dialog-body/dialog-body.component';
-import { Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {environment} from 'src/environments/environment';
+import {interval, Observable} from 'rxjs';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {Song} from '../modules/song.module';
+import {SongService} from '../services/song.service';
+import {DialogBodyComponent} from '../dialog-body/dialog-body.component';
+import {Router} from '@angular/router';
+import {HttpErrorResponse} from '@angular/common/http';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -15,11 +16,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class HomeComponent implements OnInit {
   title = 'addMusic';
 
-  songs: Song[] =[];
-  playlistSongs: Song[] =[];
+  songs: Song[] = [];
+  playlistSongs: Song[] = [];
 
-  query: string= "";
-  songTitle: string ="";
+  query: string = "";
+  songTitle: string = "";
 
   buttonDisable = false;
   buttonLikeDisable = false;
@@ -28,7 +29,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private service: SongService,
     private router: Router
-    ){
+  ) {
   }
 
 
@@ -42,38 +43,40 @@ export class HomeComponent implements OnInit {
     // });
   }
 
-  search(){
-      this.service.getSearchResult(this.query).subscribe(
-        {
-          next: result => {
+  search() {
+    this.service.getSearchResult(this.query).subscribe(
+      {
+        next: result => {
           this.songs = result;
-        }}
-      )
+        }
+      }
+    )
   }
 
 
-  addSong(song: Song){
+  addSong(song: Song) {
     this.buttonDisable = true;
     this.service.addSong(song).subscribe({
-      error: (err: HttpErrorResponse)=>{
+      error: (err: HttpErrorResponse) => {
+        this.buttonDisable = false
         alert(err.error)
       }
     })
+    this.buttonDisable = false
 
-    setTimeout(()=>{
-      this.buttonDisable = false
-    },environment.timeOutAtAdd)
+    // setTimeout(()=>{
+    // },environment.timeOutAtAdd)
 
-  	console.log(this.query)
+    console.log(this.query)
   }
 
-  likeSong(song: Song){
+  likeSong(song: Song) {
     this.buttonLikeDisable = true
     this.addSong(song)
 
-    setTimeout(()=>{
+    setTimeout(() => {
       this.buttonLikeDisable = false
-    },environment.timeOutAtAdd)
+    }, environment.timeOutAtAdd)
   }
 
   adminBtnClicked() {

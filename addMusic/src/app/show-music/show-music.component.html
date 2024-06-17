@@ -53,8 +53,8 @@
 
   <button [disabled]="btnDisabled"
           class="btn col-12 m-2 playButton"
-          (click)="startPlaying()"
-  >
+          (click)="startPlaying()">
+
     <span *ngIf="isPlaying == false">
       <mat-icon>play_arrow</mat-icon>
     </span>
@@ -63,6 +63,10 @@
       <mat-icon>pause</mat-icon>
     </span>
   </button>
+
+  <button [disabled]="btnDisabled"
+          class="btn col-12 m-2 playButton"
+          (click)=deleteSong()>Delete First</button>
 
   <span *ngFor="let song of songs; let i=index" class="col-4">
     <div class="card mb-3" style="max-width: 540px;">
