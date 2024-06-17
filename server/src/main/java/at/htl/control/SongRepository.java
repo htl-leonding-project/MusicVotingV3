@@ -9,7 +9,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -52,7 +51,13 @@ public class SongRepository implements PanacheRepository<Song> {
     }
 
     public List<Song> getPlaylist() {
-        return listAll().stream().sorted().collect(Collectors.toList());
+        if (listAll().isEmpty()) {
+            addRandomSong(); // Add random song if no songs are left
+        }
+
+        return listAll().stream()
+                .sorted((s1, s2) -> s2.getVoteCount() - s1.getVoteCount())
+                .collect(Collectors.toList());
     }
 
     public List<Song> getSongs(String query) {
@@ -62,27 +67,24 @@ public class SongRepository implements PanacheRepository<Song> {
     }
 
     @Transactional
-    public Song addRandomSong() {
+    public void addRandomSong() {
+        // Get artists
         List<Artist> artists = artistRepository.listAll();
-        Song song;
-        boolean insertFails;
-        do {
-            insertFails = false;
-            Random rand = new Random();
-            int randomArtist = rand.nextInt(artists.size());
-            Artist artist = artists.get(randomArtist);
 
-            List<Song> songs = getSongs(artist.getStrArtist());
-            int randomSong = rand.nextInt(songs.size());
-            song = songs.get(randomSong);
+        // Get random artist
+        Random random = new Random();
+        Artist randomArtist = artists.get(random.nextInt(artists.size()));
 
-            try {
-                insert(song);
-            } catch (Exception e) {
-                insertFails = true;
-            }
-        } while (insertFails);
+        // Get random song from artist
+        List<Song> songs = search.getSearchFromYoutube(randomArtist.getStrArtist());
 
-        return song;
+        // Add random song
+        if (!songs.isEmpty()) {
+            Song randomSong = songs.get(random.nextInt(songs.size()));
+            randomSong.setVoteCount(1);
+            persist(randomSong);
+        }
+
+        songWebSocket.notifyAllSongsChanged(); // Notify WebSocket
     }
 }
