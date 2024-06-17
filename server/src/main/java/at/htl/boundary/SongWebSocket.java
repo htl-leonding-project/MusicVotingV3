@@ -73,10 +73,14 @@ public class SongWebSocket {
     }
 
     private String convertToJson(List<Song> songs) {
-        // Implement this method to convert songs list to JSON
-        // You can use a library like Jackson or Gson for this
-        // Example using Gson:
-        // return new Gson().toJson(songs);
-        return "[]"; // Replace with actual implementation
+        StringBuilder json = new StringBuilder("[");
+        for (Song song : songs) {
+            json.append(song.toJson()).append(",");
+        }
+        if (!songs.isEmpty()) {
+            json.deleteCharAt(json.length() - 1); // Remove last comma
+        }
+        json.append("]");
+        return json.toString();
     }
 }
