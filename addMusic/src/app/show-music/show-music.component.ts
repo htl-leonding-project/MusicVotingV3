@@ -18,7 +18,7 @@ import {SongWebSocketService} from "../services/song-websocket.service";
 export class ShowMusicComponent implements OnInit, OnDestroy {
   isPlaying = false;
   isPausedClicked = true;
-  btnDisabled = true
+  btnDisabled = false
   player: YT.Player | null = null;
   actSong: Song = {
     videoUrl: '',
