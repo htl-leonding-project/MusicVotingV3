@@ -32,7 +32,6 @@ public class SongRepository implements PanacheRepository<Song> {
         if (existingSong != null) {
             existingSong.setVoteCount(existingSong.getVoteCount() + 1);
         } else {
-            song.setTimeAdded(LocalDateTime.now());
             persist(song);
             songWebSocket.notifyAllSongsChanged(); // Notify WebSocket
         }

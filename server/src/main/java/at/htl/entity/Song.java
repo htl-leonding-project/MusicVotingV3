@@ -1,5 +1,6 @@
 package at.htl.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -16,8 +17,6 @@ public class Song implements Comparable<Song> {
     private String thumbnail;
 
     private String songId;
-
-    private LocalDateTime timeAdded;
 
     private int voteCount = 1;
 
@@ -78,14 +77,6 @@ public class Song implements Comparable<Song> {
         this.songId = songId;
     }
 
-    public LocalDateTime getTimeAdded() {
-        return timeAdded;
-    }
-
-    public void setTimeAdded(LocalDateTime timeAdded) {
-        this.timeAdded = timeAdded;
-    }
-
     public String getSongName() {
         return songName;
     }
@@ -113,7 +104,7 @@ public class Song implements Comparable<Song> {
     @Override
     public int compareTo(Song o) {
         if (this.getVoteCount() == o.getVoteCount()) {
-            return this.getTimeAdded().compareTo(o.getTimeAdded());
+            return this.id.compareTo(o.getId());
         }
 
         return this.getVoteCount() - o.getVoteCount();

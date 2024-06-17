@@ -2,6 +2,7 @@ package at.htl.boundary;
 
 import at.htl.entity.Song;
 import at.htl.control.SongRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -69,14 +70,16 @@ public class SongWebSocket {
 
     private String getAllSongsAsJson() {
         List<Song> songs = songRepository.getPlaylist();
-        return convertToJson(songs); // Implement a method to convert songs list to JSON string
+        return convertToJson(songs);
     }
 
     private String convertToJson(List<Song> songs) {
-        // Implement this method to convert songs list to JSON
-        // You can use a library like Jackson or Gson for this
-        // Example using Gson:
-        // return new Gson().toJson(songs);
-        return "[]"; // Replace with actual implementation
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonSongs = objectMapper.writeValueAsString(songs);
+            return jsonSongs;
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 }
