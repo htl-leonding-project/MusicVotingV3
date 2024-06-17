@@ -20,14 +20,14 @@ export class BlacklistService {
   constructor(private http: HttpClient, private globalService: GlobalService) { }
 
   getBlacklist(){
-    return this.http.get<BlacklistItem[]>(this.url+"/getBlacklist");
+    return this.http.get<BlacklistItem[]>(this.url);
   }
 
-  putOnBlacklist(phrase: string){
-    return this.http.post(this.url+"/putOnBlackList/"+phrase+"/"+this.globalService.password, {});
+  addToBlacklist(phrase: string){
+    return this.http.post(this.url+"/"+phrase+"/"+this.globalService.password, {});
   }
 
-  delteFromBlacklist(blacklistItemId: number){
-    return this.http.delete(this.url+"/deleteFromBlacklist/"+blacklistItemId+"/"+this.globalService.password);
+  deleteFromBlacklist(blacklistItemId: number){
+    return this.http.delete(this.url+blacklistItemId+"/"+this.globalService.password);
   }
 }

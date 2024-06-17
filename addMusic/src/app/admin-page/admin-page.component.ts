@@ -56,7 +56,7 @@ export class AdminPageComponent implements OnInit {
     phrase.replace("/", "")
     phrase.replace("\\", "")
 
-    this.blacklistService.putOnBlacklist(phrase).subscribe({
+    this.blacklistService.addToBlacklist(phrase).subscribe({
       next: ()=> {
         this.refreshBlacklist()
       }
@@ -70,7 +70,7 @@ export class AdminPageComponent implements OnInit {
 
   deleteBlacklistItem(blacklistId: number) {
     console.log(blacklistId)
-    this.blacklistService.delteFromBlacklist(blacklistId).subscribe({
+    this.blacklistService.deleteFromBlacklist(blacklistId).subscribe({
       next: () => {
         this.refreshBlacklist()
       }

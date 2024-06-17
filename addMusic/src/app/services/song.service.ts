@@ -28,7 +28,7 @@ export class SongService {
   }
 
   addSong(newSong: Song){
-    return this.http.post<Song>(this.url+"/addSong", newSong, this.httpOptions);
+    return this.http.post<Song>(this.url, newSong, this.httpOptions);
   }
 
   checkPassword(password: string){
@@ -36,7 +36,7 @@ export class SongService {
   }
 
   deleteSong(songId: string){
-    return this.http.delete(this.url+"/deleteSong/"+songId+"/"+this.globalService.password,this.httpOptions);
+    return this.http.delete(this.url+"/"+songId+"/"+this.globalService.password,this.httpOptions);
   }
 
   getNextSong() {
