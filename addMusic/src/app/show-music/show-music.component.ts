@@ -75,7 +75,12 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
       this.player?.loadVideoById(this.getSongIdFromSong(this.actSong))
     }
   }
+
   startPlaying() {
+    // if(this.player !== null) {
+    //   if(this.player.getPlayerState() === -1)
+    //       this.playNextSong();
+    // }
     if (!this.isPlaying) {
       this.isPlaying = true;
       this.player = new YT.Player('player', {
@@ -87,6 +92,7 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
           'onStateChange': this.onStateChanged
         }
       });
+
     }
   }
 
@@ -95,7 +101,8 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
   }
 
   onStateChanged = (event: any) => {
-    if (event.data == YT.PlayerState.ENDED) {
+    if (event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.UNSTARTED) {
+      console.log(event.data)
       this.playNextSong();
     }
   };
