@@ -109,4 +109,17 @@ public class Song implements Comparable<Song> {
 
         return this.getVoteCount() - o.getVoteCount();
     }
+
+    public String toJson() {
+        return "{" +
+                "\"id\":" + id +
+                ",\"songName\":\"" + songName + '\"' +
+                ",\"videoUrl\":\"" + videoUrl + '\"' +
+                ",\"thumbnail\":\"" + thumbnail + '\"' +
+                ",\"songId\":\"" + songId + '\"' +
+                ",\"timeAdded\":\"" + timeAdded + '\"' +
+                ",\"voteCount\":" + voteCount +
+                ",\"duration\":" + duration +
+                "}";
+    }
 }
