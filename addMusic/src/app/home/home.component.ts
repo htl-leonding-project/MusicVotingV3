@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.songWebSocketService.connect();
     this.songSubscription = this.songWebSocketService.getSongUpdates().subscribe((song: any) => {
-      this.songs = song;
+      this.playlistSongs = song;
     });
   }
 
@@ -69,12 +69,7 @@ export class HomeComponent implements OnInit {
   }
 
   likeSong(song: Song) {
-    this.buttonLikeDisable = true
     this.addSong(song)
-
-    setTimeout(() => {
-      this.buttonLikeDisable = false
-    }, environment.timeOutAtAdd)
   }
 
   adminBtnClicked() {

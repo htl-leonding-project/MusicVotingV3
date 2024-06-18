@@ -26,7 +26,8 @@ export class QrCodeComponent implements OnInit {
     dialogConfig.disableClose = true
     let dialogref=this.matDialog.open(DialogBodyComponent, dialogConfig)
     dialogref.afterClosed().subscribe(result => {
-      this.qrCodeUrl = "http://music.htl-leonding.ac.at/"+environment.home
+      this.qrCodeUrl = "http://localhost:4200/"+environment.home
+      console.log(this.qrCodeUrl)
     });
 
   }
