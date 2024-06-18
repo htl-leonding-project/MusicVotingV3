@@ -66,7 +66,7 @@
 
   <button [disabled]="btnDisabled"
           class="btn col-12 m-2 playButton"
-          (click)=getNextSong()>Delete First</button>
+          (click)=playNextSong()>Delete First</button>
 
   <span *ngFor="let song of songs; let i=index" class="col-4">
     <div class="card mb-3" style="max-width: 540px;">

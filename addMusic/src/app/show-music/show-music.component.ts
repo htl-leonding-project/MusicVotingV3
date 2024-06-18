@@ -51,7 +51,6 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
       this.songs = song;
       this.actSong = song[0];
     });
-      console.log(this.songs)
   }
 
   ngOnDestroy(): void {
@@ -64,22 +63,23 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
     const dialogConfig = new MatDialogConfig()
     dialogConfig.disableClose = true
     let dialogref = this.matDialog.open(DialogBodyComponent, dialogConfig)
-    dialogref.afterClosed().subscribe((result) => { console.log(result) })
+    dialogref.afterClosed().subscribe((result) => {
+      console.log(result)
+    })
   }
 
   playNextSong() {
-    console.log("Playing next song")
     if (this.songs.length != 0) {
-      this.getNextSong();
-      this.player?.loadVideoById(this.getSongIdFromSong(this.actSong))
+      console.log("Playing next song")
+      this.getNextSong((song: Song) => {
+        console.log("Callback executed with song:", song);
+        this.actSong = song;
+        this.player?.loadVideoById(this.getSongIdFromSong(this.actSong))
+      });
     }
   }
 
   startPlaying() {
-    // if(this.player !== null) {
-    //   if(this.player.getPlayerState() === -1)
-    //       this.playNextSong();
-    // }
     if (!this.isPlaying && this.songs.length > 0) {
       this.isPlaying = true;
       this.player = new YT.Player('player', {
@@ -110,11 +110,15 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
     event.target.playVideo();
   };
 
-  getNextSong() {
-    let songToDelete = this.songs[0];
-    console.log("song to delete", songToDelete)
-    // this.songService.getNextSong().subscribe((song: Song) => {this.actSong = song});
-    this.songService.getNextSong().subscribe(() => {console.log("Deleted song")});
+
+  getNextSong(callback: (song: Song) => void): void {
+    this.songService.getNextSong().subscribe((song) => {
+      if (song === null || song === undefined) {
+        console.log("No song found");
+      } else {
+        callback(song);
+      }
+    });
   }
 }
 
