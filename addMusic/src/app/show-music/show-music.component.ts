@@ -70,9 +70,7 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
   playNextSong() {
     console.log("Playing next song")
     if (this.songs.length != 0) {
-
-      this.deleteSong();
-
+      this.getNextSong();
       this.player?.loadVideoById(this.getSongIdFromSong(this.actSong))
     }
   }
@@ -102,7 +100,7 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
   }
 
   onStateChanged = (event: any) => {
-    if (event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.UNSTARTED) {
+    if (event.data === YT.PlayerState.ENDED) {
       console.log(event.data)
       this.playNextSong();
     }
@@ -112,9 +110,11 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
     event.target.playVideo();
   };
 
-  deleteSong() {
+  getNextSong() {
     let songToDelete = this.songs[0];
-    this.songService.deleteSong(songToDelete?.id!)
+    console.log("song to delete", songToDelete)
+    // this.songService.getNextSong().subscribe((song: Song) => {this.actSong = song});
+    this.songService.getNextSong().subscribe(() => {console.log("Deleted song")});
   }
 }
 
