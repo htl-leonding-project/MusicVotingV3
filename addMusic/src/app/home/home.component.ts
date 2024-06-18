@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {environment} from 'src/environments/environment';
-import {interval, Observable} from 'rxjs';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {Subscription} from 'rxjs';
 import {Song} from '../modules/song.module';
 import {SongService} from '../services/song.service';
-import {DialogBodyComponent} from '../dialog-body/dialog-body.component';
 import {Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
+import {SongWebSocketService} from "../services/song-websocket.service";
 
 @Component({
   selector: 'app-home',
@@ -24,23 +23,22 @@ export class HomeComponent implements OnInit {
 
   buttonDisable = false;
   buttonLikeDisable = false;
+  private songSubscription: Subscription | undefined;
 
 
   constructor(
     private service: SongService,
-    private router: Router
+    private router: Router,
+    private songWebSocketService: SongWebSocketService,
   ) {
   }
 
 
   ngOnInit(): void {
-    // interval(1000).subscribe((x) => {
-    //   this.service.getPlaylist().subscribe({
-    //     next: (result) => {
-    //       this.playlistSongs = result;
-    //     },
-    //   });
-    // });
+    this.songWebSocketService.connect();
+    this.songSubscription = this.songWebSocketService.getSongUpdates().subscribe((song: any) => {
+      this.songs = song;
+    });
   }
 
   search() {
