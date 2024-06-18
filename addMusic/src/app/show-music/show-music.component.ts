@@ -102,7 +102,7 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
   }
 
   onStateChanged = (event: any) => {
-    if (event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.UNSTARTED) {
+    if (event.data === YT.PlayerState.ENDED /*|| event.data === YT.PlayerState.UNSTARTED*/) {
       console.log(event.data)
       this.playNextSong();
     }

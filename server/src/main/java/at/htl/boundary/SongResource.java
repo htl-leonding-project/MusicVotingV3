@@ -33,11 +33,14 @@ public class SongResource {
     @Transactional
     public Song getNextSong() {
         List<Song> songs = songRepository.getPlaylist();
+
         if (songs.isEmpty()) {
             return null;
         }
+
         songRepository.removeById(songs.get(0).getId());
-        return songs.get(0);
+
+        return songRepository.getPlaylist().stream().findFirst().orElse(null);
     }
 
     @POST
