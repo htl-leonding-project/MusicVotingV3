@@ -1,12 +1,10 @@
-import {Component, OnDestroy, OnInit, Pipe, PipeTransform, Sanitizer, SecurityContext, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, Pipe, PipeTransform} from '@angular/core';
 import {Song} from '../modules/song.module';
 import {SongService} from '../services/song.service';
-import {delay, interval, Observable, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {DialogBodyComponent} from '../dialog-body/dialog-body.component';
 import {DomSanitizer} from "@angular/platform-browser";
-import {YouTubePlayer} from "@angular/youtube-player";
-import {NgZone} from "@angular/core";
 import {SongWebSocketService} from "../services/song-websocket.service";
 
 @Component({
