@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DialogBodyComponent } from '../dialog-body/dialog-body.component';
-import { environment } from 'src/environments/environment';
+import {Component, OnInit} from '@angular/core';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {DialogBodyComponent} from '../dialog-body/dialog-body.component';
+import {environment} from 'src/environments/environment';
 
 @Component({
   selector: 'app-qr-code',
