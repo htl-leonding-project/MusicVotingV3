@@ -28,6 +28,6 @@ export class BlacklistService {
   }
 
   deleteFromBlacklist(blacklistItemId: number){
-    return this.http.delete(this.url+blacklistItemId+"/"+this.globalService.password);
+    return this.http.delete(this.url+"/"+blacklistItemId+"/"+this.globalService.password);
   }
 }
