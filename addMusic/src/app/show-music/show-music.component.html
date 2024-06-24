@@ -76,6 +76,12 @@
     <div class="card mb-3" style="max-width: 540px;">
       <div class="row g-0">
         <div class="col-md-6">
+          <div class="card-body " style="height: 80px;">
+            <p><b>{{i + 1}}.</b></p>
+            <h3 class="card-text overflow">{{ song.songName }}</h3>
+          </div>
+        </div>
+        <div class="col-md-6">
           <img
             *ngIf="song.thumbnail == undefined"
             class="" src="../assets/musicCover.jpg"
@@ -83,14 +89,7 @@
           />
       <img
         *ngIf="song.thumbnail != undefined"
-        class="card-img" [src]="song.thumbnail"
-
-      />
-        </div>
-        <div class="col-md-6">
-          <div class="card-body " style="height: 80px;">
-            <h3 class="card-text overflow">{{ song.songName }}</h3>
-          </div>
+        class="card-img" [src]="song.thumbnail"/>
         </div>
 
         <div class="card-footer text-muted">Stimmen: {{ song.voteCount }}</div>
