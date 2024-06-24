@@ -37,7 +37,7 @@ export class SongService {
 
   deleteSong(songId: string){
     console.log("deleted song: " + this.url+"/"+songId+"/"+this.globalService.password,this.httpOptions)
-    return this.http.delete(this.url+"/"+songId+this.globalService.password,this.httpOptions);
+    return this.http.delete(this.url+"/"+songId+"/"+this.globalService.password,this.httpOptions);
   }
 
   getNextSong() {
