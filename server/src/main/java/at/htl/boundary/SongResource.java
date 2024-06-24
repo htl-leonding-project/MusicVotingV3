@@ -28,6 +28,8 @@ public class SongResource {
         return songRepository.getPlaylist();
     }
 
+    private Song currentSong = null;
+
     @GET
     @Path("getNextSong")
     @Transactional
@@ -38,9 +40,14 @@ public class SongResource {
             return null;
         }
 
-        songRepository.removeById(songs.get(0).getId());
+        if (currentSong == null) {
+            songRepository.removeById(songs.get(0).getId());
+        } else {
+            songRepository.removeById(currentSong.getId());
+        }
+        currentSong = songRepository.getPlaylist().stream().findFirst().orElse(null);
 
-        return songRepository.getPlaylist().stream().findFirst().orElse(null);
+        return currentSong;
     }
 
     @POST

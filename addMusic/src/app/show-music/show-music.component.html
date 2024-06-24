@@ -24,12 +24,12 @@
               class="card-img-top"
               src="../assets/musicCover.jpg"
               width="80px"
-             alt=""/>
+              alt=""/>
             <img
               *ngIf="actSong.thumbnail != undefined"
               class="card-img-top" [src]="actSong.thumbnail"
               width="80px"
-             alt=""/>
+              alt=""/>
           </div>
           <div class="col-md-8">
             <div class="card-body">
@@ -51,22 +51,26 @@
 
   <h1>Aktuelle Playlist</h1>
 
-  <button [disabled]="btnDisabled"
-          class="btn col-12 m-2 playButton"
-          (click)="startPlaying()">
+  <div class="row-cols-2">
+
+    <button [disabled]="btnDisabled"
+            class="btn col-12 m-2 playButton"
+            (click)="startPlaying()">
 
     <span *ngIf="isPlaying == false">
       <mat-icon>play_arrow</mat-icon>
     </span>
-    <span *ngIf="isPlaying == true">
+      <span *ngIf="isPlaying == true">
 
       <mat-icon>pause</mat-icon>
     </span>
-  </button>
+    </button>
 
-  <button [disabled]="btnDisabled"
-          class="btn col-12 m-2 playButton"
-          (click)=playNextSong()>Delete First</button>
+    <button [disabled]="btnDisabled"
+            class="btn col-12 m-2 playButton"
+            (click)=playNextSong()>Skip
+    </button>
+  </div>
 
   <span *ngFor="let song of songs; let i=index" class="col-4">
     <div class="card mb-3" style="max-width: 540px;">

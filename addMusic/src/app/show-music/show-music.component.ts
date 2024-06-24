@@ -47,7 +47,8 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
     this.songWebSocketService.connect();
     this.songSubscription = this.songWebSocketService.getSongUpdates().subscribe((song: any) => {
       this.songs = song;
-      this.actSong = song[0];
+      if (this.actSong.id === '')
+        this.actSong = song[0];
     });
   }
 
