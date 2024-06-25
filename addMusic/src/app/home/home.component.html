@@ -56,11 +56,13 @@
           <span *ngIf="playlistSong.thumbnail != undefined">
             <img [src]="playlistSong.thumbnail" width="100px" />
           </span>
+        <p>{{playlistSong.isLikedByUser}}</p>
         </span>
 
         <span class="col-4 center">{{ playlistSong.songName }}</span>
 
-        <button class="btn btn-dark col-4 center" [disabled]="buttonLikeDisable" (click)="likeSong(playlistSong)"
+
+        <button class="btn btn-dark col-4 center" [disabled]="hasAlreadyBeenVoted(playlistSong)" (click)="likeSong(playlistSong)"
           style="height: 40%;">
           <mat-icon>favorite</mat-icon>
         </button>

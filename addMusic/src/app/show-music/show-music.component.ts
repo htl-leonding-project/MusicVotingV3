@@ -85,7 +85,8 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
         width: '640',
         videoId: this.getSongIdFromSong(this.actSong),
         playerVars: {
-          rel: 0
+          rel: 0,
+
         },
         events: {
           "onReady": this.onPlayerReady,

@@ -18,4 +18,5 @@ export interface Song {
   duration:number
   songId: string
   voteCount:number
+  isLikedByUser?: boolean
 }
