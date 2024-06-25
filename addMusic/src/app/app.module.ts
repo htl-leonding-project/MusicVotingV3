@@ -32,26 +32,25 @@ const routes: Routes = [
 
 
 @NgModule({
-  declarations: [
-    AppComponent, DialogBodyComponent, AdminPageComponent, HomeComponent, ShowMusicComponent, QrCodeComponent, SafePipe
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTabsModule,
-    MatDialogModule,
-    QRCodeModule,
-    YouTubePlayerModule,
-],
-  providers: [],
-  bootstrap: [AppComponent],
-  entryComponents: [DialogBodyComponent]
+    declarations: [
+        AppComponent, DialogBodyComponent, AdminPageComponent, HomeComponent, ShowMusicComponent, QrCodeComponent, SafePipe
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatButtonModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTabsModule,
+        MatDialogModule,
+        QRCodeModule,
+        YouTubePlayerModule,
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
