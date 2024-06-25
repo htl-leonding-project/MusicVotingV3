@@ -64,9 +64,6 @@ export class HomeComponent implements OnInit {
     })
     this.buttonDisable = false
 
-    // setTimeout(()=>{
-    // },environment.timeOutAtAdd)
-
     console.log(this.query)
   }
 
