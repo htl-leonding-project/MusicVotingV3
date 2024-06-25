@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
 import {SongWebSocketService} from "../services/song-websocket.service";
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -17,10 +18,10 @@ export class HomeComponent implements OnInit {
 
   songs: Song[] = [];
   playlistSongs: Song[] = [];
+  likedSongs: Song[]=  [];
 
   query: string = "";
   songTitle: string = "";
-
   buttonDisable = false;
   buttonLikeDisable = false;
   private songSubscription: Subscription | undefined;
@@ -31,6 +32,7 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private songWebSocketService: SongWebSocketService,
   ) {
+    // this.loadLikedSongsFromCookies();
   }
 
 
@@ -70,9 +72,28 @@ export class HomeComponent implements OnInit {
 
   likeSong(song: Song) {
     this.addSong(song)
+    this.likedSongs.push(song)
+    // this.saveLikedSongsToCookies();
   }
+
+
+  // private loadLikedSongsFromCookies() {
+  //   const cookie = this.cookieService.get('likedSongs');
+  //   if (cookie) {
+  //     this.likedSongs = JSON.parse(cookie);
+  //   }
+  // }
+
+  // private saveLikedSongsToCookies() {
+  //   this.cookieService.put('likedSongs', JSON.stringify(this.likedSongs), { expires: 365 });
+  // }
+
 
   adminBtnClicked() {
     this.router.navigate(["/adminPage"])
+  }
+
+  hasAlreadyBeenVoted(song: Song) : boolean{
+    return this.likedSongs.find(s=> s.id === song.id) !== undefined;
   }
 }
