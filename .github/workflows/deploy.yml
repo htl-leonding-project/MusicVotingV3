@@ -77,6 +77,8 @@ jobs:
 
       - name: Upload Angular frontend
         run: |
+          ls -lah
+          pwd
           scp -P ${{ secrets.SSH_PORT }} -r ./addMusic/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html
 
       - name: Run Angular frontend
