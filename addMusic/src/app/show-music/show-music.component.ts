@@ -80,11 +80,13 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
 
   startPlaying() {
     if (!this.isPlaying && this.songs.length > 0) {
-      console.log("tset")
       this.player = new YT.Player('player', {
         height: '360',
         width: '640',
         videoId: this.getSongIdFromSong(this.actSong),
+        playerVars: {
+          rel: 0
+        },
         events: {
           "onReady": this.onPlayerReady,
           'onStateChange': this.onStateChanged
