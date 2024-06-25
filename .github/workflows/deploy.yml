@@ -75,11 +75,21 @@ jobs:
           npm install
           npm run build --prod
 
+#      - name: Upload Angular frontend
+#        run: |
+#          ls -lah
+#          pwd
+#          scp -P ${{ secrets.SSH_PORT }} -r ./addMusic/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html
+
       - name: Upload Angular frontend
         run: |
           ls -lah
           pwd
-          scp -P ${{ secrets.SSH_PORT }} -r ./addMusic/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html
+          scp -P ${{ secrets.SSH_PORT }} -r ./addMusic/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:musicvoting
+
+      - name: Delete existing derby-create.sh on server
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cp -r  musicvoting/* /var/www/html'
 
       - name: Run Angular frontend
         run: |
