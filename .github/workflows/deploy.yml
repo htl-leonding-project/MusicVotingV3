@@ -57,7 +57,8 @@ jobs:
 
       - name: Upload Quarkus jar
         run: |
-          scp -P ${{ secrets.SSH_PORT }} ./server/target/*-runner.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/quarkus-app.jar
+          JAR_FILE=$(ls server/target/*.jar)
+          scp -P ${{ secrets.SSH_PORT }} $JAR_FILE ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/quarkus-app.jar
 
       - name: Execute Quarkus jar
         run: |
