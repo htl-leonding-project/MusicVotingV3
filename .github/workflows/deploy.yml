@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+env:
+  DERBY_PORT: 1527
+  QUARKUS_PORT: 8080
+  ANGULAR_PORT: 4200
+
 jobs:
   deploy:
     runs-on: ubuntu-24.04
@@ -18,10 +23,27 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Upload and execute derby-create.sh
+      - name: Add server to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
+
+      - name: Delete existing derby-create.sh on server
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'rm -f /tmp/derby-create.sh'
+
+      - name: Upload and prepare derby-create.sh
         run: |
           scp -P ${{ secrets.SSH_PORT }} ./server/derby-create.sh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/derby-create.sh
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'chmod +x /tmp/derby-create.sh && /tmp/derby-create.sh'
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'chmod +x /tmp/derby-create.sh && rm -rf ./db && /tmp/derby-create.sh'
+
+      - name: Delete existing derby-start.sh on server
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'rm -f /tmp/derby-start.sh'
+
+      - name: Kill processes on specified ports
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo fuser -k $DERBY_PORT/tcp || true && sudo fuser -k $QUARKUS_PORT/tcp || true && sudo fuser -k $ANGULAR_PORT/tcp || true"
 
       - name: Upload and execute derby-start.sh
         run: |
@@ -30,15 +52,17 @@ jobs:
 
       - name: Build Quarkus project
         run: |
-          ./mvnw package -Pnative
+          cd server
+          ./mvnw package
 
       - name: Upload Quarkus jar
         run: |
-          scp -P ${{ secrets.SSH_PORT }} ./server/target/*-runner.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/quarkus-app.jar
+          JAR_FILE=$(ls server/target/*.jar)
+          scp -P ${{ secrets.SSH_PORT }} $JAR_FILE ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/quarkus-app.jar
 
       - name: Execute Quarkus jar
         run: |
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'nohup java -jar /tmp/quarkus-app.jar &'
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "nohup java -jar /tmp/quarkus-app.jar &"
 
       - name: Install Node.js
         uses: actions/setup-node@v3
@@ -47,7 +71,7 @@ jobs:
 
       - name: Build Angular frontend
         run: |
-          cd path/to/angular-project
+          cd addMusic
           npm install
           npm run build --prod
 
@@ -57,4 +81,4 @@ jobs:
 
       - name: Run Angular frontend
         run: |
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'nohup serve -s /var/www/html -l 80 &'
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "nohup serve -s /var/www/html -l 80 &"
