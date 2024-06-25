@@ -27,10 +27,10 @@ jobs:
         run: |
           ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'rm -f /tmp/derby-create.sh'
 
-      - name: Upload and execute derby-create.sh
+      - name: Upload and prepare derby-create.sh
         run: |
           scp -P ${{ secrets.SSH_PORT }} ./server/derby-create.sh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/derby-create.sh
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'chmod +x /tmp/derby-create.sh && /tmp/derby-create.sh'
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'chmod +x /tmp/derby-create.sh && rm -rf ./db && /tmp/derby-create.sh'
 
       - name: Delete existing derby-start.sh on server
         run: |
