@@ -15,7 +15,7 @@ import {SongWebSocketService} from "../services/song-websocket.service";
 
 export class ShowMusicComponent implements OnInit, OnDestroy {
   isPlaying = false;
-  isPausedClicked = true;
+  isVideoPaused = true;
   btnDisabled = false
   player: YT.Player | null = null;
   actSong: Song = {
@@ -80,7 +80,7 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
 
   startPlaying() {
     if (!this.isPlaying && this.songs.length > 0) {
-      this.isPlaying = true;
+      console.log("tset")
       this.player = new YT.Player('player', {
         height: '360',
         width: '640',
@@ -90,7 +90,6 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
           'onStateChange': this.onStateChanged
         }
       });
-
     }
   }
 
@@ -99,15 +98,36 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
   }
 
   onStateChanged = (event: any) => {
+    if (event.data === YT.PlayerState.PAUSED) {
+      this.isVideoPaused = true;
+    }
+    if (event.data === YT.PlayerState.BUFFERING) {
+      this.isVideoPaused = false;
+    }
     if (event.data === YT.PlayerState.ENDED) {
-      console.log(event.data)
       this.playNextSong();
     }
   };
 
   onPlayerReady = (event: any) => {
     event.target.playVideo();
+    this.isPlaying = true
   };
+
+  onPauseOrPlayBtn() {
+
+    if (!this.isPlaying) {
+      this.startPlaying()
+    }
+
+    if (this.isVideoPaused) {
+      this.player?.playVideo()
+    }
+    if (!this.isVideoPaused) {
+      this.player?.pauseVideo()
+    }
+    this.isVideoPaused = !this.isVideoPaused
+  }
 
 
   getNextSong(callback: (song: Song) => void): void {

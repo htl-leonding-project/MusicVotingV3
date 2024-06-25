@@ -55,12 +55,12 @@
 
     <button [disabled]="btnDisabled"
             class="btn col-12 m-2 playButton"
-            (click)="startPlaying()">
+            (click)="onPauseOrPlayBtn()">
 
-    <span *ngIf="isPlaying == false">
+    <span *ngIf="isVideoPaused">
       <mat-icon>play_arrow</mat-icon>
     </span>
-      <span *ngIf="isPlaying == true">
+      <span *ngIf="!isVideoPaused">
 
       <mat-icon>pause</mat-icon>
     </span>
