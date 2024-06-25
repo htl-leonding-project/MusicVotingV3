@@ -104,5 +104,6 @@
         }
       }
     }
-  }
+  },
+  "defaultProject": "addMusic"
 }
