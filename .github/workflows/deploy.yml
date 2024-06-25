@@ -52,7 +52,7 @@ jobs:
 
       - name: Build Quarkus project
         run: |
-          ./mvnw package -Pnative
+          ./server/mvnw package -Pnative
 
       - name: Upload Quarkus jar
         run: |
@@ -69,7 +69,7 @@ jobs:
 
       - name: Build Angular frontend
         run: |
-          cd path/to/angular-project
+          cd addMusic
           npm install
           npm run build --prod
 
