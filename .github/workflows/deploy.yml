@@ -71,7 +71,7 @@ jobs:
 
       - name: Build Angular frontend
         run: |
-          cd path/to/angular-project
+          cd addMusic
           npm install
           npm run build --prod
 
