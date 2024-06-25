@@ -23,10 +23,18 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
 
+      - name: Delete existing derby-create.sh on server
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'rm -f /tmp/derby-create.sh'
+
       - name: Upload and execute derby-create.sh
         run: |
           scp -P ${{ secrets.SSH_PORT }} ./server/derby-create.sh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/derby-create.sh
           ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'chmod +x /tmp/derby-create.sh && /tmp/derby-create.sh'
+
+      - name: Delete existing derby-start.sh on server
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'rm -f /tmp/derby-start.sh'
 
       - name: Upload and execute derby-start.sh
         run: |
