@@ -7,14 +7,14 @@ import at.htl.entity.Artist;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
+@ApplicationScoped
 public class InitBean {
     @Inject
     SongRepository songRepository;
@@ -45,8 +45,8 @@ public class InitBean {
         artistRepository.deleteAll();
         String line = "";
         String splitBy = ",";
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/artists.csv"));
+        try (InputStream inputStream = getClass().getResourceAsStream("/artists.csv");
+             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
             br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] artist = line.split(splitBy);
