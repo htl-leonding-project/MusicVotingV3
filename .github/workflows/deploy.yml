@@ -62,7 +62,7 @@ jobs:
 
       - name: Execute Quarkus jar
         run: |
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "nohup java -jar /tmp/quarkus-app.jar &"
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "nohup java -jar /tmp/quarkus-app.jar & echo $! > application.pid"
 
       - name: Install Node.js
         uses: actions/setup-node@v3
