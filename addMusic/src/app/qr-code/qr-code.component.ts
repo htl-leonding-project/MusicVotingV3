@@ -27,7 +27,7 @@ export class QrCodeComponent implements OnInit {
     let dialogref=this.matDialog.open(DialogBodyComponent, dialogConfig)
     dialogref.afterClosed().subscribe(result => {
       this.qrCodeUrl = environment.host+environment.home
-      console.log(this.qrCodeUrl)
+      console.log(this.qrCodeUrl, "sollte nich localhost sein amk")
     });
 
   }
