@@ -73,7 +73,8 @@ jobs:
         run: |
           cd addMusic
           npm install
-          npm run build --prod
+          npm run build:prod
+
 
       - name: Upload Angular frontend to temporary directory
         run: |
