@@ -83,10 +83,6 @@ jobs:
         run: |
           ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo cp -r /tmp/angular-dist/* /var/www/html"
 
-      - name: Run Angular frontend
-        run: |
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "nohup serve -s /var/www/html -l $ANGULAR_PORT > /tmp/angular-frontend.log 2>&1 &"
-
       - name: Restart Nginx
         run: |
           ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo systemctl restart nginx"
