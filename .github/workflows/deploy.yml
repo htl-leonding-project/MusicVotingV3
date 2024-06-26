@@ -73,8 +73,7 @@ jobs:
         run: |
           cd addMusic
           npm install
-          npm run build:prod
-
+          npm run build --prod
 
       - name: Upload Angular frontend to temporary directory
         run: |
@@ -82,7 +81,11 @@ jobs:
 
       - name: Move Angular frontend to web directory with sudo
         run: |
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo cp -r /tmp/angular-dist/addMusic/* /var/www/html"
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo cp -r /tmp/angular-dist/* /var/www/html"
+
+      - name: Run Angular frontend
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "nohup serve -s /var/www/html -l $ANGULAR_PORT > /tmp/angular-frontend.log 2>&1 &"
 
       - name: Restart Nginx
         run: |
