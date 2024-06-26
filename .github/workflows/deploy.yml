@@ -48,7 +48,7 @@ jobs:
       - name: Upload and execute derby-start.sh
         run: |
           scp -P ${{ secrets.SSH_PORT }} ./server/derby-start.sh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/derby-start.sh
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'chmod +x /tmp/derby-start.sh && /tmp/derby-start.sh'
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'chmod +x /tmp/derby-start.sh && nohup /tmp/derby-start.sh > /tmp/derby-start.log 2>&1 &'
 
       - name: Build Quarkus project
         run: |
@@ -62,7 +62,7 @@ jobs:
 
       - name: Execute Quarkus jar
         run: |
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "nohup java -jar /tmp/quarkus-app.jar & echo $! > application.pid"
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "nohup java -jar /tmp/quarkus-app.jar > /tmp/quarkus-app.log 2>&1 & echo $! > application.pid"
 
       - name: Install Node.js
         uses: actions/setup-node@v3
@@ -75,22 +75,14 @@ jobs:
           npm install
           npm run build --prod
 
-#      - name: Upload Angular frontend
-#        run: |
-#          ls -lah
-#          pwd
-#          scp -P ${{ secrets.SSH_PORT }} -r ./addMusic/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html
-
-      - name: Upload Angular frontend
+      - name: Upload Angular frontend to temporary directory
         run: |
-          ls -lah
-          pwd
-          scp -P ${{ secrets.SSH_PORT }} -r ./addMusic/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:musicvoting
+          scp -P ${{ secrets.SSH_PORT }} -r ./addMusic/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/angular-dist
 
-      - name: Delete existing derby-create.sh on server
+      - name: Move Angular frontend to web directory with sudo
         run: |
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cp -r  musicvoting/* /var/www/html'
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo cp -r /tmp/angular-dist/* /var/www/html"
 
       - name: Run Angular frontend
         run: |
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "nohup serve -s /var/www/html -l 80 &"
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "nohup serve -s /var/www/html -l $ANGULAR_PORT > /tmp/angular-frontend.log 2>&1 &"
