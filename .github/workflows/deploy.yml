@@ -82,7 +82,7 @@ jobs:
 
       - name: Move Angular frontend to web directory with sudo
         run: |
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo cp -r /tmp/angular-dist/* /var/www/html"
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo cp -r /tmp/angular-dist/addMusic/* /var/www/html"
 
       - name: Run Angular frontend
         run: |
