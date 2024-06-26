@@ -78,7 +78,7 @@ jobs:
 
       - name: Upload Angular frontend to temporary directory
         run: |
-          scp -P ${{ secrets.SSH_PORT }} -r ./addMusic/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/angular-dist
+          scp -P ${{ secrets.SSH_PORT }} -r ./addMusic/dist/addMusic/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/angular-dist
 
       - name: Move Angular frontend to web directory with sudo
         run: |
