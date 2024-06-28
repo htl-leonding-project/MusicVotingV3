@@ -18,7 +18,8 @@ export class HomeComponent implements OnInit {
 
   songs: Song[] = [];
   playlistSongs: Song[] = [];
-  likedSongs: Song[]=  [];
+  likedSongs: Song[] = [];
+  addedSongs: Song[] = [];
 
   query: string = "";
   songTitle: string = "";
@@ -32,7 +33,8 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private songWebSocketService: SongWebSocketService,
   ) {
-    // this.loadLikedSongsFromCookies();
+    this.loadLikedSongsFromCookies();
+    this.loadAddedSongsFromCookies();
   }
 
 
@@ -56,6 +58,8 @@ export class HomeComponent implements OnInit {
 
   addSong(song: Song) {
     this.buttonDisable = true;
+    this.addedSongs.push(song);
+    localStorage.setItem('addedSongs', JSON.stringify(this.addedSongs));
     this.service.addSong(song).subscribe({
       error: (err: HttpErrorResponse) => {
         this.buttonDisable = false
@@ -63,34 +67,47 @@ export class HomeComponent implements OnInit {
       }
     })
     this.buttonDisable = false
-
-    console.log(this.query)
   }
 
   likeSong(song: Song) {
     this.addSong(song)
     this.likedSongs.push(song)
-    // this.saveLikedSongsToCookies();
+    localStorage.setItem('likedSongs', JSON.stringify(this.likedSongs));
   }
-
-
-  // private loadLikedSongsFromCookies() {
-  //   const cookie = this.cookieService.get('likedSongs');
-  //   if (cookie) {
-  //     this.likedSongs = JSON.parse(cookie);
-  //   }
-  // }
-
-  // private saveLikedSongsToCookies() {
-  //   this.cookieService.put('likedSongs', JSON.stringify(this.likedSongs), { expires: 365 });
-  // }
-
 
   adminBtnClicked() {
     this.router.navigate(["/adminPage"])
   }
 
-  hasAlreadyBeenVoted(song: Song) : boolean{
-    return this.likedSongs.find(s=> s.id === song.id) !== undefined;
+  hasAlreadyBeenVoted(song: Song): boolean {
+    return this.likedSongs.find(s => s.id === song.id) !== undefined;
+  }
+
+  hasAlreadyBeenAdded(song: Song): boolean {
+    let isInAddedSongs = this.addedSongs.find(s => s.videoUrl === song.videoUrl) !== undefined;
+
+    if (isInAddedSongs) {
+      let isInCurrentPlaylist = this.playlistSongs.find(s => s.videoUrl === song.videoUrl) !== undefined;
+      if (!isInCurrentPlaylist) {
+        this.addedSongs.slice(this.addedSongs.indexOf(song),1)
+        localStorage.setItem('addedSongs', JSON.stringify(this.addedSongs));
+        return false;
+      }
+    }
+    return isInAddedSongs
+  }
+
+  private loadLikedSongsFromCookies() {
+    const likedSongs = localStorage.getItem('likedSongs');
+    if (likedSongs) {
+      this.likedSongs = JSON.parse(likedSongs);
+    }
+  }
+
+  private loadAddedSongsFromCookies() {
+    const addedSongs = localStorage.getItem('addedSongs');
+    if (addedSongs) {
+      this.addedSongs = JSON.parse(addedSongs);
+    }
   }
 }

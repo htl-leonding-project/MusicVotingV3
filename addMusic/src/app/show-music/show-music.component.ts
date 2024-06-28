@@ -63,15 +63,12 @@ export class ShowMusicComponent implements OnInit, OnDestroy {
     dialogConfig.disableClose = true
     let dialogref = this.matDialog.open(DialogBodyComponent, dialogConfig)
     dialogref.afterClosed().subscribe((result) => {
-      console.log(result)
     })
   }
 
   playNextSong() {
     if (this.songs.length != 0) {
-      console.log("Playing next song")
       this.getNextSong((song: Song) => {
-        console.log("Callback executed with song:", song);
         this.actSong = song;
         this.player?.loadVideoById(this.getSongIdFromSong(this.actSong))
       });

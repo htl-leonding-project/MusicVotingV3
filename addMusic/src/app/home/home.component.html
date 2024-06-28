@@ -39,7 +39,7 @@
 
         <span class="col-4 center">{{ song.songName }}</span>
 
-        <button class="btn btn-dark col-4 center" [disabled]="buttonDisable" (click)="addSong(song)"
+        <button class="btn btn-dark col-4 center" [disabled]="hasAlreadyBeenAdded(song)" (click)="addSong(song)"
           style="height: 40%;">
           <mat-icon>add</mat-icon>
         </button>
