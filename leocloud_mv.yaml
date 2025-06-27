@@ -66,7 +66,7 @@ spec:
     spec:
       containers:
         - name: music-backend
-          image: ghcr.io/musicvoting/musicvotingv3-server:latest
+          image: ghcr.io/htl-leonding-project/musicvotingv3-server:latest
           ports:
             - containerPort: 8080
           imagePullPolicy: Always
@@ -119,7 +119,7 @@ metadata:
   name: backend-ingress-mv
   namespace: student-it210196
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
     - host: it210196.cloud.htl-leonding.ac.at
