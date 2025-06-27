@@ -2,7 +2,7 @@ name: build-image-frontend
 
 on:
   push:
-    branches: [ main ]
+    branches: [ stuetz-deploy ]
 
   workflow_dispatch:
 
