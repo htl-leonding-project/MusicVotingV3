@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   timeOutAtAdd: 3000,  //in Millisekunden
     host: "http://localhost:8080/",
-  //host: "https://student.cloud.htl-leonding.ac.at/a.hartl/music-voting/api/",
+  //host: "https://it210196.cloud.htl-leonding.ac.at/music-voting/api/",
   home:"home"
 };
 
