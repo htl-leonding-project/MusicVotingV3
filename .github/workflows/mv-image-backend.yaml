@@ -3,8 +3,7 @@ name: build-image-backend
 on:
   push:
     branches: [ stuetz-deploy ]
-    paths:
-      - server/**
+
   workflow_dispatch:
 
 env:
