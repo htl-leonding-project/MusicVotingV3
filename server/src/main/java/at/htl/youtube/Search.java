@@ -12,6 +12,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @ApplicationScoped
 public class Search {
@@ -45,19 +47,18 @@ public class Search {
 
         Element scriptElement = doc.select("script:containsData(var ytInitialData)").first();
         if (scriptElement == null) {
-            throw new RuntimeException("JSON object not found in response.");
+            throw new RuntimeException("ytInitialData not found in page.");
         }
 
         String scriptContent = scriptElement.html();
-        int startOfJsonObjectIndex = scriptContent.indexOf("{");
-        int endOfJsonObjectIndex = scriptContent.lastIndexOf("}") + 1;
+        Pattern pattern = Pattern.compile("var ytInitialData = (\\{.*?\\});", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(scriptContent);
 
-        if (startOfJsonObjectIndex == -1 || endOfJsonObjectIndex == -1) {
-            System.out.println(scriptContent); // Print the script content for debugging
-            throw new RuntimeException("JSON object not found in response.");
+        if (!matcher.find()) {
+            throw new RuntimeException("ytInitialData JSON not found or malformed.");
         }
 
-        String jsonString = scriptContent.substring(startOfJsonObjectIndex, endOfJsonObjectIndex);
+        String jsonString = matcher.group(1);
         JsonObject json = new JsonObject(jsonString);
 
         if (json == null) {
