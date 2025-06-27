@@ -27,10 +27,6 @@ public class Search {
         Document doc = null;
         int attempts = 0;
 
-        if (true) {
-            throw new RuntimeException("Here");
-        }
-
         while (doc == null && attempts < 5) {
             try {
                 doc = Jsoup.connect(baseUrl + queryTerm)
