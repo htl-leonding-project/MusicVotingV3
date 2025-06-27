@@ -1,0 +1,85 @@
+<div class="container col-12 row ">
+  <div *ngIf="actSong.thumbnail != undefined && actSong.thumbnail != ''">
+  <h1>Aktueller Song</h1>
+    <div class="main-div" >
+  <div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img
+    *ngIf="actSong.thumbnail == undefined"
+    class="card-img-top"      src="../assets/musicCover.jpg"
+    width="80px"
+    />
+    <img
+    *ngIf="actSong.thumbnail != undefined"
+    class="card-img-top"      [src]="actSong.thumbnail"
+    width="80px"
+  />
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h2 class="card-title">{{actSong.songName}}</h2>
+          <p class="card-text">
+            <small class="text-muted">{{actSong.artist.strArtist}}</small>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+
+  <br />
+  <br />
+  <br />
+
+  <h1>Aktuelle Playlist</h1>
+
+  <button
+    class="btn col-12 m-2 playButton"
+    (click)="playSong()"
+  >
+    <span *ngIf="isPlaying == false">
+      <mat-icon>play_arrow</mat-icon>
+    </span>
+    <span *ngIf="isPlaying == true">
+
+      <mat-icon>pause</mat-icon>
+    </span>
+  </button>
+
+  <span *ngFor="let song of songs; let i=index" class="col-3">
+
+
+
+
+    <div class="card mb-3" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img
+      *ngIf="song.thumbnail == undefined"
+      class="card-img-top"      src="../assets/musicCover.jpg"
+      width="80px"
+      />
+      <img
+      *ngIf="song.thumbnail != undefined"
+      class="card-img-top"      [src]="song.thumbnail"
+      width="80px"
+    />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h3 class="card-title">{{song.songName}}</h3>
+            <p class="card-text">
+              <small class="text-muted">{{song.artist.strArtist}}</small>
+            </p>
+          </div>
+        </div>
+
+        <div class="card-footer text-muted">Position: {{i +1}}</div>
+      </div>
+    </div>
+
+    <!--     <a class="btn btn-danger" (click)="goToLink(song)">play song</a>-->
+  </span>
+</div>

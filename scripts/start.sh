@@ -13,7 +13,8 @@ sed -r -i 's/(\b[0-9]{1,3}\.){3}[0-9]{1,3}\b'/"$IP_ADDRESS"/ ../showMusic/src/en
 
 export QUARKUS_HTTP_HOST=$IP_ADDRESS
 
-gnome-terminal -- sh -c "./database.sh"
-gnome-terminal -- sh -c "./quarkus.sh"
-gnome-terminal -- sh -c "./addmusic.sh"
-gnome-terminal -- sh -c "./showmusic.sh"
+./database.sh
+./quarkus.sh
+./addmusic.sh
+./showmusic.sh
+
