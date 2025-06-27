@@ -44,7 +44,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/musicvoting/musicvotingv3-frontend:latest
+          image: ghcr.io/htl-leonding-project/musicvotingv3-frontend:latest
           ports:
             - containerPort: 80
           imagePullPolicy: Always
