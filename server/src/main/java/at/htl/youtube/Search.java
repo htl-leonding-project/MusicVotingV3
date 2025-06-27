@@ -62,7 +62,9 @@ public class Search {
         }
 
         String jsonString = matcher.group(1);
-        logger.severe(jsonString);
+        if (true) {
+        throw new RuntimeException(jsonString);
+        }
         JsonObject json = new JsonObject(jsonString);
 
         if (json == null) {
