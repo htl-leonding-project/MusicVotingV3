@@ -26,6 +26,11 @@ public class Search {
 
         Document doc = null;
         int attempts = 0;
+
+        if (true) {
+            throw new RuntimeException("Here");
+        }
+
         while (doc == null && attempts < 5) {
             try {
                 doc = Jsoup.connect(baseUrl + queryTerm)
@@ -62,9 +67,6 @@ public class Search {
         }
 
         String jsonString = matcher.group(1);
-        if (true) {
-        throw new RuntimeException(jsonString);
-        }
         JsonObject json = new JsonObject(jsonString);
 
         if (json == null) {
