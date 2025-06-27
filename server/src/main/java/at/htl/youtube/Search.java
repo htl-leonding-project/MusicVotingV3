@@ -12,6 +12,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,6 +52,8 @@ public class Search {
         }
 
         String scriptContent = scriptElement.html();
+        Logger logger = Logger.getLogger("Music");
+        logger.severe(scriptContent);
         Pattern pattern = Pattern.compile("var ytInitialData = (\\{.*?\\});", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(scriptContent);
 
@@ -59,6 +62,7 @@ public class Search {
         }
 
         String jsonString = matcher.group(1);
+        logger.severe(jsonString);
         JsonObject json = new JsonObject(jsonString);
 
         if (json == null) {
